@@ -1,3 +1,9 @@
+image: docker:19.03.13
+variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+services:
+    -   name: docker:19.03.13-dind
+        alias: docker
 build-job:
   stage: build
   script:
@@ -39,9 +45,3 @@ deploy-prod:
 default:
   tags:
     - docker
-  image: docker:19.03.13
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
-  services:
-    -   name: docker:19.03.13-dind
-        alias: docker
