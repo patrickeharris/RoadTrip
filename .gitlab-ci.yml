@@ -1,4 +1,6 @@
 image: docker:20.10.17
+services:
+  - docker:dind
 
 build-job:
   stage: build
