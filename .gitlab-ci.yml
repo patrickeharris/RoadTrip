@@ -35,4 +35,7 @@ deploy-prod:
 # saved by docker; this can quickly consume a lot of memory after a few
 # builds.
     - docker image prune -af
+    
+default:
+  image: ruby:2.7.5
 
