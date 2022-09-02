@@ -38,4 +38,4 @@ deploy-prod:
     
 default:
   tags:
-    - webserver
+    - runner
