@@ -1,6 +1,3 @@
-image: "docker:19.03.0-dind"
-
-
 build-job:
   stage: build
   script:
@@ -41,4 +38,4 @@ deploy-prod:
     
 default:
   tags:
-    - docker
+    - webserver
