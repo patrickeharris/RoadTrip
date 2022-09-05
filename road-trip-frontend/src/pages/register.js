@@ -2,21 +2,20 @@ import React from 'react';
 import Link from '@material-ui/core/Link';
 import styles from './styles/index.module.css';
 import {Navbar} from "../components";
-import {About, Footer, Header} from "../containers";
+import {Footer, Register} from "../containers";
 
 require('dotenv').config();
 
-function HomePage() {
+function RegisterPage() {
     return (
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
-                <Header />
+                <Register />
+                <Footer />
             </div>
-            <About />
-            <Footer />
         </div>
     )
 }
 
-export default HomePage
+export default RegisterPage

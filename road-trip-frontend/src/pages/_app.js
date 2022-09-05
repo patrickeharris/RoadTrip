@@ -6,6 +6,11 @@ import Head from 'next/head';
 import { CssBaseline } from '@material-ui/core';
 import { RoadTripThemeProvider } from '../util/theme';
 
+import {Navbar} from '../components';
+import { About, Footer, Header } from '../containers';
+
+import './styles/app.css';
+
 let initialState = {};
 let store = buildStore(initialState);
 
@@ -21,7 +26,7 @@ const RoadTripApp = ({ Component, pageProps }) => {
     return (
         <Provider store={ store }>
             <Head>
-                <title>My page</title>
+                <title>TrailBlazers</title>
                 <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
             </Head>
 
@@ -31,6 +36,8 @@ const RoadTripApp = ({ Component, pageProps }) => {
 
                 <Component {...pageProps} />
             </RoadTripThemeProvider>
+            <div className="App">
+            </div>
         </Provider>
     )
 

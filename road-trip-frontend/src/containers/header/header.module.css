@@ -1,0 +1,129 @@
+.header {
+    display: flex;
+}
+
+.headerContent {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-right: 5rem;
+}
+
+.headerContent h1 {
+    font-family: var(--font-family);
+    font-weight: 800;
+    font-size: 62px;
+    line-height: 75px;
+    letter-spacing: -0.04em;
+}
+
+.headerContent p {
+    font-family: var(--font-family);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 27px;
+    color: var(--color-text);
+    margin-top: 1.5rem;
+}
+
+.headerInput {
+    width: 100%;
+    margin: 2rem 0 1rem;
+    display: flex;
+}
+
+.headerInput input{
+    flex: 2;
+    width: 100%;
+    min-height: 50px;
+    background: var(--color-footer);
+    font-family: var(--font-family);
+    font-size: 20px;
+    line-height: 27px;
+    border: 2px solid var(--color-footer);
+    padding: 0 1rem;
+    outline: none;
+    color: #fff;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+}
+
+.headerInput button {
+    flex: 0.6;
+    width: 100%;
+    min-height: 50px;
+    cursor: pointer;
+    outline: none;
+    padding: 0 1rem;
+    border: none;
+    background: #FF4820;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-family: var(--font-family);
+    font-size: 20px;
+    line-height: 27px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.headerImage {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.headerImage img {
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (max-width: 1050px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .headerContent {
+        margin: 0 0 3rem;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .header h1 {
+        font-size: 48px;
+        line-height: 60px;
+    }
+
+    .header p {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    .headerInput input,
+    .headerInput button {
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
+
+@media screen and (max-width: 490px) {
+    .header h1 {
+        font-size: 36px;
+        line-height: 48px;
+    }
+
+    .header p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    .headerInput input,
+    .headerInput button {
+        font-size: 12px;
+        line-height: 16px;
+    }
+}
