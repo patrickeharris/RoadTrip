@@ -43,3 +43,10 @@
         transform: scale(1);
     }
 }
+
+.white__txt {
+    color: white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}

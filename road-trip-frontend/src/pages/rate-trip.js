@@ -6,14 +6,14 @@ import {Footer} from "../containers";
 
 require('dotenv').config();
 
-function ConnectPage() {
+function RateTripPage() {
     return (
 
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
                 <div className={styles.white__txt}>
-                    This is the page to connect a music account!
+                    This is the rate trip page!
                 </div>
                 <Footer />
             </div>
@@ -21,4 +21,4 @@ function ConnectPage() {
     )
 }
 
-export default ConnectPage
+export default RateTripPage
