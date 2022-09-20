@@ -1,10 +1,9 @@
 package road.trip.api.register;
 
-public interface RegisterRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-    public default User save(User user) {
+@Repository
+public interface RegisterRepository extends JpaRepository<User, Long> {
 
-
-        return user;
-    }
 }

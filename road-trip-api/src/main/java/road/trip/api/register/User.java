@@ -22,6 +22,7 @@ public class User {
     @Column(name = "password")
     String password;
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long user_id;
 
     public void setUser_id(Long user_id) {

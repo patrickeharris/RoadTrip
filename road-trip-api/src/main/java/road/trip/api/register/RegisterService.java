@@ -1,15 +1,17 @@
 package road.trip.api.register;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import road.trip.api.register.User;
-import road.trip.api.register.RegisterRepository;
 
 import java.sql.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class RegisterService {
+    @Autowired
     private RegisterRepository regRepository;
 
     /*
@@ -18,16 +20,13 @@ public class RegisterService {
     }
     */
 
+    public List<User> getUsers(){
+        return regRepository.findAll();
+    }
+
 
     public User registerUser (User user) {
-        String sql = "INSERT INTO User (firstName, lastName, email, password) VALUES (user.firstName, " +
-                "user.lastName, user.email, user.password)";
-        try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/");
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return user;
+        System.out.println(user.getEmail());
+        return regRepository.save(user);
     }
 }

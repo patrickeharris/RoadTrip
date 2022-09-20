@@ -22,6 +22,11 @@ public class RegisterEndpoint {
     }
      */
 
+    @GetMapping("/register/users")
+    public @ResponseBody Iterable<User> findAllUsers() {
+        return regService.getUsers();
+    }
+
     @PostMapping("/register")
     public User registerUser(@RequestBody User user) {
         return regService.registerUser(user);
