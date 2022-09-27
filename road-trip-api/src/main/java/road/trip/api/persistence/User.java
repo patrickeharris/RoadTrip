@@ -1,4 +1,4 @@
-package road.trip.api.register;
+package road.trip.api.persistence;
 
 import lombok.Data;
 

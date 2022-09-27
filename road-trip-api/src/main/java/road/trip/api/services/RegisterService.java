@@ -1,13 +1,11 @@
-package road.trip.api.register;
+package road.trip.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-
-import java.sql.*;
+import road.trip.api.persistence.RegisterRepository;
+import road.trip.api.persistence.User;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RegisterService {
@@ -15,7 +13,7 @@ public class RegisterService {
     private RegisterRepository regRepository;
 
     /*
-    public Optional<road.trip.api.register.User> findUser(String email) {
+    public Optional<road.trip.api.domain.User> findUser(String email) {
         return regRepository.findByEmail(email);
     }
     */
