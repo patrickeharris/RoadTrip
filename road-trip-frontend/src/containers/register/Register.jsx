@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import styles from './register.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
+import bcrypt from 'bcryptjs'
 
 const signUp=(user)=>{
     console.log("User");
@@ -23,16 +24,22 @@ const Register = () => {
     const [password, setPassword] = useState("");
 
     const handleSubmit = async () => {
+        const salt = bcrypt.genSaltSync(10)
         console.log(firstName, lastName, email, password);
+        const hashedPassword = bcrypt.hashSync(password, salt);
         try {
             const response = await myAxios.post(
                 "/register",
-                JSON.stringify({firstName, lastName, email, password}),
+                JSON.stringify({firstName, lastName, email, hashedPassword}),
                 {
                     headers: {"Content-Type": "application/json"},
                     withCredentials: true,
                 }
             );
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
         } catch (err) {
             if (!err?.response) {
                 console.log("No Server Response");
