@@ -6,5 +6,14 @@ services:
     restart: always
     ports:
       - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
     environment:
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: 'road-trip-planner'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'admin'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'password'
