@@ -25,3 +25,10 @@ services:
       - db
     ports:
       - '8080:8080'
+  road-trip-frontend:
+    image: road-trip/road-trip-frontend
+    build: ./road-trip-frontend
+    depends_on:
+      - road-trip-api
+    ports:
+      - '3000:3000'
