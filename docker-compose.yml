@@ -17,3 +17,8 @@ services:
       MYSQL_USER: 'admin'
       # You can use whatever password you like
       MYSQL_PASSWORD: 'password'
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uadmin", "-ppassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
