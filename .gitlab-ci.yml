@@ -23,10 +23,10 @@ deploy-prod:
 # If the frontend and backend are already running on the VM, we need to 
 # stop them to free the port and delete them to free the container name
 # before trying to start the new versions
-    - docker container stop road-trip-frontend || true
-    - docker container stop road-trip-api || true
-    - docker rm road-trip-frontend || true
-    - docker rm road-trip-api || true
+    - docker container stop road-trip-road-trip-frontend-1 || true
+    - docker container stop road-trip-road-trip-api-1 || true
+    - docker rm road-trip-road-trip-frontend-1 || true
+    - docker rm road-trip-road-trip-api-1 || true
     - docker compose up -d
 # it is important you prune your docker repository after all containers
 # are deployed. This is because all images used in the build stages are
