@@ -27,7 +27,7 @@ deploy-prod:
     - docker container stop road-trip-road-trip-api-1 || true
     - docker rm road-trip-road-trip-frontend-1 || true
     - docker rm road-trip-road-trip-api-1 || true
-    - docker compose up -d --force-recreate
+    - docker compose up -d --build --force-recreate
 # it is important you prune your docker repository after all containers
 # are deployed. This is because all images used in the build stages are
 # saved by docker; this can quickly consume a lot of memory after a few
