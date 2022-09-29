@@ -1,4 +1,10 @@
 server:
+  ssl:
+    key-store: classpath:travelz.jks
+    key-store-password: password
+    key-store-type: pkcs12
+    key-alias: travelz
+    key-password: password
   port : 8080
 spring:
   jpa:
