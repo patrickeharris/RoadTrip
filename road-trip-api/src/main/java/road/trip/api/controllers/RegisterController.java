@@ -8,7 +8,7 @@ import road.trip.api.services.RegisterService;
 
 @Log4j2
 @RestController
-@CrossOrigin
+@CrossOrigin(allowCredentials = "true", origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class RegisterController {
 
     @Autowired

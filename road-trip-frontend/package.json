@@ -14,7 +14,7 @@
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
     "clsx": "^1.1.1",
-    "dotenv": "^8.2.0",
+    "dotenv": "^16.0.2",
     "env-cmd": "^10.1.0",
     "final-form": "4.20.1",
     "final-form-material-ui": "0.3.0",

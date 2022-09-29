@@ -33,7 +33,7 @@ const Register = () => {
         try {
             const response = await myAxios.post(
                 "/register",
-                JSON.stringify({firstName, lastName, email, hashedPassword}),
+                JSON.stringify({firstName, lastName, email, password: hashedPassword}),
                 {
                     headers: {"Content-Type": "application/json"},
                     withCredentials: true,
