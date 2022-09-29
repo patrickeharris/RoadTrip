@@ -28,7 +28,8 @@ const Register = () => {
 
     const handleSubmit = async () => {
         const salt = bcrypt.genSaltSync(10)
-        console.log(firstName, lastName, email, password);
+        console.log("hi", firstName, lastName, email, password);
+        console.log("process.env.API_URL");
         const hashedPassword = bcrypt.hashSync(password, salt);
         try {
             const response = await myAxios.post(
