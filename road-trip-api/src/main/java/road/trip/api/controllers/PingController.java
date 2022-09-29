@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
 public class PingController {
     @GetMapping("/ping")
     public String ping() {
-        return "pong!";
+        return "pong!!";
     }
 
     @GetMapping("/memory-ping")
