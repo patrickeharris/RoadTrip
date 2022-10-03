@@ -36,7 +36,9 @@ const Register = () => {
                 "/register",
                 JSON.stringify({firstName, lastName, email, password: hashedPassword}),
                 {
-                    headers: {"Content-Type": "application/json"},
+                    headers: {"Content-Type": "application/json",
+                        'Access-Control-Allow-Origin' : '*',
+                        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',},
                     withCredentials: true,
                 }
             );
