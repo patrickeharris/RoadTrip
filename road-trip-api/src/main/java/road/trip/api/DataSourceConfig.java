@@ -13,7 +13,7 @@ public class DataSourceConfig {
     public DataSource getDataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceBuilder.url("jdbc:mysql://localhost:3306/road-trip-planner");
+        dataSourceBuilder.url("jdbc:mysql://34.174.8.146:3306/road-trip-planner");
         dataSourceBuilder.username("admin");
         dataSourceBuilder.password("password");
         return dataSourceBuilder.build();
