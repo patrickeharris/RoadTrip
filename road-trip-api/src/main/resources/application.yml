@@ -1,6 +1,6 @@
 server:
   ssl:
-    key-store: classpath:travelz.jks
+    key-store: classpath:cert.p12
     key-store-password: password
     key-store-type: pkcs12
     key-alias: travelz
