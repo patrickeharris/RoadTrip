@@ -113,6 +113,7 @@ dependencies {
 
     implementation group: 'org.springframework', name: 'spring-beans', version: '5.3.9'
 
+    implementation 'se.michaelthelin.spotify:spotify-web-api-java:7.2.1'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
@@ -180,5 +181,11 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
         }
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
     }
 }
