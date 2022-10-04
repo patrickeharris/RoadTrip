@@ -51,10 +51,10 @@
     "next-compose-plugins": "2.2.0",
     "next-transpile-modules": "9.0.0"
   },
-  "name": "package.json",
+  "name": "pkg",
   "version": "1.0.0",
   "main": "babel.config.js",
-  "author": "",
+  "author": "Mia Gortney",
   "license": "ISC",
-  "description": ""
+  "description": "This is a package for Software Engineering II."
 }
