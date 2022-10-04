@@ -34,7 +34,7 @@ enum Keys {
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SpotifyAuthController {
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq/spotify/get-user-code");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq:8080/spotify/get-user-code");
     private String code = "";
 
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
