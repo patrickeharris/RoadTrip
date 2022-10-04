@@ -34,7 +34,7 @@ enum Keys {
 @CrossOrigin(origins = "*")
 public class SpotifyAuthController {
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/spotify/get-user-code");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq/spotify/get-user-code");
     private String code = "";
 
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
@@ -73,7 +73,7 @@ public class SpotifyAuthController {
             System.out.println("Error: " + e.getMessage());
         }
 
-        response.sendRedirect("http://localhost:3000/top-artists");
+        response.sendRedirect("http://trailblazers.gq/top-artists");
         return spotifyApi.getAccessToken();
     }
 

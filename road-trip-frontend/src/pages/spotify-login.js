@@ -7,7 +7,7 @@ import {Footer} from "../containers";
 require('dotenv').config();
 
 const getSpotifyUserLogin = () => {
-    fetch("http://localhost:8080/spotify/login")
+    fetch("http://trailblazers.gq/spotify/login")
         .then((response) => response.text())
         .then((response) => {
             window.location.replace(response);
