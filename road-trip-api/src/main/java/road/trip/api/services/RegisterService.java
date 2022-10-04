@@ -24,7 +24,6 @@ public class RegisterService {
 
 
     public User registerUser (User user) {
-        System.out.println(user.getEmail());
         return regRepository.save(user);
     }
 }
