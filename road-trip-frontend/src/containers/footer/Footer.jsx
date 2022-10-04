@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <div className={styles.footer} id="footer">
             <div className={styles.footerHeading}>
-                <h1 className={globalStyles.gradientText}>Do you not want to blaze your next trail?</h1>
+                <h1 className={globalStyles.gradientText}>Do you want to blaze your next trail?</h1>
             </div>
             <div className={styles.footerBtn}>
                 <p><a href="./register">Sign Up</a></p>
