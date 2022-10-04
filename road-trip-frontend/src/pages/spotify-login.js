@@ -7,7 +7,7 @@ import {Footer} from "../containers";
 require('dotenv').config();
 
 const getSpotifyUserLogin = () => {
-    fetch("http://trailblazers.gq/spotify/login")
+    fetch("http://trailblazers.gq/spotify/login", { mode: 'no-cors'} )
         .then((response) => response.text())
         .then((response) => {
             window.location.replace(response);

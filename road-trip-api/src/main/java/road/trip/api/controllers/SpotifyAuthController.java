@@ -31,7 +31,7 @@ enum Keys {
 
 @RestController
 @RequestMapping("spotify")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SpotifyAuthController {
 
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq/spotify/get-user-code");
