@@ -7,9 +7,13 @@ import {Footer} from "../containers";
 require('dotenv').config();
 
 const getSpotifyUserLogin = () => {
-    fetch("http://trailblazers.gq:8080/spotify/login", { mode: 'no-cors'} )
+    fetch("http://trailblazers.gq:8080/spotify/login", {
+        method: "GET",
+        headers: {"Content-type": "application/json;charset=UTF-8", 'Access-Control-Allow-Origin' : '*'}
+    } )
         .then((response) => response.text())
         .then((response) => {
+            console.log(response);
             window.location.replace(response);
         })
         .catch((error) => {
