@@ -1,0 +1,13 @@
+.rateTrip__star {
+    height: 2.5rem;
+    width: 2.5rem;
+    color: rgb(100 116 139);
+    cursor: pointer;
+}
+
+.rateTrip__starSelected {
+    height: 2.5rem;
+    width: 2.5rem;
+    color: rgb(250 204 21);
+    cursor: pointer;
+}
