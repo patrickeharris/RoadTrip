@@ -6,7 +6,10 @@ import {About, Footer, Header} from "../containers";
 
 require('dotenv').config();
 
+global.loggedIn = false;
+
 function HomePage() {
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>

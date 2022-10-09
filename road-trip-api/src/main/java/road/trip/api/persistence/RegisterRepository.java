@@ -6,5 +6,4 @@ import road.trip.api.persistence.User;
 
 @Repository
 public interface RegisterRepository extends JpaRepository<User, Long> {
-
 }

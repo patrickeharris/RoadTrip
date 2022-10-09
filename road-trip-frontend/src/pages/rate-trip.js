@@ -50,7 +50,7 @@ function RateTripPage() {
             return
         }
 
-        if (message.length < 20) {
+        if (message.length === 0) {
             alert("Please enter some feedback in the text box!")
             return
         }
