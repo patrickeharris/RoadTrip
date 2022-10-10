@@ -5,33 +5,6 @@ import {myAxios} from "../../util/helper";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-//Sign up a given user
-const signUp=(user)=>{
-    return myAxios.post("/register").then((response) => {
-        console.log("Successful registration");
-    }).catch((error) => {
-        console.log("Error in registration");
-    })
-}
-
-//Function for checking email validity
-function isValidEmail(email) {
-    return /\S+@\S+\.\S+/.test(email);
-}
-
-//Function to show error message to the user
-function showError(errorMsg){
-    toast.error(errorMsg, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-    });
-}
-
 const getFirstName = async () => {
     let id = window.localStorage.getItem('curUser');
     const response = (await myAxios.get("/register/users")).data;
@@ -95,7 +68,7 @@ const Profile = () => {
     }
     const handleSubmit = async () => {
         try {
-            const response = await myAxios.post(
+            const [response] = await Promise.all([myAxios.post(
                 "/register/update",
                 JSON.stringify({getFirstName, getLastName, getEmail, getPassword}),
                 {
@@ -106,7 +79,7 @@ const Profile = () => {
                     },
                     withCredentials: true,
                 }
-            );
+            )]);
             toast.success('Successfully Updated Profile!', {
                 position: "top-right",
                 autoClose: 5000,
