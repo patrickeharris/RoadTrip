@@ -1,14 +1,28 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {RiMenu3Line, RiCloseLine} from 'react-icons/ri'
 import styles from './navbar.module.css'
 
-const Menu = () => (
-    <>
-    <p><a href="./">Home</a></p>
-    <p><a href="./#about">About Us</a></p>
-    <p><a href="./#footer">Contact Us</a></p>
-    </>
-)
+const Menu = () => {
+
+    const [logged, setLogged] = useState('false');
+
+    useEffect(() => {
+        setLogged(window.localStorage.getItem('loggedIn'));
+    })
+
+    return (
+        <>
+            <p><a href="./">Home</a></p>
+            <p><a href="./#about">About Us</a></p>
+            {
+                logged === 'true' ?
+                    <p><a href="/trip-dashboard">Trip Dashboard</a></p> :
+                    <p><a href="/login">Trip Dashboard</a></p>
+            }
+            <p><a href="./#footer">Contact Us</a></p>
+        </>
+    )
+}
 
 const Navbar = () => {
     const [toggleMenu, setToggleMenu] = useState(false);
