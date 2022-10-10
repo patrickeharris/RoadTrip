@@ -37,8 +37,10 @@ public class RegisterController {
     public User updateUser(@RequestBody User user, Long id) {
         return regService.updateUser(user, id);
     }
+
     @PostMapping("/login")
-    public User loginUser(@RequestBody String email, String password){
+    public User loginUser(@RequestBody String email, String password) {
         User user = new User("", "", email, "");
         return regService.loginUser(user);
     }
+}

@@ -20,17 +20,19 @@ public class RegisterService {
     }
     */
 
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return regRepository.findAll();
     }
-    public User registerUser (User user) {
+
+    public User registerUser(User user) {
         return regRepository.save(user);
     }
 
-    public User updateUser(User user, Long id){
+    public User updateUser(User user, Long id) {
         return null;
     }
 
-    public User loginUser(User user){
+    public User loginUser(User user) {
         return regRepository.save(user);
     }
+}
