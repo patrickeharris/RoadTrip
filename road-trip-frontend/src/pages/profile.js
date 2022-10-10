@@ -3,7 +3,6 @@ import Link from '@material-ui/core/Link';
 import styles from "./styles/index.module.css";
 import {Navbar} from "../components";
 import {Footer} from "../containers";
-import Profile from "../containers"
 
 require('dotenv').config();
 
@@ -13,7 +12,6 @@ function ProfilePage() {
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
-                <Profile />
                 <Footer />
             </div>
         </div>
