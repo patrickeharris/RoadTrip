@@ -32,4 +32,9 @@ public class RegisterController {
     public User registerUser(@RequestBody User user) {
         return regService.registerUser(user);
     }
+
+    @PostMapping("/register/update")
+    public User updateUser(@RequestBody User user, Long id){
+        return regService.updateUser(user, id);
+    }
 }

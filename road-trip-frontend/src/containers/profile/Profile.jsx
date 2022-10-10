@@ -32,18 +32,99 @@ function showError(errorMsg){
     });
 }
 
-function getFirstName(){
+const getFirstName = async () => {
+    let id = window.localStorage.getItem('curUser');
+    const response = (await myAxios.get("/register/users")).data;
+    let found = false;
+    let index;
 
-    return "Jack";
+    for (let i = 0; i < response.length; i++) {
+        if (response[i].id == id) {
+            console.log(response[i].firstName);
+            return response[i].firstName;
+        }
+    }
+}
+
+const getLastName = async () => {
+    let id = window.localStorage.getItem('curUser');
+    const response = (await myAxios.get("/register/users")).data;
+    let found = false;
+    let index;
+
+    for (let i = 0; i < response.length; i++) {
+        if (response[i].id == id) {
+            return response[i].lastName;
+        }
+    }
+}
+
+const getEmail = async () =>{
+    let id = window.localStorage.getItem('curUser');
+    const response = (await myAxios.get("/register/users")).data;
+    let found = false;
+    let index;
+
+    for (let i = 0; i < response.length; i++) {
+        if (response[i].id == id) {
+            return response[i].email;
+        }
+    }
+}
+
+const getPassword = async () => {
+    let id = window.localStorage.getItem('curUser');
+    const response = (await myAxios.get("/register/users")).data;
+    let found = false;
+    let index;
+
+    for (let i = 0; i < response.length; i++) {
+        if (response[i].id == id) {
+            return response[i].password;
+        }
+    }
 }
 
 const Profile = () => {
-    const [firstName, setFirstName] = useState(getFirstName());
+    const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    //window.localStorage.getItem('curUser');
-    const handleSubmit = async () => {
 
+    const handleLoadFirst = async () => {
+        [firstName, setFirstName] = useState(await getFirstName);
+    }
+    const handleSubmit = async () => {
+        try {
+            const response = await myAxios.post(
+                "/register/update",
+                JSON.stringify({getFirstName, getLastName, getEmail, getPassword}),
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                    },
+                    withCredentials: true,
+                }
+            );
+            toast.success('Successfully Registered!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            window.location.replace("login");
+        } catch (err) {
+            if (!err?.response) {
+                console.log("No Server Response");
+            } else {
+                console.log("Registration Failed");
+                console.log(err?.response);
+            }
+        }
     }
 
     return (

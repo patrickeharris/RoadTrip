@@ -1,6 +1,8 @@
 package road.trip.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import road.trip.api.persistence.RegisterRepository;
 import road.trip.api.persistence.User;
@@ -23,5 +25,9 @@ public class RegisterService {
     }
     public User registerUser (User user) {
         return regRepository.save(user);
+    }
+
+    public User updateUser(User user, Long id){
+
     }
 }
