@@ -8,8 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const getFirstName = async () => {
     let id = window.localStorage.getItem('curUser');
     const response = (await myAxios.get("/register/users")).data;
-    let found = false;
-    let index;
 
     for (let i = 0; i < response.length; i++) {
         if (response[i].id == id) {
@@ -22,8 +20,6 @@ const getFirstName = async () => {
 const getLastName = async () => {
     let id = window.localStorage.getItem('curUser');
     const response = (await myAxios.get("/register/users")).data;
-    let found = false;
-    let index;
 
     for (let i = 0; i < response.length; i++) {
         if (response[i].id == id) {
@@ -35,8 +31,6 @@ const getLastName = async () => {
 const getEmail = async () =>{
     let id = window.localStorage.getItem('curUser');
     const response = (await myAxios.get("/register/users")).data;
-    let found = false;
-    let index;
 
     for (let i = 0; i < response.length; i++) {
         if (response[i].id == id) {
@@ -48,8 +42,6 @@ const getEmail = async () =>{
 const getPassword = async () => {
     let id = window.localStorage.getItem('curUser');
     const response = (await myAxios.get("/register/users")).data;
-    let found = false;
-    let index;
 
     for (let i = 0; i < response.length; i++) {
         if (response[i].id == id) {
@@ -63,14 +55,11 @@ const Profile = () => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
 
-    const handleLoadFirst = async () => {
-        [firstName, setFirstName] = useState(await getFirstName);
-    }
     const handleSubmit = async () => {
         try {
-            const [response] = await Promise.all([myAxios.post(
+            const [response] = await myAxios.post(
                 "/register/update",
-                JSON.stringify({getFirstName, getLastName, getEmail, getPassword}),
+                JSON.stringify({firstName, lastName, email, await: getPassword}),
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -79,7 +68,7 @@ const Profile = () => {
                     },
                     withCredentials: true,
                 }
-            )]);
+            );
             toast.success('Successfully Updated Profile!', {
                 position: "top-right",
                 autoClose: 5000,
