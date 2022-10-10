@@ -8,6 +8,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import bcrypt from "bcryptjs";
 import {myAxios} from "../util/helper";
+import {GoogleMap, Marker, useJsApiLoader} from "@react-google-maps/api";
 const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
@@ -28,40 +29,50 @@ const responsive = {
     }
 };
 
-function test() {
-    let test = <p>hello</p>
-    return test;
-};
-
-async function getTrips() {
-    let add = "";
-    try {
-        const response = await myAxios.get(
-            "/trips"
-        );
-        let trips = response.data;
-        console.log(trips);
-        trips.forEach((trip) => {
-            add = add + <div><Card title={trip.trip_name}/></div>
-            console.log(trip.trip_id);
-        })
-    } catch (err) {
-        if (!err?.response) {
-            console.log("No Server Response");
-        } else {
-            console.log(err?.response);
-        }
-    }
-    return add;
-};
-require('dotenv').config();
-
 function TripsPage() {
+    const [map, setMap] = React.useState(null)
+
+    const onLoad = React.useCallback(function callback(map) {
+        const bounds = new window.google.maps.LatLngBounds(center);
+        map.fitBounds(bounds);
+        setMap(map)
+    }, [])
+
+    const onUnmount = React.useCallback(function callback(map) {
+        setMap(null)
+    }, [])
+    require('dotenv').config();
+
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: "AIzaSyDJGTHHgwc5HXLi7qDeMAvecrT0ts-7jLU"
+    })
+
+    const containerStyle = {
+        width: '400px',
+        height: '400px'
+    };
+
+    const center = {
+        lat: 29.7604,
+        lng: -95.3698
+    };
+
     return (
 
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
+                {isLoaded ? (<GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={center}
+                    zoom={8}
+                    onLoad={onLoad}
+                    onUnmount={onUnmount}
+                >
+                    { /* Child components, such as markers, info windows, etc. */ }
+                    <></>
+                </GoogleMap>) : (<></>)}
                 <Carousel responsive={responsive}>
                     <TripList />
                 </Carousel>

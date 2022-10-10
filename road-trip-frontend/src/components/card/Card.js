@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "./card.module.css"
+import {GoogleMap, useLoadScript, Marker} from "@react-google-maps/api";
 
 /**
  * NOTES:
@@ -46,11 +47,26 @@ function CardContent(props) {
     );
 }
 
+function Map(props){
+    const containerStyle = {
+        width: '300px',
+        height: '300px'
+    };
+    const [selected, setSelected] = useState({lat: 43.45, lng: -80.49});
+    const {isLoaded} = useLoadScript({
+        googleMapsApiKey: "AIzaSyDJGTHHgwc5HXLi7qDeMAvecrT0ts-7jLU",
+        libraries: ["places"],
+    });
+    return (<>{isLoaded ? <GoogleMap zoom={10} center={selected} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
+    </GoogleMap> : <></>}</>);
+}
+
 export default class Card extends React.Component {
     render() {
         return (
             <div style={{ width: this.props.width + "px" }}>
                 <div className={styles.styleCard}>
+                    <Map/>
                     <CardImage image={this.props.image} width={this.props.width} />
                     <CardContent
                         title={this.props.title}
