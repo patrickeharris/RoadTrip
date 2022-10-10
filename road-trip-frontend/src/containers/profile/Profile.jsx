@@ -107,7 +107,7 @@ const Profile = () => {
                     withCredentials: true,
                 }
             );
-            toast.success('Successfully Registered!', {
+            toast.success('Successfully Updated Profile!', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -116,7 +116,7 @@ const Profile = () => {
                 draggable: true,
                 progress: undefined,
             });
-            window.location.replace("login");
+            window.location.replace("");
         } catch (err) {
             if (!err?.response) {
                 console.log("No Server Response");

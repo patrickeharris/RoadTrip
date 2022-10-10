@@ -1,16 +1,6 @@
 import React, {useState} from 'react'
 import styles from './login.module.css'
 import globalStyles from "../container.module.css";
-import bcrypt from "bcryptjs";
-/*
-    Things Left:
-        - myAxios is not running (Server is not connected)
-        - Set currently logged in User
- */
-
-import React, {useState} from 'react'
-import styles from './login.module.css'
-import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
 import {toast, ToastContainer} from "react-toastify";
 
