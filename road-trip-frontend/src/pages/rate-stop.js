@@ -5,16 +5,16 @@ import {Footer} from "../containers";
 
 require('dotenv').config();
 
-function RateTripPage() {
+function RateStopPage() {
     return (
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar/>
-                <Rating title={"How was your trip?"} type={"trip"}/>
+                <Rating title={"How was this stop?"} type={"stop"}/>
                 <Footer/>
             </div>
         </div>
     )
 }
 
-export default RateTripPage
+export default RateStopPage

@@ -1,3 +1,62 @@
+.rateTrip__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rateTrip__header {
+    font-weight: bold;
+    font-size: xx-large;
+    color: white;
+}
+
+.rateTrip__formWrapper {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rateTrip__starSelectWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.rateTrip__textArea {
+    margin-top: 20px;
+    height: 150px;
+    width: 350px;
+    outline: none;
+    font-size: medium;
+    resize: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+.rateTrip__formSubmitButton {
+    cursor: pointer;
+    height: 40px;
+    width: 350px;
+    text-align: center;
+    display: flex;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    color: white;
+    border-color: transparent;
+    border-radius: 0.25rem;
+    background-color: rgb(255, 72, 32);
+}
+
+.rateTrip__formSubmitButton:hover {
+    background-color: #ff6445;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-duration: 150ms;
+}
+
 .rateTrip__star {
     height: 2.5rem;
     width: 2.5rem;

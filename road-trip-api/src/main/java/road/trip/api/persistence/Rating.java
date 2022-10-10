@@ -1,12 +1,18 @@
 package road.trip.api.persistence;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = Rating.TABLE_NAME)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Rating {
     public static final String TABLE_NAME = "RATING";
 
@@ -24,4 +30,7 @@ public class Rating {
 
     @Column(name = "MESSAGE")
     String message;
+
+    @Column(name = "TYPE")
+    String type;
 }

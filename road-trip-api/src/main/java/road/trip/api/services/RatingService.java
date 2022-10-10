@@ -10,7 +10,6 @@ import java.util.List;
 @Service
 public class RatingService {
     @Autowired
-
     private RatingRepository ratingRepository;
 
     public List<Rating> getRatings() {
