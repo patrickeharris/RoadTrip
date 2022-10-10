@@ -6,9 +6,13 @@ import {About, Footer, Header} from "../containers";
 
 require('dotenv').config();
 
-global.loggedIn = false;
-
 function HomePage() {
+
+    React.useEffect(() => {
+        if (window.localStorage.getItem('loggedIn') === null) {
+            window.localStorage.setItem('loggedIn', 'false');
+        }
+    });
 
     return (
         <div className={styles.wrapper}>
