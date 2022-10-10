@@ -32,8 +32,13 @@ function showError(errorMsg){
     });
 }
 
+function getFirstName(){
+
+    return "Jack";
+}
+
 const Profile = () => {
-    const [firstName, setFirstName] = useState("");
+    const [firstName, setFirstName] = useState(getFirstName());
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     //window.localStorage.getItem('curUser');
