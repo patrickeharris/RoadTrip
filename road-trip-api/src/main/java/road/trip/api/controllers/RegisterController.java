@@ -32,4 +32,10 @@ public class RegisterController {
     public User registerUser(@RequestBody User user) {
         return regService.registerUser(user);
     }
+
+    @PostMapping("/login")
+    public User loginUser(@RequestBody String email, String password){
+        User user = new User("", "", email, "");
+        return regService.loginUser(user);
+    }
 }

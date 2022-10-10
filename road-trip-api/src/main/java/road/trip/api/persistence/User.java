@@ -21,9 +21,17 @@ public class User {
 
     @Column(name = "password")
     String password;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long user_id;
+
+    public User(String firstName, String lastName, String email, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 
     public void setUser_id(Long user_id) {
         this.user_id = user_id;

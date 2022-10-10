@@ -26,4 +26,8 @@ public class RegisterService {
     public User registerUser (User user) {
         return regRepository.save(user);
     }
+
+    public User loginUser(User user){
+        return regRepository.save(user);
+    }
 }
