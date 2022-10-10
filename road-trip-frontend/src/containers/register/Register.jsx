@@ -6,17 +6,31 @@ import bcrypt from 'bcryptjs'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+//Sign up a given user
 const signUp=(user)=>{
-    console.log("User");
-    console.log(user);
-    /*
     return myAxios.post("/register").then((response) => {
-        console.log(response);
-        console.log("Success");
+        console.log("Successful registration");
     }).catch((error) => {
-        console.log(error);
-        console.log("Error");
-    })*/
+        console.log("Error in registration");
+    })
+}
+
+//Function for checking email validity
+function isValidEmail(email) {
+    return /\S+@\S+\.\S+/.test(email);
+}
+
+//Function to show error message to the user
+function showError(errorMsg){
+    toast.error(errorMsg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
 }
 
 const Register = () => {
@@ -25,37 +39,49 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
     const handleSubmit = async () => {
-        const salt = bcrypt.genSaltSync(10)
-        console.log("hi", firstName, lastName, email, password);
-        console.log("process.env.API_URL");
+        const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
         try {
-            const response = await myAxios.post(
-                "/register",
-                JSON.stringify({firstName, lastName, email, password: hashedPassword}),
-                {
-                    headers: {"Content-Type": "application/json",
-                        'Access-Control-Allow-Origin' : '*',
-                        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',},
-                    withCredentials: true,
-                }
-            );
-            setFirstName("");
-            setLastName("");
-            setEmail("");
-            setPassword("");
-            setConfirmPassword("");
-            toast.success('Successfully Registered!', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
+            //Check validity
+            if (firstName=="") {
+                showError('Error: First name cannot be blank');
+            }else if(lastName=="") {
+                showError('Error: Last name cannot be blank');
+            }else if(email=="") {
+                showError('Error: Email cannot be blank');
+            }else if(!isValidEmail(email)){
+                showError('Error: Email must be valid');
+            }else if(password!=confirmPassword){
+                showError('Error: Password must match the confirmation password');
+            }else if(password=="") {
+                showError('Error: Password cannot be blank');
+            }else if(password.length < 6) {
+                showError('Error: Password must be 6 or more characters');
+            } else{
+                const response = await myAxios.post(
+                    "/register",
+                    JSON.stringify({firstName, lastName, email, password: hashedPassword}),
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                        },
+                        withCredentials: true,
+                    }
+                );
+                toast.success('Successfully Registered!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                window.location.replace("login");
+            }
         } catch (err) {
             if (!err?.response) {
                 console.log("No Server Response");
