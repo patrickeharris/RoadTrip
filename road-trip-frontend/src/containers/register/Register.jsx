@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styles from './register.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
