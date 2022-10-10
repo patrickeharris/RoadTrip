@@ -22,9 +22,11 @@
     "msal": "^1.4.0",
     "next": "^12.1.6",
     "react": "^18.1.0",
+    "react-bootstrap": "^2.5.0",
     "react-dom": "^18.1.0",
     "react-final-form": "6.5.1",
     "react-icons": "^4.4.0",
+    "react-multi-carousel": "^2.8.2",
     "react-redux": "7.2.1",
     "react-toast-notifier": "^1.0.3",
     "react-toastify": "^9.0.8"
@@ -49,10 +51,10 @@
     "next-compose-plugins": "2.2.0",
     "next-transpile-modules": "9.0.0"
   },
-  "name": "package.json",
+  "name": "pkg",
   "version": "1.0.0",
   "main": "babel.config.js",
-  "author": "",
+  "author": "Mia Gortney",
   "license": "ISC",
-  "description": ""
+  "description": "This is a package for Software Engineering II."
 }

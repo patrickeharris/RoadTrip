@@ -1,0 +1,101 @@
+.register {
+    display: flex;
+}
+
+.registerContent {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 5rem;
+    min-width: 200px;
+}
+
+.registerContent h1 {
+    font-family: var(--font-family);
+    font-weight: 800;
+    font-size: 62px;
+    line-height: 75px;
+    letter-spacing: -0.04em;
+}
+
+.registerInput {
+    width: 50%;
+    margin: 2rem 0 1rem ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.registerInput input{
+    flex: 2;
+    width: 100%;
+    min-height: 50px;
+    background: var(--color-footer);
+    font-family: var(--font-family);
+    font-size: 20px;
+    line-height: 27px;
+    border: 2px solid var(--color-footer);
+    padding: 0 1rem;
+    outline: none;
+    color: #fff;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-bottom: 3rem;
+}
+
+.registerInput button {
+    flex: 0.6;
+    width: 100%;
+    min-height: 50px;
+    cursor: pointer;
+    outline: none;
+    padding: 0 1rem;
+    border: none;
+    background: #FF4820;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-family: var(--font-family);
+    font-size: 20px;
+    line-height: 27px;
+    font-weight: bold;
+    color: #fff;
+}
+
+@media screen and (max-width: 1050px) {
+    .register {
+        flex-direction: column;
+    }
+
+    .registerContent {
+        margin: 0 0 3rem;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .register h1 {
+        font-size: 48px;
+        line-height: 60px;
+    }
+
+    .registerInput input,
+    .registerInput button {
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
+
+@media screen and (max-width: 490px) {
+    .register h1 {
+        font-size: 36px;
+        line-height: 48px;
+    }
+
+    .registerInput input,
+    .registerInput button {
+        font-size: 12px;
+        line-height: 16px;
+    }
+}

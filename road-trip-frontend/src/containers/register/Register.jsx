@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import styles from './register.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
-import bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -40,7 +40,9 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const handleSubmit = async () => {
-        const salt = bcrypt.genSaltSync(10);
+        const salt = bcrypt.genSaltSync(10)
+        console.log(firstName, lastName, email, password);
+        console.log(process.env.API_URL);
         const hashedPassword = bcrypt.hashSync(password, salt);
         try {
             //Check validity

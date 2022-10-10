@@ -1,18 +1,18 @@
-.wrapper{
+.wrapper {
     background: #000000;
 }
 
 .gradient__bg {
     /* ff 3.6+ */
-    background:-moz-radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
+    background: -moz-radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
     /* safari 5.1+,chrome 10+ */
-    background:-webkit-radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
+    background: -webkit-radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
     /* opera 11.10+ */
-    background:-o-radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
+    background: -o-radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
     /* ie 10+ */
-    background:-ms-radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
+    background: -ms-radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
     /* global 92%+ browsers support */
-    background:radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
+    background: radial-gradient(circle at 3% 25%, rgba(0, 40, 83, 1) 0%, rgba(4, 12, 24, 1) 100%);
 }
 
 .scale-up-center {
@@ -49,4 +49,63 @@
     align-items: center;
     justify-content: center;
     display: flex;
+}
+
+.rateTrip__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rateTrip__header {
+    font-weight: bold;
+    font-size: xx-large;
+    color: white;
+}
+
+.rateTrip__formWrapper {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rateTrip__starSelectWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.rateTrip__textArea {
+    margin-top: 20px;
+    height: 150px;
+    width: 350px;
+    outline: none;
+    font-size: medium;
+    resize: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+.rateTrip__formSubmitButton {
+    cursor: pointer;
+    height: 40px;
+    width: 350px;
+    text-align: center;
+    display: flex;
+    font-weight: 600;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    color: white;
+    border-color: transparent;
+    border-radius: 0.25rem;
+    background-color: rgb(255, 72, 32);
+}
+
+.rateTrip__formSubmitButton:hover {
+    background-color: #ff6445;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-duration: 150ms;
 }

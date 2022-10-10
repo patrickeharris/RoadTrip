@@ -21,10 +21,7 @@ public class RegisterService {
     public List<User> getUsers(){
         return regRepository.findAll();
     }
-
-
     public User registerUser (User user) {
-        System.out.println(user.getEmail());
         return regRepository.save(user);
     }
 }

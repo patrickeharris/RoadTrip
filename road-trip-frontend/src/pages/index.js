@@ -7,6 +7,13 @@ import {About, Footer, Header} from "../containers";
 require('dotenv').config();
 
 function HomePage() {
+
+    React.useEffect(() => {
+        if (window.localStorage.getItem('loggedIn') === null) {
+            window.localStorage.setItem('loggedIn', 'false');
+        }
+    });
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
