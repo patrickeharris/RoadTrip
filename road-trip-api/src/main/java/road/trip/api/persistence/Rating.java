@@ -17,20 +17,16 @@ public class Rating {
     public static final String TABLE_NAME = "RATING";
 
     @Id
-    @GeneratedValue(generator = TABLE_NAME + "_GENERATOR")
-    @SequenceGenerator(
-            name = TABLE_NAME + "_GENERATOR",
-            sequenceName = TABLE_NAME + "_SEQUENCE"
-    )
-    @Column(name = "RATING_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column
     Long id;
 
-    @Column(name = "SCORE")
+    @Column
     int score;
 
-    @Column(name = "MESSAGE")
-    String message;
+    @Column
+    int stopScore;
 
-    @Column(name = "TYPE")
-    String type;
+    @Column
+    String message;
 }

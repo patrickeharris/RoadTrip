@@ -10,7 +10,7 @@ function RateTripPage() {
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar/>
-                <Rating title={"How was your trip?"} type={"trip"}/>
+                <Rating/>
                 <Footer/>
             </div>
         </div>
