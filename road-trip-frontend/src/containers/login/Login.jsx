@@ -18,7 +18,6 @@ import {myAxios} from "../../util/helper";
 import {toast} from "react-toastify";
 
 const Login = () => {
-<<<<<<< HEAD
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const handleSubmit = async () => {
@@ -54,7 +53,6 @@ const Login = () => {
                 console.log("Registration Failed");
                 console.log(err?.response);
             }
-=======
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
