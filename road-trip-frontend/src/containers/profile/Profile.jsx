@@ -36,7 +36,7 @@ const Profile = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    window.localStorage.getItem('curUser');
+    //window.localStorage.getItem('curUser');
     const handleSubmit = async () => {
 
     }
