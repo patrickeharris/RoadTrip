@@ -40,9 +40,7 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const handleSubmit = async () => {
-        const salt = bcrypt.genSaltSync(10)
-        console.log(firstName, lastName, email, password);
-        console.log(process.env.API_URL);
+        const salt = bcrypt.genSaltSync(10);
         const hashedPassword = bcrypt.hashSync(password, salt);
         try {
             //Check validity

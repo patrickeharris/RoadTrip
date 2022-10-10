@@ -28,6 +28,9 @@ public class RegisterService {
     }
 
     public User updateUser(User user, Long id){
-
+        return null;
     }
-}
+
+    public User loginUser(User user){
+        return regRepository.save(user);
+    }
