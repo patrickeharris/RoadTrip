@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './styles/index.module.css';
 import {Navbar} from '../components';
-import {Footer} from '../containers';
-import SpotifyLogin from '../containers/spotify-login/SpotifyLogin'
+import {Footer, SpotifyLogin} from '../containers';
 
 require('dotenv').config();
 
