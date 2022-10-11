@@ -33,8 +33,13 @@ public class RegisterController {
         return regService.registerUser(user);
     }
 
+    @PostMapping("/register/update")
+    public User updateUser(@RequestBody User u) {
+        return regService.updateUser(u);
+    }
+
     @PostMapping("/login")
-    public User loginUser(@RequestBody String email, String password){
+    public User loginUser(@RequestBody String email, String password) {
         User user = new User("", "", email, "");
         return regService.loginUser(user);
     }

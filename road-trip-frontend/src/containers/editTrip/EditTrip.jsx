@@ -21,6 +21,7 @@ const EditTrip = () => {
         }
     }
 
+    const [trip_id, setTrip_Id] = useState("");
     const [tripName, setTripName] = useState("");
     const [start, setStart] = useState("");
     const [end, setEnd] = useState("");
@@ -33,6 +34,7 @@ const EditTrip = () => {
 
             for (let i = 0; i < response.length; i++) {
                 if (response[i].trip_id.toString() === window.localStorage.getItem('curTrip')) {
+                    setTrip_Id(response[i].trip_id);
                     setTripName(response[i].tripName);
                     setStart(response[i].start);
                     setEnd(response[i].end);
@@ -49,7 +51,7 @@ const EditTrip = () => {
         try {
             const response = await myAxios.post(
                 "/edit-trip",
-                JSON.stringify({tripName, start, end, date, userID, selectedRoute}),
+                JSON.stringify({trip_id, tripName, start, end, date, userID, selectedRoute}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
@@ -76,6 +78,7 @@ const EditTrip = () => {
             });
 
             window.localStorage.setItem('curTrip', null);
+            window.location.replace("/trip-dashboard");
 
         } catch (err) {
             if (!err?.response) {
