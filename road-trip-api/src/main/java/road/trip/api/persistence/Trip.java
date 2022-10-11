@@ -25,8 +25,14 @@ public class Trip {
     @Column(name = "start")
     String start;
 
+    @Column(name = "selectedStart")
+    String selectedStart;
+
     @Column(name = "end")
     String end;
+
+    @Column(name = "selectedEnd")
+    String selectedEnd;
 
     @Column(name = "date")
     String date;

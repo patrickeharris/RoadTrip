@@ -170,7 +170,7 @@ const CreateTrip = () => {
         try {
             const response = await myAxios.post(
                 "/create-trip",
-                JSON.stringify({tripName, start, end, date, tolls, highways, userID, selectedRoute}),
+                JSON.stringify({tripName, start, selectedStart, end, selectedEnd, date, tolls, highways, userID, selectedRoute}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
