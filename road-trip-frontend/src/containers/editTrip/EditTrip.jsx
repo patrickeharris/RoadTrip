@@ -39,7 +39,7 @@ const EditTrip = () => {
                     setStart(response[i].start);
                     setEnd(response[i].end);
                     setDate(response[i].date);
-                    setUserID(response[i].userID);
+                    setUserID(window.localStorage.getItem('curUser'));
                     setSelectedRoute(response[i].selectedRoute);
                     break;
                 }
@@ -51,7 +51,7 @@ const EditTrip = () => {
         try {
             const response = await myAxios.post(
                 "/edit-trip",
-                JSON.stringify({trip_id, tripName, start, end, date, userID, selectedRoute}),
+                JSON.stringify({trip_id, tripName, start, end, date, user_id: userID, selectedRoute}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
@@ -66,7 +66,6 @@ const EditTrip = () => {
             setDate("");
             setUserID("");
             setSelectedRoute("");
-            console.log(response);
             toast.success('Successfully Edited Trip!', {
                 position: "top-right",
                 autoClose: 5000,
@@ -101,7 +100,6 @@ const EditTrip = () => {
                         <input type="text" onChange={(e) => setStart(e.target.value)} value={start}/>
                         <input type="text" onChange={(e) => setEnd(e.target.value)} value={end}/>
                         <input type="date" onChange={(e) => setDate(e.target.value)} value={date}/>
-                        <input type="text" onChange={(e) => setUserID(e.target.value)} value={userID}/>
                         <input type="text" onChange={(e) => setSelectedRoute(e.target.value)} value={selectedRoute}/>
                         <button type="button" onClick={handleSubmit}>Edit Trip</button>
                     </div>
