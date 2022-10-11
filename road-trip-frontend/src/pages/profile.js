@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from '@material-ui/core/Link';
 import styles from "./styles/index.module.css";
-import {Navbar} from "../components";
+import {Navbar, Profile} from "../components";
 import {Footer} from "../containers";
 
 require('dotenv').config();

@@ -10,7 +10,10 @@
     "@bessemer/cornerstone": "1.0.23",
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
+    "@reach/combobox": "^0.17.0",
+    "@react-google-maps/api": "^2.13.1",
     "@reduxjs/toolkit": "1.4.0",
+    "@syncfusion/ej2-react-buttons": "^20.3.48",
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
     "clsx": "^1.1.1",
@@ -29,7 +32,9 @@
     "react-multi-carousel": "^2.8.2",
     "react-redux": "7.2.1",
     "react-toast-notifier": "^1.0.3",
-    "react-toastify": "^9.0.8"
+    "react-toastify": "^9.0.8",
+    "reactjs-popup": "^2.0.5",
+    "use-places-autocomplete": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.11.1",

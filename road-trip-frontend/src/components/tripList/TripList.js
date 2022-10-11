@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component, useState} from 'react';
 import {myAxios} from "../../util/helper";
 import {Carousel} from "react-bootstrap";
 import {Card} from "../index";
 import styles from "./triplist.module.css";
 import "react-multi-carousel/lib/styles.css";
+import {GoogleMap, Marker} from "@react-google-maps/api";
 const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
@@ -37,9 +38,9 @@ export default class TripList extends Component {
         )).data;
         this.setState({ data });
     }
-
     render() {
         const { data } = this.state;
+
         const itemList = data.map(function(item) {
             console.log(item);
             const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
