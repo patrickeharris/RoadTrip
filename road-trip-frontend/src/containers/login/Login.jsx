@@ -48,7 +48,7 @@ const Login = () => {
                             progress: undefined,
                         });
                         window.localStorage.setItem('curUser', response[index].user_id);
-                        window.location.replace("/");
+                        window.location.replace("/trip-dashboard");
                     } else {
                         alert("This is the wrong password. Please try again!")
                     }
