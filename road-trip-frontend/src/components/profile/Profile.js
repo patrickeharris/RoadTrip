@@ -5,6 +5,9 @@
  */
 
 import React, {Component, useState} from "react";
+import EditableUserProfile from "../userprofile/EditableUserProfile";
+import UserProfile from "../userprofile/UserProfile";
+
 
 export default function Profile() {
 
