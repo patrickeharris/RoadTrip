@@ -25,14 +25,14 @@ public class Trip {
     @Column(name = "start")
     String start;
 
-    @Column(name = "selectedStart")
-    String selectedStart;
+    @Column(name = "startLoc")
+    String startLoc;
 
     @Column(name = "end")
     String end;
 
-    @Column(name = "selectedEnd")
-    String selectedEnd;
+    @Column(name = "endLoc")
+    String endLoc;
 
     @Column(name = "date")
     String date;

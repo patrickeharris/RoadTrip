@@ -168,9 +168,12 @@ const CreateTrip = () => {
     };
     const handleSubmit = async () => {
         try {
+            const startLoc = selectedStart.lat + " " + selectedStart.lng;
+            console.log(startLoc);
+            const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
             const response = await myAxios.post(
                 "/create-trip",
-                JSON.stringify({tripName, start, selectedStart, end, selectedEnd, date, tolls, highways, userID, selectedRoute}),
+                JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, userID, selectedRoute}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
