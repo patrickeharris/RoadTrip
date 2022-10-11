@@ -19,6 +19,11 @@ const Menu = () => {
                     <p><a href="/trip-dashboard">Trip Dashboard</a></p> :
                     <p><a href="/login">Trip Dashboard</a></p>
             }
+            {
+                logged === 'true' ?
+                    <p><a href="/profile">Profile</a></p> :
+                    <p><a href="/login">Profile</a></p>
+            }
             <p><a href="./#footer">Contact Us</a></p>
         </>
     )
