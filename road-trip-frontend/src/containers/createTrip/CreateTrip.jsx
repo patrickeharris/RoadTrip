@@ -179,9 +179,10 @@ const CreateTrip = () => {
             });
             console.log(stops);
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
+            let id = window.localStorage.getItem('curUser');
             const response = await myAxios.post(
                 "/create-trip",
-                JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, userID, selectedRoute}),
+                JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, user_id: id, selectedRoute}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
@@ -227,7 +228,6 @@ const CreateTrip = () => {
                         <Places placeholderText="Start" start={start} setStart={setStart} selected={selectedStart} setSelected={setSelectedStart}/>
                         <Places placeholderText="End" start={end} setStart={setEnd} selected={selectedEnd} setSelected={setSelectedEnd}/>
                         <input type="date" placeholder="Date" onChange={(e) => setDate(e.target.value)} value={date}/>
-                        <input type="text" placeholder="User" onChange={(e) => setUserID(e.target.value)} value={userID}/>
                         <h1 className={globalStyles.gradientText}>Route Preferences</h1>
                         <h2 className={globalStyles.gradientText}>Tolls: <Checkbox label="Tolls"
                                                                                    value={tolls} checked={tolls}

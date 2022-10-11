@@ -18,7 +18,6 @@ public class TripController {
 
     @PostMapping("/create-trip")
     public Trip createTrip(@RequestBody Trip trip) {
-        System.out.println("test3");
         return tripService.makeTrip(trip);
     }
 

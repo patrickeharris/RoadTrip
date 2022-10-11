@@ -42,19 +42,23 @@ export default class TripList extends Component {
         const { data } = this.state;
 
         const itemList = data.map(function(item) {
-            console.log(item);
-            const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
-            return <div><Card title={item.tripName} description={description}
-                              editButton={<button onClick={ function editTrip() {
-                                  window.localStorage.setItem('curTrip', item.trip_id);
-                                  window.location.replace('/edit-trip');
-                              }}>Edit Trip</button>}
-                              rateButton={<button onClick={function rateTrip() {
-                                  window.localStorage.setItem('curTrip', item.trip_id);
-                                  window.location.replace('/rate-trip');
-                              }}>Rate Trip</button>}
-                                startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute}/>
+            console.log(item.user);
+            console.log(window.localStorage.getItem('curUser'));
+            if(item.user_id === window.localStorage.getItem('curUser')) {
+                console.log(item);
+                const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
+                return <div><Card title={item.tripName} description={description}
+                                  editButton={<button onClick={function editTrip() {
+                                      window.localStorage.setItem('curTrip', item.trip_id);
+                                      window.location.replace('/edit-trip');
+                                  }}>Edit Trip</button>}
+                                  rateButton={<button onClick={function rateTrip() {
+                                      window.localStorage.setItem('curTrip', item.trip_id);
+                                      window.location.replace('/rate-trip');
+                                  }}>Rate Trip</button>}
+                                  startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute}/>
                 </div>
+            }
         });
         return <Carousel responsive={responsive}>{itemList}</Carousel>;
     }
