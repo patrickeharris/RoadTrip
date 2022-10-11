@@ -10,6 +10,12 @@
     color: white;
 }
 
+.rateTrip__subHeader {
+    font-weight: bold;
+    font-size: large;
+    color: white;
+}
+
 .rateTrip__formWrapper {
     margin-top: 20px;
     margin-bottom: 20px;

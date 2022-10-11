@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, {Component, useState} from 'react';
 import {myAxios} from "../../util/helper";
-import {Carousel} from "react-bootstrap";
+import Carousel from "react-multi-carousel";
 import {Card} from "../index";
 import styles from "./triplist.module.css";
 import "react-multi-carousel/lib/styles.css";
+import {GoogleMap, Marker} from "@react-google-maps/api";
 const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
@@ -23,6 +24,7 @@ const responsive = {
         items: 1
     }
 };
+
 export default class TripList extends Component {
     constructor(props) {
         super(props);
@@ -36,15 +38,29 @@ export default class TripList extends Component {
         )).data;
         this.setState({ data });
     }
-
     render() {
         const { data } = this.state;
+
         const itemList = data.map(function(item) {
-            console.log(item);
-            const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
-            return <div><Card title={item.tripName} description={description}/></div>;
+            console.log(item.user);
+            console.log(window.localStorage.getItem('curUser'));
+            if(item.user_id === window.localStorage.getItem('curUser')) {
+                console.log(item);
+                const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
+                return <div><Card title={item.tripName} description={description}
+                                  editButton={<button onClick={function editTrip() {
+                                      window.localStorage.setItem('curTrip', item.trip_id);
+                                      window.location.replace('/edit-trip');
+                                  }}>Edit Trip</button>}
+                                  rateButton={<button onClick={function rateTrip() {
+                                      window.localStorage.setItem('curTrip', item.trip_id);
+                                      window.location.replace('/rate-trip');
+                                  }}>Rate Trip</button>}
+                                  startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute}/>
+                </div>
+            }
         });
-        return itemList;
+        return <Carousel responsive={responsive}>{itemList}</Carousel>;
     }
 
 }

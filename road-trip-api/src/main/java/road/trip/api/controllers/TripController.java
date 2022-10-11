@@ -16,11 +16,14 @@ public class TripController {
     @Autowired
     private TripService tripService;
 
-
     @PostMapping("/create-trip")
     public Trip createTrip(@RequestBody Trip trip) {
-        System.out.println("test3");
         return tripService.makeTrip(trip);
+    }
+
+    @PostMapping("/edit-trip")
+    public Trip editTrip(@RequestBody Trip trip) {
+        return tripService.editTrip(trip);
     }
 
     @GetMapping("/trips")

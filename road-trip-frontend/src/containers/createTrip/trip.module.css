@@ -99,3 +99,52 @@
         line-height: 16px;
     }
 }
+
+.combobox {
+    /* Border slightly darker than Chrome's <select>, slightly lighter than FireFox's */
+    border: 1px solid #999;
+    padding-right: 1.25em; /* leave room for ▾ */
+}
+.dropdown, .combobox {
+    /* "relative" and "inline-block" (or just "block") are needed
+       here so that "absolute" works correctly in children */
+    position: relative;
+    display: inline-block;
+}
+.combobox > .downarrow, .dropdown > .downarrow {
+    /* ▾ Outside normal flow, relative to container */
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1.25em;
+
+    cursor: default;
+    nav-index: -1; /* nonfunctional in most browsers */
+
+    border-width: 0px;          /* disable by default */
+    border-style: inherit; /* copy parent border */
+    border-color: inherit; /* copy parent border */
+}
+/* Add a divider before the ▾ down arrow in non-dropdown comboboxes */
+.combobox:not(.dropdown) > .downarrow {
+    border-left-width: 1px;
+}
+/* Auto-down-arrow if one is not provided */
+.downarrow:empty::before {
+    content: '▾';
+}
+.downarrow::before, .downarrow > *:only-child {
+    text-align: center;
+
+    /* vertical centering trick */
+    position: relative;
+    top: 50%;
+    display: block; /* transform requires block/inline-block */
+    transform: translateY(-50%);
+}
+
+.results h2 {
+    color: white;
+}

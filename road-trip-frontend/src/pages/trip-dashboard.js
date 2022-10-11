@@ -5,9 +5,7 @@ import {Navbar, Card, TripList} from "../components";
 import {Footer} from "../containers";
 import {Button} from "react-bootstrap";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import bcrypt from "bcryptjs";
-import {myAxios} from "../util/helper";
+import 'react-multi-carousel/lib/styles.css';
 const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
@@ -28,43 +26,19 @@ const responsive = {
     }
 };
 
-function test() {
-    let test = <p>hello</p>
-    return test;
-};
-
-async function getTrips() {
-    let add = "";
-    try {
-        const response = await myAxios.get(
-            "/trips"
-        );
-        let trips = response.data;
-        console.log(trips);
-        trips.forEach((trip) => {
-            add = add + <div><Card title={trip.trip_name}/></div>
-            console.log(trip.trip_id);
-        })
-    } catch (err) {
-        if (!err?.response) {
-            console.log("No Server Response");
-        } else {
-            console.log(err?.response);
-        }
-    }
-    return add;
-};
-require('dotenv').config();
-
 function TripsPage() {
+
     return (
 
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
-                <Carousel responsive={responsive}>
+                <div className={styles.buttons}>
+                    <button type="button" onClick={() => window.location.replace("/create-trip")} >Add Trip</button>
+                </div>
+
                     <TripList />
-                </Carousel>
+
                 <Footer />
             </div>
         </div>

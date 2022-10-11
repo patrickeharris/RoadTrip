@@ -6,3 +6,4 @@ export {default as Register} from './register/Register';
 export {default as Profile} from './profile/Profile';
 export {default as CreateTrip} from './createTrip/CreateTrip';
 export {default as SpotifyLogin} from './spotify-login/SpotifyLogin';
+export {default as EditTrip} from './editTrip/EditTrip';

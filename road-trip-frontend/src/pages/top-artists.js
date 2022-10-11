@@ -8,7 +8,7 @@ function TopArtists() {
     const [userTopArtists, setUserTopArtists] = useState();
 
     useEffect(() => {
-        fetch("http://trailblazers.gq:8080/spotify/user-top-artists")
+        fetch("http://localhost:8080/spotify/user-top-artists")
             .then(response => response.json())
             .then(data => {
                 console.log(data)

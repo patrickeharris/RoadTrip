@@ -25,16 +25,29 @@ public class Trip {
     @Column(name = "start")
     String start;
 
+    @Column(name = "startLoc")
+    String startLoc;
+
     @Column(name = "end")
     String end;
 
+    @Column(name = "endLoc")
+    String endLoc;
+
     @Column(name = "date")
     String date;
+
+    @Column(name = "tolls")
+    String tolls;
+
+    @Column(name = "highways")
+    String highways;
+
     @Column(name = "userID")
     private Long user_id;
 
     @Column(name = "selectedRoute")
-    private Long selectedRoute;
+    private String selectedRoute;
 
     public void setUser_id(Long user_id) {
         this.user_id = user_id;

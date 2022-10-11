@@ -1,5 +1,7 @@
-import React from "react";
+/* global google */
+import React, {useState} from "react";
 import styles from "./card.module.css"
+import {GoogleMap, useLoadScript, Marker, DirectionsRenderer} from "@react-google-maps/api";
 
 /**
  * NOTES:
@@ -42,20 +44,73 @@ function CardContent(props) {
         <div className={styles.styleCardContent}>
             <p className={styles.styleCardTitle}>{props.title}</p>
             <p className={styles.styleDescription}>{props.description}</p>
+            <p className={styles.styleButton}>{props.editButton}</p>
+            <p className={styles.styleButton}>{props.rateButton}</p>
         </div>
     );
 }
 
+const Map = (props) => {
+    const [results, setResults] = useState(null)
+    async function getResults() {
+        const directionsService = new google.maps.DirectionsService();
+        return await directionsService.route({
+            origin: props.startLoc,
+            destination: props.endLoc,
+            travelMode: google.maps.TravelMode.DRIVING,
+            provideRouteAlternatives: true,
+            avoidHighways: false,
+            avoidTolls: false});
+    }
+    const containerStyle = {
+        width: '300px',
+        height: '300px'
+    };
+
+    const [selected, setSelected] = useState({lat: 43.45, lng: -80.49});
+    const {isLoaded} = useLoadScript({
+        googleMapsApiKey: "AIzaSyDJGTHHgwc5HXLi7qDeMAvecrT0ts-7jLU",
+        libraries: ["places"],
+    });
+    if(isLoaded) {
+        getResults().then((response) => {
+            if(results === null) {
+                const resultList = response.routes.filter(function (item) {
+                    //console.log(item);
+                    const t = [];
+                    t.push(item);
+                    if (item.legs[0].distance.text === props.selectedRoute) {
+                        return t;
+                    }
+
+                });
+                const t = [];
+                t.routes = resultList;
+                t.request = response.request;
+                setResults(t);
+            }
+        })
+    }
+    return (<>{isLoaded ?
+        <GoogleMap zoom={10} center={selected} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
+            <DirectionsRenderer directions={results}/>
+        </GoogleMap> : <></>}</>);
+}
+
 export default class Card extends React.Component {
     render() {
+        console.log(this.props.startLoc)
         return (
             <div style={{ width: this.props.width + "px" }}>
                 <div className={styles.styleCard}>
+                    <Map startLoc={this.props.startLoc} endLoc={this.props.endLoc} selectedRoute={this.props.selectedRoute}/>
                     <CardImage image={this.props.image} width={this.props.width} />
                     <CardContent
                         title={this.props.title}
                         location={this.props.location}
                         description={this.props.description}
+                        editButton={this.props.editButton}
+                        rateButton={this.props.rateButton}
                     />
                 </div>
             </div>
