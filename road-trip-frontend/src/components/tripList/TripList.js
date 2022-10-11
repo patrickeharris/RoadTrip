@@ -42,9 +42,10 @@ export default class TripList extends Component {
         const { data } = this.state;
 
         const itemList = data.map(function(item) {
-            console.log(item.user);
+            console.log(item.user_id);
             console.log(window.localStorage.getItem('curUser'));
-            if(item.user_id === window.localStorage.getItem('curUser')) {
+            console.log('' + item.user_id === window.localStorage.getItem('curUser').toString())
+            if('' + item.user_id === window.localStorage.getItem('curUser').toString()) {
                 console.log(item);
                 const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
                 return <div><Card title={item.tripName} description={description}
