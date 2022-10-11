@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react';
 import {myAxios} from "../../util/helper";
-import {Carousel} from "react-bootstrap";
+import Carousel from "react-multi-carousel";
 import {Card} from "../index";
 import styles from "./triplist.module.css";
 import "react-multi-carousel/lib/styles.css";
@@ -52,10 +52,11 @@ export default class TripList extends Component {
                               rateButton={<button onClick={function rateTrip() {
                                   window.localStorage.setItem('curTrip', item.trip_id);
                                   window.location.replace('/rate-trip');
-                              }}>Rate Trip</button>}/>
+                              }}>Rate Trip</button>}
+                                startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute}/>
                 </div>
         });
-        return itemList;
+        return <Carousel responsive={responsive}>{itemList}</Carousel>;
     }
 
 }

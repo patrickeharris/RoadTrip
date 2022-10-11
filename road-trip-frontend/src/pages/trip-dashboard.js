@@ -5,10 +5,7 @@ import {Navbar, Card, TripList} from "../components";
 import {Footer} from "../containers";
 import {Button} from "react-bootstrap";
 import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import bcrypt from "bcryptjs";
-import {myAxios} from "../util/helper";
-import {GoogleMap, Marker, useJsApiLoader} from "@react-google-maps/api";
+import 'react-multi-carousel/lib/styles.css';
 const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
@@ -30,52 +27,18 @@ const responsive = {
 };
 
 function TripsPage() {
-    const [map, setMap] = React.useState(null)
-
-    const onLoad = React.useCallback(function callback(map) {
-        const bounds = new window.google.maps.LatLngBounds(center);
-        map.fitBounds(bounds);
-        setMap(map)
-    }, [])
-
-    const onUnmount = React.useCallback(function callback(map) {
-        setMap(null)
-    }, [])
-    require('dotenv').config();
-
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: "AIzaSyDJGTHHgwc5HXLi7qDeMAvecrT0ts-7jLU"
-    })
-
-    const containerStyle = {
-        width: '400px',
-        height: '400px'
-    };
-
-    const center = {
-        lat: 29.7604,
-        lng: -95.3698
-    };
 
     return (
 
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
-                {isLoaded ? (<GoogleMap
-                    mapContainerStyle={containerStyle}
-                    center={center}
-                    zoom={8}
-                    onLoad={onLoad}
-                    onUnmount={onUnmount}
-                >
-                    { /* Child components, such as markers, info windows, etc. */ }
-                    <></>
-                </GoogleMap>) : (<></>)}
-                <Carousel responsive={responsive}>
+                <div className={styles.buttons}>
+                    <button type="button" onClick={() => window.location.replace("/create-trip")} >Add Trip</button>
+                </div>
+
                     <TripList />
-                </Carousel>
+
                 <Footer />
             </div>
         </div>

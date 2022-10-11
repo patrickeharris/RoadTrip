@@ -40,7 +40,8 @@ const Results = ({results, setSelectedRoute}) => {
 
 const StopResults = ({results}) => {
     const resultList = results.map(function(item) {
-        return <div><h2 className={globalStyles.gradientText}>Name: {item.name}</h2><h2 className={globalStyles.gradientText}>Address: {item.vicinity}</h2></div>
+        return <div><h2 className={globalStyles.gradientText}>Name: {item.name}</h2><h2 className={globalStyles.gradientText}>Address: {item.vicinity}</h2><input
+            type="checkbox" name="stops" value={item.name}/></div>
     })
     return resultList;
 }
@@ -154,7 +155,7 @@ const CreateTrip = () => {
         var request = {
             location: selectedStart,
             radius: '500',
-            type: ['restaurant']
+            types: ['restaurant']
         };
 
         var service = new google.maps.places.PlacesService(map);
@@ -169,7 +170,14 @@ const CreateTrip = () => {
     const handleSubmit = async () => {
         try {
             const startLoc = selectedStart.lat + " " + selectedStart.lng;
-            console.log(startLoc);
+            const stops = [];
+            var myCheckbox = document.getElementsByName("stops");
+            Array.prototype.forEach.call(myCheckbox,function(el){
+                if(el.checked){
+                    stops.push(el.value);
+                }
+            });
+            console.log(stops);
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
             const response = await myAxios.post(
                 "/create-trip",
