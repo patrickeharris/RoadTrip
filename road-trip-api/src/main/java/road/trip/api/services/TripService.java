@@ -29,6 +29,8 @@ public class TripService {
         t.setEnd(trip.getEnd());
         t.setStart(trip.getStart());
         t.setTripName(trip.getTripName());
+        t.setUser_id(trip.getUser_id());
+        t.setSelectedRoute(trip.getSelectedRoute());
 
         return tripRepository.save(t);
     }

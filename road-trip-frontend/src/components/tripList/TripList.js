@@ -23,6 +23,7 @@ const responsive = {
         items: 1
     }
 };
+
 export default class TripList extends Component {
     constructor(props) {
         super(props);
@@ -42,7 +43,16 @@ export default class TripList extends Component {
         const itemList = data.map(function(item) {
             console.log(item);
             const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
-            return <div><Card title={item.tripName} description={description}/></div>;
+            return <div><Card title={item.tripName} description={description}
+                              editButton={<button onClick={ function editTrip() {
+                                  window.localStorage.setItem('curTrip', item.trip_id);
+                                  window.location.replace('/edit-trip');
+                              }}>Edit Trip</button>}
+                              rateButton={<button onClick={function rateTrip() {
+                                  window.localStorage.setItem('curTrip', item.trip_id);
+                                  window.location.replace('/rate-trip');
+                              }}>Rate Trip</button>}/>
+                </div>
         });
         return itemList;
     }

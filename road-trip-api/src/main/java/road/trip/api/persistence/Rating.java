@@ -22,6 +22,9 @@ public class Rating {
     Long id;
 
     @Column
+    Long trip_id;
+
+    @Column
     int score;
 
     @Column

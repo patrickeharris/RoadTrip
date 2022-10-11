@@ -1,9 +1,3 @@
-/*
-    Things Left:
-        - myAxios is not running (Server is not connected)
-        - Set currently logged in User
- */
-
 import React, {useState} from 'react'
 import styles from './login.module.css'
 import globalStyles from "../container.module.css";

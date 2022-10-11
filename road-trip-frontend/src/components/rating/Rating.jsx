@@ -68,11 +68,12 @@ const Rating = () => {
         }
 
         axios.post("http://localhost:8080/rating/add", {
-            "score": rating, "stopScore": stopRating, "message": message
+            "trip_id": window.localStorage.getItem('curTrip'), "score": rating, "stopScore": stopRating, "message": message
         })
             .then((response) => {
                 console.log(response)
                 alert("Thank you for taking the time to give feedback!")
+                window.localStorage.setItem('curTrip', null);
                 window.location.href = "/"
             })
     }
