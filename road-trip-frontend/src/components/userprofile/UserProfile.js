@@ -20,7 +20,7 @@ export default function EditableUserProfile({
         </Group>
         <Group>
             <button
-                style={buttonStyle}
+
                 onClick={startEditCallback}
             >Edit</button>
         </Group>
