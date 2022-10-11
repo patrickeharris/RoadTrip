@@ -1,10 +1,9 @@
-package road.trip.api.controllers;
+/*package road.trip.api.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,8 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@WebMvcTest(RatingController.class)
-public class RatingControllerTest {
+public class OldRatingControllerTest {
     @Autowired
     MockMvc mockMvc;
     @Autowired
@@ -30,9 +28,9 @@ public class RatingControllerTest {
     @MockBean
     private RatingRepository ratingRepository;
 
-    Rating RATING_1 = new Rating(1l, 5, "Wife and kids had a fantastic time, the app made it so much easier to navigate the trip!", "trip");
-    Rating RATING_2 = new Rating(2l, 3, "App was a bit slow in areas with little to no cell service", "trip");
-    Rating RATING_3 = new Rating(3l, 4, "This stop was awesome, it was in an inlet only 2 miles from our route!", "stop");
+    Rating RATING_1 = new Rating(1L, 5, 3, "Wife and kids had a fantastic time, the app made it so much easier to navigate the trip!");
+    Rating RATING_2 = new Rating(2L, 3, 2, "App was a bit slow in areas with little to no cell service");
+    Rating RATING_3 = new Rating(3L, 4, 5, "This stop was awesome, it was in an inlet only 2 miles from our route!");
 
     @Test
     public void getAllRatings_success() throws Exception {
@@ -67,3 +65,5 @@ public class RatingControllerTest {
                 .andExpect(jsonPath("$.score", is(5)));
     }
 }
+
+ */

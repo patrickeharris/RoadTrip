@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import styles from "./rating.module.css";
 import {Star} from "../index";
+import {myAxios} from "../../util/helper";
 
 const Rating = () => {
     const [rating, setRating] = useState(0);
@@ -67,7 +68,7 @@ const Rating = () => {
             return
         }
 
-        axios.post("http://localhost:8080/rating/add", {
+        axios.post("/rating/add", {
             "trip_id": window.localStorage.getItem('curTrip'), "score": rating, "stopScore": stopRating, "message": message
         })
             .then((response) => {
