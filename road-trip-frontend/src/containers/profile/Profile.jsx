@@ -96,7 +96,7 @@ const Profile = () => {
             try {
                 const response = await myAxios.post(
                     "/register/update",
-                    JSON.stringify({firstName, lastName, email, id}),
+                    JSON.stringify({firstName, lastName, email, user_id: id}),
                     {
                         headers: {
                             "Content-Type": "application/json",

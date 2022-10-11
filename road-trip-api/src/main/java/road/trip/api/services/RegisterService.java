@@ -28,12 +28,14 @@ public class RegisterService {
         return regRepository.save(user);
     }
 
-    public User updateUser(String firstName, String lastName, String email, Long id) {
-        User u = regRepository.findById(id).get();
-        u.setFirstName(firstName);
-        u.setLastName(lastName);
-        u.setEmail(email);
-        return regRepository.save(u);
+    public User updateUser(User user) {
+        if(regRepository.existsById(user.getUser_id())) {
+            regRepository.findById(user.getUser_id()).get().setFirstName(user.getFirstName());
+            regRepository.findById(user.getUser_id()).get().setLastName(user.getLastName());
+            regRepository.findById(user.getUser_id()).get().setEmail(user.getEmail());
+            return regRepository.save(regRepository.findById(user.getUser_id()).get());
+        }
+        return null;
     }
 
     public User loginUser(User user) {

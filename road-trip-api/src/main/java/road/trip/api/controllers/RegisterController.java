@@ -34,8 +34,8 @@ public class RegisterController {
     }
 
     @PostMapping("/register/update")
-    public User updateUser(@RequestBody String firstName, String lastName, String email, Long id) {
-        return regService.updateUser(firstName, lastName, email, id);
+    public User updateUser(@RequestBody User u) {
+        return regService.updateUser(u);
     }
 
     @PostMapping("/login")
