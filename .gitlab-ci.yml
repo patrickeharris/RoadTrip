@@ -12,6 +12,11 @@ build-job:
     - docker build -t road-trip-frontend .
     - cd ..
 
+test-job:
+  stage: test
+  script:
+    - cd road-trip-api
+    - ./gradlew test
 
 deploy-prod:
   stage: deploy
