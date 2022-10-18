@@ -131,6 +131,7 @@ configurations.all {
     exclude group: "org.slf4j", module: "jcl-over-slf4j"
     exclude group: "org.slf4j", module: "jul-to-slf4j"
     exclude group: "org.slf4j", module: "log4j-over-slf4j"
+    exclude group: "junit", module: "junit-dep"
     exclude group: "ch.qos.logback"
 }
 
