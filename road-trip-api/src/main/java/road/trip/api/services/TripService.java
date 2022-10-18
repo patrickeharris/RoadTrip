@@ -17,9 +17,11 @@ public class TripService {
         return tripRepository.findById(id).get();
     }
 
+    /*
     public Trip findTripByUser(Long user_id) {
         return tripRepository.findByUser(user_id);
     }
+     */
 
     public Trip makeTrip (Trip trip) {
         System.out.println("test1");
