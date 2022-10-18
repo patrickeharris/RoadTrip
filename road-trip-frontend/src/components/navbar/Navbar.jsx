@@ -31,6 +31,17 @@ const Menu = () => {
 
 const Navbar = () => {
     const [toggleMenu, setToggleMenu] = useState(false);
+    const [logged, setLogged] = useState('false');
+
+    useEffect(() => {
+        setLogged(window.localStorage.getItem('loggedIn'));
+        console.log(window.localStorage.getItem('loggedIn'))
+    })
+
+    function logOut(){
+        setLogged('false');
+        window.localStorage.setItem('loggedIn', 'false');
+    }
 
   return (
       <div className={styles.navbar}>
@@ -43,10 +54,17 @@ const Navbar = () => {
                   <Menu />
               </div>
           </div>
-          <div className={styles.navbarBtns}>
-              <p><a href="./login">Sign in</a></p>
-              <button type="button"><a href="./register">Sign up</a></button>
-          </div>
+          {
+              logged === 'false' ?
+                  <div className={styles.navbarBtns}>
+                      <p><a href="./login">Sign in</a></p>
+                      <button type="button"><a href="./register">Sign up</a></button>
+                  </div>
+                  :
+                  <div className={styles.navbarBtns}>
+                      <button type="button" onClick={logOut}>Logout</button>
+                  </div>
+          }
           <div className={styles.navbarMenu}>
               {toggleMenu
                 ? <RiCloseLine color="#fff" size={27} onClick={() => setToggleMenu(false)}/>
