@@ -3,9 +3,9 @@ package road.trip.api.controllers;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import road.trip.api.persistence.Stop;
 import road.trip.api.persistence.Trip;
-import road.trip.api.persistence.User;
-import road.trip.api.services.RegisterService;
+import road.trip.api.services.RouteService;
 import road.trip.api.services.TripService;
 
 @Log4j2
@@ -15,6 +15,9 @@ public class TripController {
 
     @Autowired
     private TripService tripService;
+
+    @Autowired
+    private RouteService routeService;
 
     @PostMapping("/create-trip")
     public Trip createTrip(@RequestBody Trip trip) {
@@ -30,4 +33,17 @@ public class TripController {
     public @ResponseBody Iterable<Trip> findAllTrips() {
         return tripService.getTrips();
     }
+
+    /*
+    @DeleteMapping("/delete-trip")
+    public Trip deleteTrip(Long tripId) {
+        return tripService.deleteTrip(tripId);
+    }
+
+    @GetMapping("/recommended-stops")
+    public Iterable<Stop> getRecommendedStops(Long routeId) {
+
+        return routeService.getRecommendedStops(routeId);
+    }
+     */
 }

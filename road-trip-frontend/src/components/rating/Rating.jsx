@@ -72,8 +72,8 @@ const Rating = () => {
         setTrip_Id(window.localStorage.getItem('curTrip'));
 
         const response = await myAxios.post(
-            "/rating/add",
-            JSON.stringify({trip_id, rating, stopRating, message}),
+            "/rating/add-rating",
+            JSON.stringify({trip_id: trip_id, score: rating, stopScore: stopRating, message}),
             {
                 headers: {"Content-Type": "application/json",
                     'Access-Control-Allow-Origin' : '*',

@@ -4,15 +4,15 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import road.trip.api.persistence.User;
-import road.trip.api.services.RegisterService;
+import road.trip.api.services.UserService;
 
 @Log4j2
 @RestController
 @CrossOrigin(allowCredentials = "true", origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
-public class RegisterController {
+public class UserController {
 
     @Autowired
-    private RegisterService regService;
+    private UserService userService;
 
     /*
     @GetMapping("/register/{email}")
@@ -25,22 +25,38 @@ public class RegisterController {
 
     @GetMapping("/register/users")
     public @ResponseBody Iterable<User> findAllUsers() {
-        return regService.getUsers();
+        return userService.findAllUsers();
     }
 
     @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
-        return regService.registerUser(user);
+    public User register(@RequestBody User user) {
+        return userService.register(user);
     }
 
     @PostMapping("/register/update")
-    public User updateUser(@RequestBody User u) {
-        return regService.updateUser(u);
+    public User update(@RequestBody User u) {
+        return userService.update(u);
     }
 
     @PostMapping("/login")
-    public User loginUser(@RequestBody String email, String password) {
+    public User login(@RequestBody String email, String password) {
         User user = new User("", "", email, "");
-        return regService.loginUser(user);
+        return userService.login(user);
     }
+
+    /*
+
+    public void logout() {
+
+    }
+
+    @DeleteMapping("/profile/delete")
+    public User deleteAccount(Long user_id) {
+
+    }
+
+    public void connectSpotifyAccount() {
+
+    }
+     */
 }

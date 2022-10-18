@@ -13,6 +13,14 @@ public class TripService {
     @Autowired
     private TripRepository tripRepository;
 
+    public Trip findTripById(Long id) {
+        return tripRepository.findById(id).get();
+    }
+
+    public Trip findTripByUser(Long user_id) {
+        return tripRepository.findByUser(user_id);
+    }
+
     public Trip makeTrip (Trip trip) {
         System.out.println("test1");
         System.out.println(trip);
@@ -24,7 +32,7 @@ public class TripService {
 
     public Trip editTrip(Trip trip) {
 
-        Trip t = tripRepository.findById(trip.getTrip_id()).get();
+        Trip t = findTripById(trip.getTrip_id());
         t.setDate(trip.getDate());
         t.setEnd(trip.getEnd());
         t.setStart(trip.getStart());
@@ -39,4 +47,21 @@ public class TripService {
         return tripRepository.findAll();
     }
 
+    /*
+    public Trip deleteTrip(Long trip_Id) {
+
+    }
+
+    public void chooseRoute(Long routeId) {
+
+    }
+
+    public void choosePlaylist(Long playlistId) {
+
+    }
+
+    public List<Playlist> getRecommendedPlaylists(Long tripId) {
+
+    }
+    */
 }

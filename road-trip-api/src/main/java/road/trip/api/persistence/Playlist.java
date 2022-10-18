@@ -9,14 +9,14 @@ public class Playlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long playlist_ID;
+    private Long playlistID;
 
     @Column(name = "trip_ID")
     private Long trip_ID;
 
-    @Column(name = "playlist_name")
-    String playlist_name;
+    @Column(name = "playlistName")
+    String playlistName;
 
-    @Column(name = "playlist_link")
-    String playlist_link;
+    @Column(name = "playlistLink")
+    String playlistLink;
 }

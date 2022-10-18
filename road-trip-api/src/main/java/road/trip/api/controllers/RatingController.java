@@ -15,12 +15,12 @@ public class RatingController {
     @Autowired
     private RatingService ratingService;
 
-    @GetMapping("/all")
+    @GetMapping("/ratings")
     public @ResponseBody Iterable<Rating> getAllRatings() {
         return ratingService.getRatings();
     }
 
-    @PostMapping("/add")
+    @PostMapping("/add-rating")
     public Rating saveRating(@RequestBody Rating rating) {
         return ratingService.saveRating(rating);
     }

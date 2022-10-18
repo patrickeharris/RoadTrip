@@ -12,6 +12,10 @@ public class RatingService {
     @Autowired
     private RatingRepository ratingRepository;
 
+    public Rating findRatingById(Long id) {
+        return ratingRepository.findById(id).get();
+    }
+
     public List<Rating> getRatings() {
         return ratingRepository.findAll();
     }

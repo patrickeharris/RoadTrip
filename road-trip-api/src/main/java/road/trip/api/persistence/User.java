@@ -26,6 +26,25 @@ public class User {
     @Column(name = "password")
     String password;
 
+    /*
+
+    @Column(name = "regDate")
+    Date regDate;
+
+    @Column(name = "lastLogin")
+    Date lastLogin;
+
+    @Column(name = "isOperator")
+    Boolean isOperator;
+
+    @Column(name = "emailPref")
+    Boolean emailPref;
+
+    @Column(name = "spotifyAccountToken")
+    String spotifyAccountToken;
+
+     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long user_id;
