@@ -1,5 +1,6 @@
 package road.trip.api.persistence;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,7 +45,7 @@ public class Trip {
     String highways;
 
     @Column(name = "userID")
-    private Long user_id;
+    private Long userID;
 
     @Column(name = "selectedRoute")
     private String selectedRoute;
@@ -58,10 +59,10 @@ public class Trip {
      */
 
     public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+        this.userID = user_id;
     }
 
     public Long getUser_id() {
-        return user_id;
+        return userID;
     }
 }

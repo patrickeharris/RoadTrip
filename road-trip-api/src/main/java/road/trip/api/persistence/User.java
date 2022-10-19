@@ -47,7 +47,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long user_id;
+    @Column(name = "user_id")
+    private Long userID;
 
     public User(String firstName, String lastName, String email, String password){
         this.firstName = firstName;
@@ -57,10 +58,10 @@ public class User {
     }
 
     public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+        this.userID = user_id;
     }
 
     public Long getUser_id() {
-        return user_id;
+        return userID;
     }
 }

@@ -13,15 +13,15 @@ public class UserService {
     private UserRepository userRepository;
 
     public User findAccountById(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findByUserID(id).get();
     }
 
-    /*
+
     public User findAccountByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-     */
+
 
     public List<User> findAllUsers() {
         return userRepository.findAll();
