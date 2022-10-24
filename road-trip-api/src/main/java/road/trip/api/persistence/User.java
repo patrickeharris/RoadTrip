@@ -3,6 +3,7 @@ package road.trip.api.persistence;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 
 import javax.persistence.*;
 
@@ -40,10 +41,9 @@ public class User {
     @Column(name = "emailPref")
     Boolean emailPref;
 
-    @Column(name = "spotifyAccountToken")
-    String spotifyAccountToken;
-
      */
+
+    AuthorizationCodeCredentials spotifyAccountToken;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
