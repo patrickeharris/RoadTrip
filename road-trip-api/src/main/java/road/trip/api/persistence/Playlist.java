@@ -1,11 +1,20 @@
 package road.trip.api.persistence;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@Data
+@Entity
+@Table(name = Playlist.TABLE_NAME)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Playlist {
+    public static final String TABLE_NAME = "PLAYLIST";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
