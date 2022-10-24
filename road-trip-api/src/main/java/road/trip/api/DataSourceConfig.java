@@ -15,7 +15,7 @@ public class DataSourceConfig {
         dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
         dataSourceBuilder.url("jdbc:mysql://34.174.8.146:3306/road-trip-planner");
         dataSourceBuilder.username("admin");
-        dataSourceBuilder.password("password");
+        dataSourceBuilder.password("adminpass");
         return dataSourceBuilder.build();
     }
 }
