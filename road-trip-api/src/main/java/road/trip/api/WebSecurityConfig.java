@@ -1,3 +1,4 @@
+/*
 package road.trip.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("http://localhost:3000/login")
                 .permitAll()
                 .and()
                 .logout()
@@ -33,3 +34,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("user").password("password").roles("USER");
     }
 }
+*/

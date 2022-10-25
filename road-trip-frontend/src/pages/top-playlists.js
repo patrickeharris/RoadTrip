@@ -4,15 +4,15 @@ import {Navbar} from "../components";
 import {Footer} from "../containers";
 
 
-function TopArtists() {
-    const [userTopArtists, setUserTopArtists] = useState();
+function TopPlaylists() {
+    const [userTopPlaylists, setUserTopPlaylists] = useState();
 
     useEffect(() => {
-        fetch("http://localhost:8080/spotify/user-top-artists")
+        fetch("http://trailblazers.gq:8080/spotify/user-playlists")
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                setUserTopArtists(data)
+                setUserTopPlaylists(data)
             })
     }, [])
 
@@ -22,9 +22,9 @@ function TopArtists() {
             <div className={styles.gradient__bg}>
                 <Navbar />
                 <div className={styles.white__txt}>
-                    {userTopArtists ? (
-                        userTopArtists.map((artistResult) => {
-                            return <h1 key= {artistResult.name}>{artistResult.name}</h1>
+                    {userTopPlaylists ? (
+                        userTopPlaylists.map((playlistResult) => {
+                            return <h1 key= {playlistResult.name}>{playlistResult.name}</h1>
                         })
                         ):
                         (
@@ -38,4 +38,4 @@ function TopArtists() {
     )
 }
 
-export default TopArtists
+export default TopPlaylists

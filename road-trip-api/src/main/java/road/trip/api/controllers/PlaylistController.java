@@ -7,9 +7,11 @@ import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
+import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
 import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
+import se.michaelthelin.spotify.requests.data.playlists.GetListOfCurrentUsersPlaylistsRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,7 +36,7 @@ enum Keys {
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PlaylistController {
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/spotify/get-user-code");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq:8080/spotify/get-user-code");
     private String code = "";
 
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
@@ -63,22 +65,60 @@ public class PlaylistController {
                 .build();
 
         try {
+
             final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
+
+            /*
+                if (user.spotifyAccountToken == NULL) {
+
+                   final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
+                   spotifyAccountToken = authorizationCodeCredentials;
+
+                } else {
+                    if (user.spotifyAccountToken.getExpiresIn() > now()) {
+                        final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
+                        spotifyAccountToken = authorizationCodeCredentials;
+                    }
+                }
+
+
+            spotifyApi.setAccessToken(spotifyAccountToken.getAccessToken());
+            spotifyApi.setRefreshToken(spotifyAccountToken.getRefreshToken());
+
+            System.out.println("Expires in: " + spotifyAccountToken.getExpiresIn());
+
+             */
 
             spotifyApi.setAccessToken(authorizationCodeCredentials.getAccessToken());
             spotifyApi.setRefreshToken(authorizationCodeCredentials.getRefreshToken());
 
             System.out.println("Expires in: " + authorizationCodeCredentials.getExpiresIn());
+
         } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        response.sendRedirect("http://localhost:3000/top-artists");
+        response.sendRedirect("http://trailblazers.gq/top-playlists");
         return spotifyApi.getAccessToken();
     }
 
-    @GetMapping(value="user-top-artists")
-    public Artist[] getUserTopArtists() {
+    @GetMapping(value="user-playlists")
+    public PlaylistSimplified[] getUserTopArtists() {
+
+        final GetListOfCurrentUsersPlaylistsRequest getListOfCurrentUsersPlaylistsRequest =
+                spotifyApi.getListOfCurrentUsersPlaylists().build();
+
+        try {
+
+            final Paging<PlaylistSimplified> playlistPaging = getListOfCurrentUsersPlaylistsRequest.execute();
+            return playlistPaging.getItems();
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        /*
+
         final GetUsersTopArtistsRequest getUsersTopArtistsRequest = spotifyApi.getUsersTopArtists()
                 .time_range("medium_term")
                 .limit(10)
@@ -91,6 +131,8 @@ public class PlaylistController {
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
-        return new Artist[0];
+        */
+
+        return new se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified[0];
     }
 }
