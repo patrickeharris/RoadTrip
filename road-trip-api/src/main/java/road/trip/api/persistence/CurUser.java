@@ -11,6 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = User.TABLE_NAME)
 @AllArgsConstructor
+@NoArgsConstructor
 public class CurUser extends User {
     public static final String TABLE_NAME = "CurUser";
 }
