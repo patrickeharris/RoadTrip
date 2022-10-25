@@ -44,6 +44,7 @@ function CardContent(props) {
         <div className={styles.styleCardContent}>
             <p className={styles.styleCardTitle}>{props.title}</p>
             <p className={styles.styleDescription}>{props.description}</p>
+            <p className={styles.styleButton}>{props.playlistButton}</p>
             <p className={styles.styleButton}>{props.editButton}</p>
             <p className={styles.styleButton}>{props.rateButton}</p>
         </div>
@@ -109,6 +110,7 @@ export default class Card extends React.Component {
                         title={this.props.title}
                         location={this.props.location}
                         description={this.props.description}
+                        playlistButton={this.props.playlistButton}
                         editButton={this.props.editButton}
                         rateButton={this.props.rateButton}
                     />

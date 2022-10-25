@@ -139,7 +139,7 @@ const CreateTrip = () => {
         setDirectionsResponse(results);
     }
     function callback(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
             setStopsResponse(results);
             for (var i = 0; i < results.length; i++) {
                 console.log(results[i]);
@@ -179,7 +179,7 @@ const CreateTrip = () => {
             });
             console.log(stops);
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
-            let id = window.localStorage.getItem('curUser');
+            let id = (await myAxios.get("/register/curUser")).data.user_id;
             const response = await myAxios.post(
                 "/create-trip",
                 JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, user_id: id, selectedRoute}),

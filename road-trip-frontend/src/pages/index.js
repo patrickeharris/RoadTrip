@@ -9,8 +9,8 @@ require('dotenv').config();
 function HomePage() {
 
     React.useEffect(() => {
-        if (window.localStorage.getItem('loggedIn') === null) {
-            window.localStorage.setItem('loggedIn', 'false');
+        if (window.sessionStorage.getItem('loggedIn') === null) {
+            window.sessionStorage.setItem('loggedIn', 'false');
         }
     });
 

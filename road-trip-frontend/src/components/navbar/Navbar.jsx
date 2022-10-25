@@ -7,7 +7,7 @@ const Menu = () => {
     const [logged, setLogged] = useState('false');
 
     useEffect(() => {
-        setLogged(window.localStorage.getItem('loggedIn'));
+        setLogged(window.sessionStorage.getItem('loggedIn'));
     })
 
     return (
@@ -34,13 +34,13 @@ const Navbar = () => {
     const [logged, setLogged] = useState('false');
 
     useEffect(() => {
-        setLogged(window.localStorage.getItem('loggedIn'));
-        console.log(window.localStorage.getItem('loggedIn'))
+        setLogged(window.sessionStorage.getItem('loggedIn'));
+        console.log(window.sessionStorage.getItem('loggedIn'))
     })
 
     function logOut(){
         setLogged('false');
-        window.localStorage.setItem('loggedIn', 'false');
+        window.sessionStorage.setItem('loggedIn', 'false');
     }
 
   return (
