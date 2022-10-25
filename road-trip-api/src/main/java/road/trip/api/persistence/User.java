@@ -3,13 +3,9 @@ package road.trip.api.persistence;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 
 import javax.persistence.*;
-import java.util.Collection;
-
 @Data
 @Entity
 @Table(name = User.TABLE_NAME)
