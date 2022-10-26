@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import road.trip.api.persistence.CurUser;
 import road.trip.api.persistence.User;
+import road.trip.api.services.CurUserService;
 import road.trip.api.services.UserService;
 
 @Log4j2
@@ -15,6 +16,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CurUserService curUserService;
+
     @GetMapping("/register/users")
     public @ResponseBody Iterable<User> findAllUsers() {
         return userService.findAllUsers();
@@ -22,7 +26,7 @@ public class UserController {
 
     @GetMapping("/register/curUser")
     public CurUser findCurUser() {
-        return userService.findCurUser();
+        return curUserService.findCurUser();
     }
 
     @PostMapping("/register")
@@ -39,7 +43,7 @@ public class UserController {
     public CurUser login(@RequestBody String email, String password) {
         CurUser user = new CurUser();
         user.setEmail(email);
-        return userService.login(user);
+        return curUserService.login(user);
     }
 
     /*

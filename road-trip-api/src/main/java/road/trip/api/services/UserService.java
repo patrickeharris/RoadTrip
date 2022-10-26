@@ -14,9 +14,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private CurUserRepository curUserRepository;
-
     public User findAccountById(Long id) {
         return userRepository.findByUserID(id).get();
     }
@@ -41,16 +38,6 @@ public class UserService {
             return userRepository.save(findAccountById(user.getUser_id()));
         }
         return null;
-    }
-
-    public CurUser login(CurUser user) {
-        CurUser newUser = (CurUser) findAccountByEmail(user.getEmail());
-        return curUserRepository.save(newUser);
-    }
-
-    public CurUser findCurUser(){
-        List<CurUser> list = curUserRepository.findAll();
-        return list.get(0);
     }
     /*
     public void logout() {
