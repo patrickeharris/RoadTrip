@@ -16,8 +16,12 @@ public class RatingController {
     private RatingService ratingService;
 
     @GetMapping("/ratings")
-    public @ResponseBody Iterable<Rating> getAllRatings() {
-        return ratingService.getRatings();
+    public @ResponseBody Iterable<Rating> getAllRatings(@RequestParam(value = "tripId", required = false) Long tripId) {
+        if (tripId == null) {
+            return ratingService.getRatings();
+        } else {
+            return ratingService.getRatingsByTripId(tripId);
+        }
     }
 
     @PostMapping("/add-rating")
