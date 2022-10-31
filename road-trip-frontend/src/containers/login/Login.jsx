@@ -40,7 +40,7 @@ const Login = () => {
                 }
 
                 if (found === true) {
-                    if (response[index].password === hashedPassword) {
+                    if (response[index].password === password) {
 
                         window.sessionStorage.setItem('loggedIn', 'true');
                         const response = await myAxios.post(

@@ -21,7 +21,11 @@ public class UserService {
     }
 
     public User findAccountByEnabled(Boolean enabled) {
-        return userRepository.findByEnabled(enabled);
+        if (userRepository.findByEnabled(enabled).isEmpty()) {
+            return null;
+        } else {
+            return userRepository.findByEnabled(enabled).get();
+        }
     }
 
     public List<User> findAllUsers() {
@@ -44,9 +48,11 @@ public class UserService {
 
     public User login(String email) {
         User newUser = findAccountByEmail(email);
-        User oldUser = findAccountByEnabled(true);
-        oldUser.setEnabled(false);
-        userRepository.save(oldUser);
+        User oldUser = findCurUser();
+        if (oldUser != null) {
+            oldUser.setEnabled(false);
+            userRepository.save(oldUser);
+        }
         newUser.setEnabled(true);
         return userRepository.save(newUser);
     }
