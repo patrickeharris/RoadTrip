@@ -43,8 +43,7 @@ export default class TripList extends Component {
 
         const itemList = data.map(async function (item) {
             console.log(item.user_id);
-            console.log(window.sessionStorage.getItem('curUser'));
-            console.log('' + item.user_id === window.sessionStorage.getItem('curUser').toString())
+            console.log((await myAxios.get("/register/curUser")).data.user_id);
             if ('' + item.user_id === (await myAxios.get("/register/curUser")).data.user_id) {
                 console.log(item);
                 const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;

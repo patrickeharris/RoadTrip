@@ -354,7 +354,7 @@ const CreateTrip = () => {
             });
             console.log(stops);
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
-            let id = window.localStorage.getItem('curUser');
+            let id = (await myAxios.get("/register/curUser")).data.user_id;
             const response = await myAxios.post(
                 "/create-trip",
                 JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, user_id: id, selectedRoute}),
