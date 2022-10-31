@@ -2,8 +2,6 @@ package road.trip.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import road.trip.api.persistence.CurUser;
-import road.trip.api.persistence.CurUserRepository;
 import road.trip.api.persistence.UserRepository;
 import road.trip.api.persistence.User;
 
@@ -20,6 +18,10 @@ public class UserService {
 
     public User findAccountByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    public User findAccountByEnabled(Boolean enabled) {
+        return userRepository.findByEnabled(enabled);
     }
 
     public List<User> findAllUsers() {
@@ -39,6 +41,20 @@ public class UserService {
         }
         return null;
     }
+
+    public User login(String email) {
+        User newUser = findAccountByEmail(email);
+        User oldUser = findAccountByEnabled(true);
+        oldUser.setEnabled(false);
+        userRepository.save(oldUser);
+        newUser.setEnabled(true);
+        return userRepository.save(newUser);
+    }
+
+    public User findCurUser() {
+        return findAccountByEnabled(true);
+    }
+
     /*
     public void logout() {
 

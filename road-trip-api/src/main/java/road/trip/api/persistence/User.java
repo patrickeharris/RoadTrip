@@ -44,6 +44,8 @@ public class User {
 
     AuthorizationCodeCredentials spotifyAccountToken;
 
+    Boolean enabled = false;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "user_id")

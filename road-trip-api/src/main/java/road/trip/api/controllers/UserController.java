@@ -3,9 +3,7 @@ package road.trip.api.controllers;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import road.trip.api.persistence.CurUser;
 import road.trip.api.persistence.User;
-import road.trip.api.services.CurUserService;
 import road.trip.api.services.UserService;
 
 @Log4j2
@@ -16,17 +14,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private CurUserService curUserService;
-
     @GetMapping("/register/users")
     public @ResponseBody Iterable<User> findAllUsers() {
         return userService.findAllUsers();
     }
 
     @GetMapping("/register/curUser")
-    public CurUser findCurUser() {
-        return curUserService.findCurUser();
+    public User findCurUser() {
+        return userService.findCurUser();
     }
 
     @PostMapping("/register")
@@ -40,10 +35,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public CurUser login(@RequestBody String email, String password) {
-        CurUser user = new CurUser();
-        user.setEmail(email);
-        return curUserService.login(user);
+    public User login(@RequestBody String email, String password) {
+        return userService.login(email);
     }
 
     /*
