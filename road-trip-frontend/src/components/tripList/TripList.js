@@ -43,7 +43,8 @@ export default class TripList extends Component {
         const { data, curID } = this.state;
 
         const itemList = data.map(function (item) {
-            if ('' + item.user_id === curID) {
+            console.log(item);
+            if (item.user_id === curID) {
                 console.log(item);
                 const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
                 return <div><Card title={item.tripName} description={description}
