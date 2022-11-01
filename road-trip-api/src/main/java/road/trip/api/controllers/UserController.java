@@ -39,11 +39,12 @@ public class UserController {
         return userService.login(email);
     }
 
-    /*
-
-    public void logout() {
-
+    @GetMapping("/logout")
+    public User logout() {
+        return userService.logout();
     }
+
+    /*
 
     @DeleteMapping("/profile/delete")
     public User deleteAccount(Long user_id) {
