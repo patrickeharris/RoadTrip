@@ -69,7 +69,7 @@ const Rating = () => {
             return
         }
 
-        setTrip_Id(window.localStorage.getItem('curTrip'));
+        setTrip_Id(window.sessionStorage.getItem('curTrip'));
 
         const response = await myAxios.post(
             "/rating/add-rating",

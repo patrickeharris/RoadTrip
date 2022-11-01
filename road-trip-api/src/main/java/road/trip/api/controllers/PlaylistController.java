@@ -1,6 +1,7 @@
 package road.trip.api.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import road.trip.api.services.UserService;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -38,12 +39,13 @@ public class PlaylistController {
 
     private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq:8080/spotify/get-user-code");
     private String code = "";
-
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
             .setClientId(Keys.CLIENT_ID.getKey())
             .setClientSecret(Keys.CLIENT_SECRET.getKey())
             .setRedirectUri(redirectUri)
             .build();
+
+    UserService userService;
 
     @GetMapping("login")
     @ResponseBody
@@ -72,12 +74,12 @@ public class PlaylistController {
                 if (user.spotifyAccountToken == NULL) {
 
                    final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
-                   spotifyAccountToken = authorizationCodeCredentials;
+                   userService.findCurUser().setSpotifyAccountToken(authorizationCodeCredentials);
 
                 } else {
                     if (user.spotifyAccountToken.getExpiresIn() > now()) {
                         final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
-                        spotifyAccountToken = authorizationCodeCredentials;
+                        userService.findCurUser().setSpotifyAccountToken(authorizationCodeCredentials);
                     }
                 }
 

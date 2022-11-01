@@ -44,8 +44,8 @@ public class Trip {
     @Column(name = "highways")
     String highways;
 
-    @Column(name = "userID")
-    private Long userID;
+    @Column(name = "user_id")
+    private Long user_id;
 
     @Column(name = "selectedRoute")
     private String selectedRoute;
@@ -59,10 +59,10 @@ public class Trip {
      */
 
     public void setUser_id(Long user_id) {
-        this.userID = user_id;
+        this.user_id = user_id;
     }
 
     public Long getUser_id() {
-        return userID;
+        return user_id;
     }
 }

@@ -9,22 +9,26 @@ import styles from './login.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
 import {toast, ToastContainer} from "react-toastify";
+import bcrypt from "bcryptjs";
 
 const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
 
     const handleSubmit = async () => {
 
-        if (window.localStorage.getItem('loggedIn') === 'true') {
+        if (window.sessionStorage.getItem('loggedIn') === 'true') {
             if (confirm("You are already logged in. Do you want to log out?")) {
-                window.localStorage.setItem('loggedIn', 'false');
+                window.sessionStorage.setItem('loggedIn', 'false');
             }
         } else {
 
             try {
                 const response = (await myAxios.get("/register/users")).data;
+                console.log(response[0]);
                 let found = false;
                 let index;
 
@@ -37,7 +41,19 @@ const Login = () => {
 
                 if (found === true) {
                     if (response[index].password === password) {
-                        window.localStorage.setItem('loggedIn', 'true');
+
+                        window.sessionStorage.setItem('loggedIn', 'true');
+                        const response = await myAxios.post(
+                            "/login",
+                            JSON.stringify({email}),
+                            {
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                                },
+                                withCredentials: true,
+                            });
                         toast.success('Successfully Logged In!', {
                             position: "top-right",
                             autoClose: 5000,
@@ -47,7 +63,6 @@ const Login = () => {
                             draggable: true,
                             progress: undefined,
                         });
-                        window.localStorage.setItem('curUser', response[index].user_id);
                         window.location.replace("/trip-dashboard");
                     } else {
                         alert("This is the wrong password. Please try again!")

@@ -13,21 +13,27 @@ public class UserService {
     private UserRepository userRepository;
 
     public User findAccountById(Long id) {
-        return userRepository.findByUserID(id).get();
+        return userRepository.findById(id).get();
     }
-
 
     public User findAccountByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
-
+    public User findAccountByEnabled(Boolean enabled) {
+        if (userRepository.findByEnabled(enabled).isEmpty()) {
+            return null;
+        } else {
+            return userRepository.findByEnabled(enabled).get();
+        }
+    }
 
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
     public User register(User user) {
+        user.setEnabled(false);
         return userRepository.save(user);
     }
 
@@ -41,8 +47,19 @@ public class UserService {
         return null;
     }
 
-    public User login(User user) {
-        return userRepository.save(user);
+    public User login(String email) {
+        User newUser = findAccountByEmail(email);
+        User oldUser = findCurUser();
+        if (oldUser != null) {
+            oldUser.setEnabled(false);
+            userRepository.save(oldUser);
+        }
+        newUser.setEnabled(true);
+        return userRepository.save(newUser);
+    }
+
+    public User findCurUser() {
+        return findAccountByEnabled(true);
     }
 
     /*
