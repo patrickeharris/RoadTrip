@@ -33,6 +33,7 @@ public class UserService {
     }
 
     public User register(User user) {
+        user.setEnabled(false);
         return userRepository.save(user);
     }
 

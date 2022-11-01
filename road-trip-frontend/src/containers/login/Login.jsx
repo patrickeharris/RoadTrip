@@ -45,7 +45,7 @@ const Login = () => {
                         window.sessionStorage.setItem('loggedIn', 'true');
                         const response = await myAxios.post(
                             "/login",
-                            JSON.stringify({email, password: hashedPassword}),
+                            JSON.stringify({email}),
                             {
                                 headers: {
                                     "Content-Type": "application/json",
