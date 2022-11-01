@@ -62,11 +62,14 @@ public class UserService {
         return findAccountByEnabled(true);
     }
 
-    /*
-    public void logout() {
 
+    public User logout() {
+        User user = findCurUser();
+        user.setEnabled(false);
+        return userRepository.save(user);
     }
 
+    /*
     public User deleteAccount() {
 
     }

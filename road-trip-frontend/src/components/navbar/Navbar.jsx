@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {RiMenu3Line, RiCloseLine} from 'react-icons/ri'
 import styles from './navbar.module.css'
+import {myAxios} from "../../util/helper";
 
 const Menu = () => {
 
@@ -38,9 +39,10 @@ const Navbar = () => {
         console.log(window.sessionStorage.getItem('loggedIn'))
     })
 
-    function logOut(){
+    async function logOut() {
         setLogged('false');
         window.sessionStorage.setItem('loggedIn', 'false');
+        await myAxios.get("/logout");
     }
 
   return (

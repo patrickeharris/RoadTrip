@@ -1,9 +1,3 @@
-/*
-    Things Left:
-        - myAxios is not running (Server is not connected)
-        - Set currently logged in User
- */
-
 import React, {useState} from 'react'
 import styles from './login.module.css'
 import globalStyles from "../container.module.css";
@@ -23,6 +17,7 @@ const Login = () => {
         if (window.sessionStorage.getItem('loggedIn') === 'true') {
             if (confirm("You are already logged in. Do you want to log out?")) {
                 window.sessionStorage.setItem('loggedIn', 'false');
+                await myAxios.get("/logout");
             }
         } else {
 
