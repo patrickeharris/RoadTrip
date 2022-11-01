@@ -28,9 +28,9 @@ public class TripService {
         return tripRepository.findById(id).get();
     }
 
-    public Trip findTripByUser(Long user_id) {
-        return tripRepository.findByUser_id(user_id);
-    }
+    //public Trip findTripByUser(Long user_id) {
+       // return tripRepository.findByUser_id(user_id);
+    //}
 
     public Trip makeTrip (Trip trip) throws GeneralSecurityException, IOException, MessagingException {
         System.out.println("test1");
