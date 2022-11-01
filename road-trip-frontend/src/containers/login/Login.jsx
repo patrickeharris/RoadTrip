@@ -45,8 +45,9 @@ const Login = () => {
                         window.sessionStorage.setItem('loggedIn', 'true');
                         const response = await myAxios.post(
                             "/login",
-                            JSON.stringify({email}),
+                            null,
                             {
+                                params: {email},
                                 headers: {
                                     "Content-Type": "application/json",
                                     'Access-Control-Allow-Origin': '*',
