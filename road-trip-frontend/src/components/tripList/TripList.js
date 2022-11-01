@@ -36,15 +36,14 @@ export default class TripList extends Component {
         const data = (await myAxios.get(
             "/trips"
         )).data;
-        this.setState({ data });
+        const curID = (await myAxios.get("/register/curUser")).data.user_id;
+        this.setState({ data, curID });
     }
     render() {
-        const { data } = this.state;
+        const { data, curID } = this.state;
 
-        const itemList = data.map(async function (item) {
-            console.log(item.user_id);
-            console.log((await myAxios.get("/register/curUser")).data.user_id);
-            if ('' + item.user_id === (await myAxios.get("/register/curUser")).data.user_id) {
+        const itemList = data.map(function (item) {
+            if ('' + item.user_id === curID) {
                 console.log(item);
                 const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
                 return <div><Card title={item.tripName} description={description}

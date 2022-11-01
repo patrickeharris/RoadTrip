@@ -435,7 +435,7 @@ const CreateTrip = () => {
                             /></h2>
                         </div>
                         <div className={styles.stopFloat}>
-                            <h2 className={globalStyles.gradientText}>Distance to Route: <input type={"range"} min={"1"} style={getBackgroundSize()} max={MAX} onChange={(e) => setDistance(e.target.value)} value={distance}/><h6>{distance} mi</h6></h2>
+                            <h2 className={globalStyles.gradientText}>Distance to Route: <input type={"range"} min={"1"} style={getBackgroundSize()} max={MAX} onChange={(e) => setDistance(e.target.value)} value={distance}/></h2><h6>{distance} mi</h6>
                             <h2 className={globalStyles.gradientText}>Restaurants: <Checkbox label="Restaurants"
                                                                                              value={restaurants} checked={restaurants}
                                                                                              onChange={() => {setRestaurants(!restaurants)}}
