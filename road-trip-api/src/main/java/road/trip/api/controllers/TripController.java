@@ -8,6 +8,10 @@ import road.trip.api.persistence.Trip;
 import road.trip.api.services.RouteService;
 import road.trip.api.services.TripService;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 @Log4j2
 @RestController
 @CrossOrigin(allowCredentials = "true", origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
@@ -20,7 +24,7 @@ public class TripController {
     private RouteService routeService;
 
     @PostMapping("/create-trip")
-    public Trip createTrip(@RequestBody Trip trip) {
+    public Trip createTrip(@RequestBody Trip trip) throws GeneralSecurityException, IOException, MessagingException {
         return tripService.makeTrip(trip);
     }
 

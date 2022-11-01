@@ -14,18 +14,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    /*
-    @GetMapping("/register/{email}")
-    public User findUserByEmail(@PathVariable String email) {
-
-        var user = regService.findUser(email);
-        return user.orElse(null);
-    }
-     */
-
     @GetMapping("/register/users")
     public @ResponseBody Iterable<User> findAllUsers() {
         return userService.findAllUsers();
+    }
+
+    @GetMapping("/register/curUser")
+    public User findCurUser() {
+        return userService.findCurUser();
     }
 
     @PostMapping("/register")
@@ -40,8 +36,7 @@ public class UserController {
 
     @PostMapping("/login")
     public User login(@RequestBody String email, String password) {
-        User user = new User("", "", email, "");
-        return userService.login(user);
+        return userService.login(email);
     }
 
     /*

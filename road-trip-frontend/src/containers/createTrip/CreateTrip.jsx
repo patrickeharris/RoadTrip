@@ -1,18 +1,16 @@
-import React, {useState, useMemo, useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import styles from './trip.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
-import {GoogleMap, useLoadScript, Marker, DirectionsRenderer} from "@react-google-maps/api";
+import {DirectionsRenderer, GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 import usePlacesAutocomplete, {getGeocode, getLatLng} from "use-places-autocomplete";
-import {Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption} from "@reach/combobox";
-import bcrypt from 'bcryptjs'
+import {Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover} from "@reach/combobox";
 import "@reach/combobox/styles.css"
-import { ToastContainer, toast } from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import {Checkbox} from "@material-ui/core";
-import {Label} from "@material-ui/icons";
 
 const Test = ({start, end, selectedStart, selectedEnd, setDirectionsResponse, highways, tolls, directionsResponse}) => {
     async function calc() {
@@ -53,14 +51,13 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
 
         setSelectedRoute(id.target.value);
     }
+
     function getChecked(id){
-        if(id.target.value === selectedRoute){
-            return true;
-        }
-        return false;
+        return id.target.value === selectedRoute;
     }
+
     const [selectedStart, setSelectedStart] = useState({lat: 43.45, lng: -80.49});
-    const resultList = results.routes.map(function(item) {
+    return results.routes.map(function (item) {
         //console.log(item);
         const t = [];
         t.routes = [item];
@@ -69,18 +66,20 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
         var directionsRenderer = new window.google.maps.DirectionsRenderer();
         directionsRenderer.setDirections(t);
         directionsRenderer.setMap(map);
-        return <div><h2>Distance: {item.legs[0].distance.text}</h2><h2>Duration: {item.legs[0].duration.text}</h2><GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> <DirectionsRenderer directions={t}/> </GoogleMap><input
-            type="checkbox" name="myCheckbox" value={item.legs[0].distance.text} onClick={selectOnlyThis} checked={getChecked}/></div>
-    })
-    return resultList;
+        return <div><h2>Distance: {item.legs[0].distance.text}</h2><h2>Duration: {item.legs[0].duration.text}</h2>
+            <GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> <DirectionsRenderer
+                directions={t}/> </GoogleMap><input
+                type="checkbox" name="myCheckbox" value={item.legs[0].distance.text} onClick={selectOnlyThis}
+                checked={getChecked}/></div>
+    });
 }
 
 const StopResults = ({results}) => {
-    const resultList = results.map(function(item) {
-        return <div><h2 className={globalStyles.gradientText}>Name: {item.name}</h2><h2 className={globalStyles.gradientText}>Address: {item.vicinity}</h2><input
+    return results.map(function (item) {
+        return <div><h2 className={globalStyles.gradientText}>Name: {item.name}</h2><h2
+            className={globalStyles.gradientText}>Address: {item.vicinity}</h2><input
             type="checkbox" name="stops" value={item.name}/></div>
-    })
-    return resultList;
+    });
 }
 
 const Places = ({placeholderText, start, setStart, selected, setSelected}) => {
@@ -189,7 +188,7 @@ const CreateTrip = () => {
         setDirectionsResponse(results);
     }
     function callback(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
             let arr = stopsResponse;
             //setStopsResponse(stopsResponse.concat(results));
             for (var i = 0; i < results.length; i++) {
@@ -235,10 +234,8 @@ const CreateTrip = () => {
 
     async function calculateStops() {
         let waypoints = []
-        var polyline = require( 'google-polyline' );
+        let polyline = require( 'google-polyline' );
         waypoints = polyline.decode( directionsResponse.routes[0].overview_polyline );
-
-
 
         /*let polypoints = waypoints
         let PolyLength = polypoints.length;
@@ -272,7 +269,7 @@ const CreateTrip = () => {
             }, callback);
 
             function callback(results, status) {
-                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
                     for (var i = 0; i < results.length; i++) {
                         var marker = new google.maps.Marker({
                             position: results[i].geometry.location,
@@ -354,7 +351,7 @@ const CreateTrip = () => {
             });
             console.log(stops);
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
-            let id = window.localStorage.getItem('curUser');
+            let id = (await myAxios.get("/register/curUser")).data.user_id;
             const response = await myAxios.post(
                 "/create-trip",
                 JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, user_id: id, selectedRoute}),

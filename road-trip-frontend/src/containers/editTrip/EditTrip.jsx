@@ -30,16 +30,16 @@ const EditTrip = () => {
     const [selectedRoute, setSelectedRoute] = useState("");
 
     if (tripName === "" && start === "" && end === "" && date === "" && userID === "" && selectedRoute === "") {
-        getDefaultValues().then((response) => {
+        getDefaultValues().then(async (response) => {
 
             for (let i = 0; i < response.length; i++) {
-                if (response[i].trip_id.toString() === window.localStorage.getItem('curTrip')) {
+                if (response[i].trip_id.toString() === window.sessionStorage.getItem('curTrip')) {
                     setTrip_Id(response[i].trip_id);
                     setTripName(response[i].tripName);
                     setStart(response[i].start);
                     setEnd(response[i].end);
                     setDate(response[i].date);
-                    setUserID(window.localStorage.getItem('curUser'));
+                    setUserID((await myAxios.get("/register/curUser")).data.user_id);
                     setSelectedRoute(response[i].selectedRoute);
                     break;
                 }
@@ -76,7 +76,7 @@ const EditTrip = () => {
                 progress: undefined,
             });
 
-            window.localStorage.setItem('curTrip', null);
+            window.sessionStorage.setItem('curTrip', null);
             window.location.replace("/trip-dashboard");
 
         } catch (err) {
