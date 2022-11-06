@@ -4,14 +4,14 @@ import axios from "axios";
 const RatingsTable = ({tripId}) => {
     const [ratings, setRatings] = useState([]);
 
+    let url = "http://localhost:8080/rating/ratings";
+
+    if (tripId != null) {
+        url += "?tripId=" + tripId
+    }
+
     useEffect(() => {
-
         const fetchRatings = async () => {
-            let url = "http://localhost:8080/rating/ratings";
-
-            if (tripId != null) {
-                url += "?tripId=" + tripId
-            }
             const response = await axios.get(url);
 
             setRatings(response.data)

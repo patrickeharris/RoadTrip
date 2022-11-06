@@ -158,6 +158,7 @@ const CreateTrip = () => {
     const [selectedEnd, setSelectedEnd] = useState(null);
     const [directionsResponse, setDirectionsResponse] = useState(null);
     const [stopsResponse, setStopsResponse] = useState([]);
+    const [selectedStops, setSelectedStops] = useState([]);
 
     const onLoad = useCallback((map) => setMap(map), []);
 
@@ -230,6 +231,17 @@ const CreateTrip = () => {
                 anchor: new google.maps.Point(18, 27),
             };
             marker.setIcon(svgMarker);
+
+            let stop = {
+                Name: marker.title,
+                Location: {
+                    Lat: marker.position.lat(),
+                    Lon: marker.position.lng()
+                },
+                Type: ""
+            }
+
+            setSelectedStops(current => [...current, stop]);
         });
     }
 
@@ -352,12 +364,24 @@ const CreateTrip = () => {
                     stops.push(el.value);
                 }
             });
-            console.log(stops);
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
+            console.log(selectedStops)
             let id = window.localStorage.getItem('curUser');
             const response = await myAxios.post(
                 "/create-trip",
-                JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, user_id: id, selectedRoute}),
+                JSON.stringify({
+                    tripName,
+                    start,
+                    startLoc,
+                    end,
+                    endLoc,
+                    date,
+                    tolls,
+                    highways,
+                    user_id: id,
+                    selectedRoute,
+                    selectedStops
+                }),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',

@@ -24,12 +24,7 @@ public class TripService {
 
 
     public Trip makeTrip (Trip trip) {
-        System.out.println("test1");
-        System.out.println(trip);
-        Trip t = tripRepository.save(trip);
-        System.out.println(t);
-        System.out.println("test2");
-        return t;
+        return tripRepository.save(trip);
     }
 
     public Trip editTrip(Trip trip) {
