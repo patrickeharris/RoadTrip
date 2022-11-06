@@ -29,6 +29,96 @@
     align-items: center;
 }
 
+.float {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #999;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stopFloat {
+    position: absolute;
+    top: 50%;
+    right: 15%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #999;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stopsFloat {
+    position: absolute;
+    top: 50%;
+    right: 15%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #999;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stopsFloatButton {
+    position: absolute;
+    top: 50%;
+    right: 15%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #999;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stopFloatButton {
+    position: absolute;
+    top: 50%;
+    right: 18%;
+    z-index: 5;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #999;
+    text-align: center;
+    font-family: 'Roboto','sans-serif';
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.stopFloatButton button{
+    margin-bottom: 5px;
+}
+
+.stopFloat input[type='range'] {
+    height: 50%;
+    width: 50%;
+    margin: 0;
+}
+
 .registerInput input{
     flex: 2;
     width: 100%;
@@ -104,12 +194,14 @@
     /* Border slightly darker than Chrome's <select>, slightly lighter than FireFox's */
     border: 1px solid #999;
     padding-right: 1.25em; /* leave room for ▾ */
+    z-index: 10;
 }
 .dropdown, .combobox {
     /* "relative" and "inline-block" (or just "block") are needed
        here so that "absolute" works correctly in children */
     position: relative;
     display: inline-block;
+    z-index: 10;
 }
 .combobox > .downarrow, .dropdown > .downarrow {
     /* ▾ Outside normal flow, relative to container */
@@ -130,6 +222,9 @@
 /* Add a divider before the ▾ down arrow in non-dropdown comboboxes */
 .combobox:not(.dropdown) > .downarrow {
     border-left-width: 1px;
+}
+.popup {
+    z-index: 10;
 }
 /* Auto-down-arrow if one is not provided */
 .downarrow:empty::before {

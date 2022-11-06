@@ -44,17 +44,17 @@ const Register = () => {
         const hashedPassword = bcrypt.hashSync(password, salt);
         try {
             //Check validity
-            if (firstName=="") {
+            if (firstName==="") {
                 showError('Error: First name cannot be blank');
-            }else if(lastName=="") {
+            }else if(lastName==="") {
                 showError('Error: Last name cannot be blank');
-            }else if(email=="") {
+            }else if(email==="") {
                 showError('Error: Email cannot be blank');
             }else if(!isValidEmail(email)){
                 showError('Error: Email must be valid');
-            }else if(password!=confirmPassword){
+            }else if(password!==confirmPassword){
                 showError('Error: Password must match the confirmation password');
-            }else if(password=="") {
+            }else if(password==="") {
                 showError('Error: Password cannot be blank');
             }else if(password.length < 6) {
                 showError('Error: Password must be 6 or more characters');

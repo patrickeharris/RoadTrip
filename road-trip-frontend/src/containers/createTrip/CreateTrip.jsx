@@ -1,18 +1,16 @@
-import React, {useState, useMemo, useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import styles from './trip.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
-import {GoogleMap, useLoadScript, Marker, DirectionsRenderer} from "@react-google-maps/api";
+import {DirectionsRenderer, GoogleMap, Marker, useLoadScript} from "@react-google-maps/api";
 import usePlacesAutocomplete, {getGeocode, getLatLng} from "use-places-autocomplete";
-import {Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption} from "@reach/combobox";
-import bcrypt from 'bcryptjs'
+import {Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover} from "@reach/combobox";
 import "@reach/combobox/styles.css"
-import { ToastContainer, toast } from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import {Checkbox} from "@material-ui/core";
-import {Label} from "@material-ui/icons";
 
 const Test = ({start, end, selectedStart, selectedEnd, setDirectionsResponse, highways, tolls, directionsResponse}) => {
     async function calc() {
@@ -53,14 +51,13 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
 
         setSelectedRoute(id.target.value);
     }
+
     function getChecked(id){
-        if(id.target.value === selectedRoute){
-            return true;
-        }
-        return false;
+        return id.target.value === selectedRoute;
     }
+
     const [selectedStart, setSelectedStart] = useState({lat: 43.45, lng: -80.49});
-    const resultList = results.routes.map(function(item) {
+    return results.routes.map(function (item) {
         //console.log(item);
         const t = [];
         t.routes = [item];
@@ -69,18 +66,32 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
         var directionsRenderer = new window.google.maps.DirectionsRenderer();
         directionsRenderer.setDirections(t);
         directionsRenderer.setMap(map);
-        return <div><h2>Distance: {item.legs[0].distance.text}</h2><h2>Duration: {item.legs[0].duration.text}</h2><GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> <DirectionsRenderer directions={t}/> </GoogleMap><input
-            type="checkbox" name="myCheckbox" value={item.legs[0].distance.text} onClick={selectOnlyThis} checked={getChecked}/></div>
-    })
-    return resultList;
+        return <div><h2>Distance: {item.legs[0].distance.text}</h2><h2>Duration: {item.legs[0].duration.text}</h2>
+            <GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> <DirectionsRenderer
+                directions={t}/> </GoogleMap><input
+                type="checkbox" name="myCheckbox" value={item.legs[0].distance.text} onClick={selectOnlyThis}
+                checked={getChecked}/></div>
+    });
 }
 
 const StopResults = ({results}) => {
-    const resultList = results.map(function(item) {
-        return <div><h2 className={globalStyles.gradientText}>Name: {item.name}</h2><h2 className={globalStyles.gradientText}>Address: {item.vicinity}</h2><input
+    return results.map(function (item) {
+        return <div><h2 className={globalStyles.gradientText}>Name: {item.name}</h2><h2
+            className={globalStyles.gradientText}>Address: {item.vicinity}</h2><input
             type="checkbox" name="stops" value={item.name}/></div>
-    })
-    return resultList;
+    });
+}
+
+const StopResultsNew = ({results, markers}) => {
+    function test(thing){
+        //console.
+        if(markers.find(e=> e.name === thing.target.val) != null){
+            console.log("yay");
+        }
+    }
+    return results.map(function (item) {
+        return <div><h6>Name: {item.name}</h6><button val={item.name} onClick={test}>Add Stop</button></div>
+    });
 }
 
 const Places = ({placeholderText, start, setStart, selected, setSelected}) => {
@@ -128,7 +139,7 @@ const PlacesAutocomplete = ({setSelected, placeholderText, start, setStart}) => 
 
     return <Combobox onSelect={handleSelect}>
         <ComboboxInput value={start} onChange={e => {setStart(e.target.value); setValue(e.target.value)}} disabled={!ready} className="combobox-input" placeholder={placeholderText}/>
-        <ComboboxPopover>
+        <ComboboxPopover className={styles.popup}>
             <ComboboxList>
                 {status === "OK" && data.map(({place_id, description}) => <ComboboxOption key={place_id} value={description}/>)}
             </ComboboxList>
@@ -154,20 +165,45 @@ const CreateTrip = () => {
     const [gasStations, setGasStations] = useState(true);
     const [attractions, setAttractions] = useState(true);
     const [selectedRoute, setSelectedRoute] = useState("");
+    const [defaultStart, setDefaultStart] = useState({lat: 43.45, lng: -80.49});
     const [selectedStart, setSelectedStart] = useState(null);
     const [selectedEnd, setSelectedEnd] = useState(null);
     const [directionsResponse, setDirectionsResponse] = useState(null);
     const [stopsResponse, setStopsResponse] = useState([]);
+    const [distance, setDistance] = useState(1);
+    const [showStopPref, setShowStopPref] = useState(false);
+    const [showStops, setShowStops] = useState(false);
+    const MAX = 50;
+    const maxRating = 5;
+    const [rating, setRating] = useState(maxRating);
+    const markers = [];
     const [selectedStops, setSelectedStops] = useState([]);
 
     const onLoad = useCallback((map) => setMap(map), []);
+    const getBackgroundSize = () => {
+        return {
+            backgroundSize: `${(distance * 100) / MAX}% 100%`,
+        };
+    };
 
     useEffect(() => {
-        if (map) {
+        if (map && selectedStart){
+            var bounds = new google.maps.LatLngBounds();
+            bounds.extend(selectedStart);
+            map.fitBounds(bounds);
+        }
+        if (map && selectedEnd){
+            var bounds = new google.maps.LatLngBounds();
+            bounds.extend(selectedEnd);
+            map.fitBounds(bounds);
+        }
+        if (map && selectedStart && selectedEnd) {
             var bounds = new google.maps.LatLngBounds();
             bounds.extend(selectedStart);
             bounds.extend(selectedEnd);
             map.fitBounds(bounds);
+            calculateRoute();
+            setOpen(o => !o);
         }
     }, [map, selectedStart, selectedEnd]);
 
@@ -190,7 +226,7 @@ const CreateTrip = () => {
         setDirectionsResponse(results);
     }
     function callback(results, status) {
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
             let arr = stopsResponse;
             //setStopsResponse(stopsResponse.concat(results));
             for (var i = 0; i < results.length; i++) {
@@ -246,11 +282,10 @@ const CreateTrip = () => {
     }
 
     async function calculateStops() {
+        //setStopsResponse([]);
         let waypoints = []
-        var polyline = require( 'google-polyline' );
+        let polyline = require( 'google-polyline' );
         waypoints = polyline.decode( directionsResponse.routes[0].overview_polyline );
-
-
 
         /*let polypoints = waypoints
         let PolyLength = polypoints.length;
@@ -276,22 +311,29 @@ const CreateTrip = () => {
         var infowindow =  new google.maps.InfoWindow({
             content: ''
         });
-        for(let j = 0;j< waypoints.length;j+=40) {
+        for(let j = 0;j< waypoints.length;j+=20) {
             service.nearbySearch({
                 location: {lat: waypoints[j][0], lng: waypoints[j][1]},
-                radius: '20000',
+                radius: distance * 1000,
                 type: ['restaurant']
             }, callback);
 
             function callback(results, status) {
-                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
                     for (var i = 0; i < results.length; i++) {
-                        var marker = new google.maps.Marker({
-                            position: results[i].geometry.location,
-                            map,
-                            title: results[i].name
-                        });
-                        bindInfoWindow(marker, map, infowindow, "<p>" + marker.title + "</p> <button>Add Stop</button>");
+
+                        if(stopsResponse.findIndex(e => e.name === results[i].name) == -1)
+                        {
+                            var marker = new google.maps.Marker({
+                                position: results[i].geometry.location,
+                                map,
+                                title: results[i].name
+                            });
+                            markers.push(marker);
+                            bindInfoWindow(marker, map, infowindow, "<p>" + marker.title + "</p> <button>Add Stop</button>");
+                            stopsResponse.push({name: results[i].name});
+                            setStopsResponse(stopsResponse);
+                        }
                     }
                 }
             }
@@ -365,10 +407,12 @@ const CreateTrip = () => {
                 }
             });
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
+            let id = (await myAxios.get("/register/curUser")).data.user_id;
+            console.log(id);
             console.log(selectedStops)
-            let id = window.localStorage.getItem('curUser');
             const response = await myAxios.post(
                 "/create-trip",
+                JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, userid: id, user_id: id, selectedRoute}),
                 JSON.stringify({
                     tripName,
                     start,
@@ -416,8 +460,8 @@ const CreateTrip = () => {
         }
     }
     const containerStyle = {
-        width: '400px',
-        height: '400px'
+        width: '1280px',
+        height: '1280px'
     };
 
     return (
@@ -427,25 +471,53 @@ const CreateTrip = () => {
                 <div className={styles.registerContent}>
                     <h1 className={globalStyles.gradientText}>Create Trip</h1>
                     <div className={styles.registerInput}>
-                        <input type="text" placeholder="Trip Name" onChange={(e) => setTripName(e.target.value)} value={tripName}/>
-                        <Places placeholderText="Start" start={start} setStart={setStart} selected={selectedStart} setSelected={setSelectedStart}/>
-                        <Places placeholderText="End" start={end} setStart={setEnd} selected={selectedEnd} setSelected={setSelectedEnd}/>
-                        <input type="date" placeholder="Date" onChange={(e) => setDate(e.target.value)} value={date}/>
-                        {isLoaded && selectedStart && selectedEnd && <GoogleMap id="map" zoom={10} center={selectedStart} onLoad={onLoad} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
+                        <div className={styles.float}>
+                            <input type="text" placeholder="Trip Name" onChange={(e) => setTripName(e.target.value)} value={tripName}/>
+                            <Places placeholderText="Start" start={start} setStart={setStart} selected={selectedStart} setSelected={setSelectedStart}/>
+                            <Places placeholderText="End" start={end} setStart={setEnd} selected={selectedEnd} setSelected={setSelectedEnd}/>
+                            <input type="date" placeholder="Date" onChange={(e) => setDate(e.target.value)} value={date}/>
+                            <h2 className={globalStyles.gradientText}>Tolls: <Checkbox label="Tolls"
+                                                                                       value={tolls} checked={tolls}
+                                                                                       onChange={handleTolls}
+                            /></h2>
+                            <h2 className={globalStyles.gradientText}>Highways: <Checkbox label="Highways"
+                                                                                          value={highways} checked={highways}
+                                                                                          onChange={handleHighways}
+                            /></h2>
+                        </div>
+                        { !showStopPref &&
+                        <div className={styles.stopFloatButton}>
+                            <button onClick={()=>{setShowStopPref(!showStopPref)}}>Stop Preferences</button>
+                            { selectedRoute != "" && <button onClick={()=>{calculateStops().then(r => setShowStops(!showStops)); }}>Stop Suggestions</button>}
+                        </div>}
+                        { showStopPref && <div className={styles.stopFloat}>
+                            <h2 className={globalStyles.gradientText}>Distance to Route: <input type={"range"} min={"1"} style={getBackgroundSize()} max={MAX} onChange={(e) => setDistance(e.target.value)} value={distance}/></h2><h6>{distance} mi</h6>
+                            <h2 className={globalStyles.gradientText}>Minimum Rating: <input type={"range"} min={"1"} style={getBackgroundSize()} max={maxRating} onChange={(e) => setRating(e.target.value)} value={rating}/></h2><h6>{rating} stars</h6>
+                            <h2 className={globalStyles.gradientText}>Restaurants: <Checkbox label="Restaurants"
+                                                                                             value={restaurants} checked={restaurants}
+                                                                                             onChange={() => {setRestaurants(!restaurants)}}
+                            /></h2>
+                            <h2 className={globalStyles.gradientText}>Lodging: <Checkbox label="Lodging"
+                                                                                         value={lodging} checked={lodging}
+                                                                                         onChange={() => {setLodging(!lodging)}}
+                            /></h2>
+                            <h2 className={globalStyles.gradientText}>Gas Stations: <Checkbox label="Gas Stations"
+                                                                                              value={gasStations} checked={gasStations}
+                                                                                              onChange={() => {setGasStations(!gasStations)}}
+                            /></h2>
+                            <h2 className={globalStyles.gradientText}>Attractions: <Checkbox label="Attractions"
+                                                                                             value={attractions} checked={attractions}
+                                                                                             onChange={() => {setAttractions(!attractions)}}
+                            /></h2>
+                            <button onClick={()=>{setShowStopPref(!showStopPref)}}>Close</button>
+                        </div>}
+                        { showStops && <div className={styles.stopFloat}>
+                            <StopResultsNew results={stopsResponse} markers={markers}/><button onClick={()=>setShowStops(!showStops)}>Close</button></div>
+                        }
+                        {isLoaded && <GoogleMap id="map" zoom={10} center={defaultStart} onLoad={onLoad} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
                             {selectedStart && <Marker position={selectedStart}/>}
                             {selectedEnd && <Marker position={selectedEnd}/>}
                         </GoogleMap>}
-                        <h1 className={globalStyles.gradientText}>Route Preferences</h1>
-                        <h2 className={globalStyles.gradientText}>Tolls: <Checkbox label="Tolls"
-                                                                                   value={tolls} checked={tolls}
-                                                                                   onChange={handleTolls}
-                        /></h2>
-                        <h2 className={globalStyles.gradientText}>Highways: <Checkbox label="Highways"
-                                  value={highways} checked={highways}
-                                  onChange={handleHighways}
-                        /></h2>
-                        <h1 className={globalStyles.gradientText}>Routes</h1>
-                        <button type="button" onClick={() => {calculateRoute(); setOpen(o => !o)}}>Calculate Routes</button>
                         <Popup open={open} closeOnDocumentClick onClose={closeModal}>
                         <div className={styles.results}>
 
@@ -453,28 +525,6 @@ const CreateTrip = () => {
                         </div>
                         <h2 className={globalStyles.gradientText}>Chosen Route: {selectedRoute}</h2>
                         </Popup>
-                        <h1 className={globalStyles.gradientText}>Stop Preferences</h1>
-                        <h2 className={globalStyles.gradientText}>Restaurants: <Checkbox label="Restaurants"
-                                                                                   value={restaurants} checked={restaurants}
-                                                                                   onChange={() => {setRestaurants(!restaurants)}}
-                        /></h2>
-                        <h2 className={globalStyles.gradientText}>Lodging: <Checkbox label="Lodging"
-                                                                                         value={lodging} checked={lodging}
-                                                                                         onChange={() => {setLodging(!lodging)}}
-                        /></h2>
-                        <h2 className={globalStyles.gradientText}>Gas Stations: <Checkbox label="Gas Stations"
-                                                                                         value={gasStations} checked={gasStations}
-                                                                                         onChange={() => {setGasStations(!gasStations)}}
-                        /></h2>
-                        <h2 className={globalStyles.gradientText}>Attractions: <Checkbox label="Attractions"
-                                                                                         value={attractions} checked={attractions}
-                                                                                         onChange={() => {setAttractions(!attractions)}}
-                        /></h2>
-                        <h1 className={globalStyles.gradientText}>Stops</h1>
-                        <button type="button" onClick={calculateStops}>Calculate Stops</button>
-                        <div>
-                            {stopsResponse != null ? (<div><StopResults results={stopsResponse}/></div>) : (<></>)}
-                        </div>
                         <button type="button" onClick={handleSubmit}>Create Trip</button>
                     </div>
                 </div>

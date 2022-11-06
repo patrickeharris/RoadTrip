@@ -7,46 +7,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import bcrypt from "bcryptjs";
 
 const getFirstName = async () => {
-    let id = window.localStorage.getItem('curUser');
-    const response = (await myAxios.get("/register/users")).data;
-    for (let i = 0; i < response.length; i++) {
-        if (response[i].id === id) {
-            return response[i].firstName;
-        }
-    }
+    return (await myAxios.get("/register/curUser")).data.firstName;
 }
 
 const getLastName = async () => {
-    let id = window.localStorage.getItem('curUser');
-    const response = (await myAxios.get("/register/users")).data;
-
-    for (let i = 0; i < response.length; i++) {
-        if (response[i].id == id) {
-            return response[i].lastName;
-        }
-    }
+    return (await myAxios.get("/register/curUser")).data.lastName;
 }
 
 const getEmail = async () =>{
-    let id = window.localStorage.getItem('curUser');
-    const response = (await myAxios.get("/register/users")).data;
-
-    for (let i = 0; i < response.length; i++) {
-        if (response[i].id == id) {
-            return response[i].email;
-        }
-    }
+    return (await myAxios.get("/register/curUser")).data.email;
 }
 
 const getPassword = async () => {
-    let id = window.localStorage.getItem('curUser');
-    const response = (await myAxios.get("/register/users")).data;
-
-    for (let i = 0; i < response.length; i++) {
-        if (response[i].id == id) {
-            return response[i].password;
-        }
-    }
+    return (await myAxios.get("/register/curUser")).data.password;
 }
 
 //Function to show error message to the user
@@ -82,16 +55,16 @@ const Profile = () => {
     }, [])*/
 
     const handleSubmit = async () => {
-        if(firstName==""){
+        if(firstName===""){
             showError('Error: First name cannot be blank');
-        }else if(lastName=="") {
+        }else if(lastName==="") {
             showError('Error: Last name cannot be blank');
-        }else if(email=="") {
+        }else if(email==="") {
             showError('Error: Email cannot be blank');
         }else if(!isValidEmail(email)){
             showError('Error: Email must be valid');
         }else {
-            let id = window.localStorage.getItem('curUser');
+            let id = (await myAxios.get("/register/curUser")).data.user_id;
             console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id);
             try {
                 const response = await myAxios.post(

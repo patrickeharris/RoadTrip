@@ -4,7 +4,7 @@ import Carousel from "react-multi-carousel";
 import {Card} from "../index";
 import styles from "./triplist.module.css";
 import "react-multi-carousel/lib/styles.css";
-import {GoogleMap, Marker} from "@react-google-maps/api";
+
 const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
@@ -36,25 +36,28 @@ export default class TripList extends Component {
         const data = (await myAxios.get(
             "/trips"
         )).data;
-        this.setState({ data });
+        const curID = (await myAxios.get("/register/curUser")).data.user_id;
+        this.setState({ data, curID });
     }
     render() {
-        const { data } = this.state;
+        const { data, curID } = this.state;
 
-        const itemList = data.map(function(item) {
-            console.log(item.user_id);
-            console.log(window.localStorage.getItem('curUser'));
-            console.log('' + item.user_id === window.localStorage.getItem('curUser').toString())
-            if('' + item.user_id === window.localStorage.getItem('curUser').toString()) {
+        const itemList = data.map(function (item) {
+            console.log(item);
+            if (item.user_id === curID) {
                 console.log(item);
                 const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
                 return <div><Card title={item.tripName} description={description}
+                                  playlistButton={<button onClick={function addPlaylist() {
+                                      window.sessionStorage.setItem('curTrip', item.trip_id);
+                                      window.location.replace("/add-playlist");
+                                  }}>Add Playlist</button>}
                                   editButton={<button onClick={function editTrip() {
-                                      window.localStorage.setItem('curTrip', item.trip_id);
+                                      window.sessionStorage.setItem('curTrip', item.trip_id);
                                       window.location.replace('/edit-trip');
                                   }}>Edit Trip</button>}
                                   rateButton={<button onClick={function rateTrip() {
-                                      window.localStorage.setItem('curTrip', item.trip_id);
+                                      window.sessionStorage.setItem('curTrip', item.trip_id);
                                       window.location.replace('/rate-trip');
                                   }}>Rate Trip</button>}
                                   startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute}/>
