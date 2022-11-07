@@ -40,21 +40,17 @@ public class UserController {
     }
 
     @PostMapping("/register/remove")
-    public User remove(@RequestBody Long id){ return userService.remove(id); }
+    public User remove(@RequestBody Long id) {
+        return userService.remove(id);
+    }
 
-    /*
-
-    public void logout() {
-
+    @GetMapping("/logout")
+    public User logout() {
+        return userService.logout();
     }
 
     @DeleteMapping("/profile/delete")
     public User deleteAccount(Long user_id) {
-
+        return userService.deleteAccount(user_id);
     }
-
-    public void connectSpotifyAccount() {
-
-    }
-     */
 }

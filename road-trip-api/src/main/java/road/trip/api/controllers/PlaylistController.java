@@ -1,6 +1,10 @@
 package road.trip.api.controllers;
 
+import org.apache.hc.core5.http.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import road.trip.api.persistence.Playlist;
+import road.trip.api.services.PlaylistService;
 import road.trip.api.services.UserService;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
@@ -17,6 +21,7 @@ import se.michaelthelin.spotify.requests.data.playlists.GetListOfCurrentUsersPla
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Arrays;
 
 enum Keys {
     CLIENT_ID,
@@ -33,11 +38,13 @@ enum Keys {
 }
 
 @RestController
-@RequestMapping("spotify")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PlaylistController {
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq:8080/spotify/get-user-code");
+    @Autowired
+    PlaylistService playlistService;
+
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq:8080/get-spotify-user-code");
     private String code = "";
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
             .setClientId(Keys.CLIENT_ID.getKey())
@@ -47,7 +54,7 @@ public class PlaylistController {
 
     UserService userService;
 
-    @GetMapping("login")
+    @GetMapping("spotify-login")
     @ResponseBody
     public String spotifyLogin() {
         AuthorizationCodeUriRequest authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
@@ -59,7 +66,7 @@ public class PlaylistController {
         return uri.toString();
     }
 
-    @GetMapping(value = "get-user-code")
+    @GetMapping(value = "get-spotify-user-code")
     public String getSpotifyUserCode(@RequestParam("code") String userCode, HttpServletResponse response)
             throws IOException {
         code = userCode;
@@ -70,40 +77,45 @@ public class PlaylistController {
 
             final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
 
-            /*
-                if (user.spotifyAccountToken == NULL) {
-
-                   final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
-                   userService.findCurUser().setSpotifyAccountToken(authorizationCodeCredentials);
-
-                } else {
-                    if (user.spotifyAccountToken.getExpiresIn() > now()) {
-                        final AuthorizationCodeCredentials authorizationCodeCredentials = authorizationCodeRequest.execute();
-                        userService.findCurUser().setSpotifyAccountToken(authorizationCodeCredentials);
-                    }
-                }
-
-
-            spotifyApi.setAccessToken(spotifyAccountToken.getAccessToken());
-            spotifyApi.setRefreshToken(spotifyAccountToken.getRefreshToken());
-
-            System.out.println("Expires in: " + spotifyAccountToken.getExpiresIn());
-
-             */
-
             spotifyApi.setAccessToken(authorizationCodeCredentials.getAccessToken());
             spotifyApi.setRefreshToken(authorizationCodeCredentials.getRefreshToken());
 
             System.out.println("Expires in: " + authorizationCodeCredentials.getExpiresIn());
 
-        } catch (IOException | SpotifyWebApiException | org.apache.hc.core5.http.ParseException e) {
+        } catch (IOException | SpotifyWebApiException | ParseException e) {
             System.out.println("Error: " + e.getMessage());
         }
 
-        response.sendRedirect("http://trailblazers.gq/top-playlists");
+        final GetListOfCurrentUsersPlaylistsRequest getListOfCurrentUsersPlaylistsRequest =
+                spotifyApi.getListOfCurrentUsersPlaylists().build();
+
+        try {
+
+            final Paging<PlaylistSimplified> playlistPaging = getListOfCurrentUsersPlaylistsRequest.execute();
+            for (int i = 0; i < playlistPaging.getItems().length; i++) {
+                System.out.println(playlistPaging.getItems()[i].getName());
+                playlistService.store(playlistPaging.getItems()[i]);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        response.sendRedirect("http://trailblazers.gq/");
         return spotifyApi.getAccessToken();
     }
 
+    @GetMapping(value="playlists-all")
+    public Iterable<Playlist> getAllPlaylistsByUser(@RequestParam Long user_id) {
+        return playlistService.getAllPlaylistsByUser(user_id);
+    }
+
+    @PostMapping(value="add-playlist")
+    public Playlist addPlaylist(@RequestParam Long trip_id, @RequestParam Long playlistID) {
+        return playlistService.addPlaylist(trip_id, playlistID);
+    }
+
+    /*
     @GetMapping(value="user-playlists")
     public PlaylistSimplified[] getUserTopArtists() {
 
@@ -119,22 +131,8 @@ public class PlaylistController {
             System.out.println("Error: " + e.getMessage());
         }
 
-        /*
-
-        final GetUsersTopArtistsRequest getUsersTopArtistsRequest = spotifyApi.getUsersTopArtists()
-                .time_range("medium_term")
-                .limit(10)
-                .offset(5)
-                .build();
-
-        try {
-            final Paging<Artist> artistPaging = getUsersTopArtistsRequest.execute();
-            return artistPaging.getItems();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        */
-
         return new se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified[0];
     }
+
+     */
 }

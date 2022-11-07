@@ -40,6 +40,7 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+
     const handleSubmit = async () => {
         const hashedPassword = bcrypt.hashSync(password, 10);
         try {
@@ -71,6 +72,20 @@ const Register = () => {
                         withCredentials: true,
                     }
                 );
+                window.sessionStorage.setItem('loggedIn', 'true');
+                window.sessionStorage.setItem('spotifyLogged', 'false');
+                await myAxios.post(
+                    "/login",
+                    null,
+                    {
+                        params: {email},
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                        },
+                        withCredentials: true,
+                    });
                 toast.success('Successfully Registered!', {
                     position: "top-right",
                     autoClose: 5000,
@@ -80,6 +95,7 @@ const Register = () => {
                     draggable: true,
                     progress: undefined,
                 });
+                window.location.replace("trip-dashboard");
             }
         } catch (err) {
             if (!err?.response) {

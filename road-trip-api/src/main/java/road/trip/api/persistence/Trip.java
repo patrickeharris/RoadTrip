@@ -50,13 +50,8 @@ public class Trip {
     @Column(name = "selectedRoute")
     private String selectedRoute;
 
-    /*
-    @Column(name = "routePref")
-    private Enum routePref;
-
-    @Column(name = "playlistPref")
-    private Enum playlistPref;
-     */
+    @Column(name = "playlist_id")
+    private Long playlist_id;
 
     public void setUser_id(Long user_id) {
         this.user_id = user_id;
