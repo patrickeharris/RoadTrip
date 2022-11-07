@@ -39,6 +39,9 @@ public class UserController {
         return userService.login(email);
     }
 
+    @PostMapping("/register/remove")
+    public User remove(@RequestBody Long id){ return userService.remove(id); }
+
     /*
 
     public void logout() {

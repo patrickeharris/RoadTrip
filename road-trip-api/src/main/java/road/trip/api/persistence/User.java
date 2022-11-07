@@ -14,10 +14,10 @@ import javax.persistence.*;
 public class User {
     public static final String TABLE_NAME = "User";
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     String lastName;
 
     @Column(name = "email")
@@ -25,6 +25,9 @@ public class User {
 
     @Column(name = "password")
     String password;
+
+    @Column(name = "password_hash")
+    String salt;
 
     /*
 
@@ -51,11 +54,12 @@ public class User {
     @Column(name = "user_id")
     private Long user_id;
 
-    public User(String firstName, String lastName, String email, String password){
+    public User(String firstName, String lastName, String email, String password, String salt){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.salt = salt;
     }
 
     public void setUser_id(Long user_id) {

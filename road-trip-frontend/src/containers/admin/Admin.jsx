@@ -1,5 +1,7 @@
 import {myAxios} from "../../util/helper";
 import React from "react";
+import styles from './admin.module.css'
+import globalStyles from "../container.module.css";
 
 class Admin extends React.Component{
     constructor(props){
@@ -12,9 +14,7 @@ class Admin extends React.Component{
     componentDidMount() {
         const fetchUserEmail = async () => {
             const response = (await myAxios.get("/register/users")).data;
-            console.log(response);
             const users  = response;
-            console.log(users)
             this.setState({
                 users
             });
@@ -22,34 +22,57 @@ class Admin extends React.Component{
         fetchUserEmail();
     }
 
-    handleRemove = () => {
-
+    handleRemove = async (user_id) => {
+        console.log(user_id)
+        try {
+            const response = await myAxios.post(
+                "/register/remove",
+                null,
+                {
+                    params: {user_id},
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                    },
+                    withCredentials: true,
+                });
+        } catch (err) {
+            if (!err?.response) {
+                console.log("No Server Response");
+            } else {
+                console.log("Registration Failed");
+                console.log(err?.response);
+            }
+        }
     }
 
     render(){
         return (
-            <table>
-                <tr>
-                    <th>User ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Remove User</th>
-                </tr>
-                <tbody>
-                    {this.state.users.map(user =>{
-                        return [
-                            <tr>
-                                <td>{user.user_id}</td>
-                                <td>{user.firstName}</td>
-                                <td>{user.lastName}</td>
-                                <td>{user.email}</td>
-                                <button onClick={this.handleRemove}>Remove User</button>
-                            </tr>
-                        ];
-                    })}
-                </tbody>
-            </table>
+            <div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>User ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Remove User</th>
+                        </tr>
+                        {this.state.users.map(user =>{
+                            return [
+                                <tr>
+                                    <td>{user.user_id}</td>
+                                    <td>{user.firstName}</td>
+                                    <td>{user.lastName}</td>
+                                    <td>{user.email}</td>
+                                    <td><button onClick={() => this.handleRemove(user.user_id)}>Remove User</button></td>
+                                </tr>
+                            ];
+                        })}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }

@@ -5,6 +5,7 @@ import {myAxios} from "../../util/helper";
 import bcrypt from 'bcryptjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as emailjs from "@emailjs/browser";
 
 //Sign up a given user
 const signUp=(user)=>{
@@ -61,7 +62,7 @@ const Register = () => {
             } else{
                 const response = await myAxios.post(
                     "/register",
-                    JSON.stringify({firstName, lastName, email, password: hashedPassword}),
+                    JSON.stringify({firstName, lastName, email, password: hashedPassword, salt}),
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -80,7 +81,6 @@ const Register = () => {
                     draggable: true,
                     progress: undefined,
                 });
-                window.location.replace("login");
             }
         } catch (err) {
             if (!err?.response) {
@@ -90,6 +90,17 @@ const Register = () => {
                 console.log(err?.response);
             }
         }
+        const emailParams = {
+            send_to: email,
+            to_name: firstName + ' ' + lastName
+        };
+        emailjs.send('service_qf6j9ma', 'template_iwzl8bb', emailParams, 'BhNdV_jnMUg4W-obV')
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+            }, function(error) {
+                console.log('FAILED...', error);
+            });
+        window.location.replace("login");
     }
 
     return (
