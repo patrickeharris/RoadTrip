@@ -41,8 +41,7 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const handleSubmit = async () => {
-        const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync(password, salt);
+        const hashedPassword = bcrypt.hashSync(password, 10);
         try {
             //Check validity
             if (firstName==="") {
@@ -62,7 +61,7 @@ const Register = () => {
             } else{
                 const response = await myAxios.post(
                     "/register",
-                    JSON.stringify({firstName, lastName, email, password: hashedPassword, salt}),
+                    JSON.stringify({firstName, lastName, email, password: hashedPassword}),
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -90,7 +89,7 @@ const Register = () => {
                 console.log(err?.response);
             }
         }
-        const emailParams = {
+        /*const emailParams = {
             send_to: email,
             to_name: firstName + ' ' + lastName
         };
@@ -99,7 +98,7 @@ const Register = () => {
                 console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
                 console.log('FAILED...', error);
-            });
+            });*/
         window.location.replace("login");
     }
 

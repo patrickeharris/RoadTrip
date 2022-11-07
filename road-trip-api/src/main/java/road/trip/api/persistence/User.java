@@ -63,14 +63,6 @@ public class User {
         this.password = password;
     }
 
-    public User(String firstName, String lastName, String email, String password, String salt){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-    }
-
     public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }
@@ -84,11 +76,11 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(user_id, user.user_id);
+        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(user_id, user.user_id) && Objects.equals(salt, user.salt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, password, user_id);
+        return Objects.hash(firstName, lastName, email, password, user_id, salt);
     }
 }

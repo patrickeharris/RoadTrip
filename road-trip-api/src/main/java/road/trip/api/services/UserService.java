@@ -43,7 +43,6 @@ public class UserService {
 
     public User register(User user) {
         user.setEnabled(false);
-        sendEmail(user.getEmail());
         return userRepository.save(user);
     }
 
@@ -73,10 +72,6 @@ public class UserService {
         }
         newUser.setEnabled(true);
         return userRepository.save(newUser);
-    }
-
-    public void sendEmail(String email){
-
     }
 
     public User findCurUser() {

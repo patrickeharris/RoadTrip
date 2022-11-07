@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import {Checkbox} from "@material-ui/core";
+import * as emailjs from "@emailjs/browser";
 
 const Test = ({start, end, selectedStart, selectedEnd, setDirectionsResponse, highways, tolls, directionsResponse}) => {
     async function calc() {
@@ -433,6 +434,22 @@ const CreateTrip = () => {
                 console.log(err?.response);
             }
         }
+        //Sending trip confirmation email
+        /*const response = (await myAxios.get("/register/curUser")).data;
+        let email = response.email;
+        const emailParams = {
+            send_to: email,
+            trip_name: tripName,
+            trip_start: start,
+            trip_end: end,
+            trip_date: date
+        };
+        emailjs.send('service_qf6j9ma', 'template_m697stp', emailParams, 'BhNdV_jnMUg4W-obV')
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+            }, function(error) {
+                console.log('FAILED...', error);
+            });*/
     }
     const containerStyle = {
         width: '1280px',
