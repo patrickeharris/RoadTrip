@@ -23,7 +23,7 @@ const responsive = {
     }
 };
 
-export default class AddPlaylist extends Component {
+export default class AddAPlaylist extends Component {
     constructor(props) {
         super(props);
         this.state = {
