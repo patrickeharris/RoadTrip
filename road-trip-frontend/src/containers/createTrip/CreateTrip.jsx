@@ -83,15 +83,29 @@ const StopResults = ({results}) => {
     });
 }
 
-const StopResultsNew = ({results, markers}) => {
+const StopResultsNew = ({results, markers, onStopChange}) => {
     function test(thing){
-        //console.
-        if(markers.find(e=> e.name === thing.target.val) != null){
-            console.log("yay");
+        // Append stop info to stored state
+        const marker = markers.find(element => element.title === thing.target.value)
+        let stop = {
+            name: marker.title,
+            location: String(marker.position.lat() + ", " + marker.position.lng()),
         }
+        onStopChange(current => [...current, stop]);
+
+        // Notify user if stop was successfully added
+        toast.success('Successfully Added Stop!', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
     }
     return results.map(function (item) {
-        return <div><h6>Name: {item.name}</h6><button val={item.name} onClick={test}>Add Stop</button></div>
+        return <div onClick={test}><h6>Name: {item.name}</h6><button value={item.name}>Add Stop</button></div>
     });
 }
 
@@ -177,7 +191,8 @@ const CreateTrip = () => {
     const MAX = 50;
     const maxRating = 5;
     const [rating, setRating] = useState(maxRating);
-    const markers = [];
+    const [markers, setMarkers] = useState([])
+    const [selectedStops, setSelectedStops] = useState([]);
 
     const onLoad = useCallback((map) => setMap(map), []);
     const getBackgroundSize = () => {
@@ -267,6 +282,14 @@ const CreateTrip = () => {
                 anchor: new google.maps.Point(18, 27),
             };
             marker.setIcon(svgMarker);
+
+            let stop = {
+                Name: marker.title,
+                Location: String(marker.position.lat() + ", " + marker.position.lng()),
+                Type: ""
+            }
+
+            setSelectedStops(current => [...current, stop]);
         });
     }
 
@@ -318,7 +341,8 @@ const CreateTrip = () => {
                                 map,
                                 title: results[i].name
                             });
-                            markers.push(marker);
+                            //markers.push(marker);
+                            setMarkers(current => [...current, marker]);
                             bindInfoWindow(marker, map, infowindow, "<p>" + marker.title + "</p> <button>Add Stop</button>");
                             stopsResponse.push({name: results[i].name});
                             setStopsResponse(stopsResponse);
@@ -395,13 +419,25 @@ const CreateTrip = () => {
                     stops.push(el.value);
                 }
             });
-            console.log(stops);
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
             let id = (await myAxios.get("/register/curUser")).data.user_id;
             console.log(id);
+            console.log(selectedStops)
             const response = await myAxios.post(
                 "/create-trip",
-                JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, userid: id, user_id: id, selectedRoute}),
+                JSON.stringify({
+                    tripName,
+                    start,
+                    startLoc,
+                    end,
+                    endLoc,
+                    date,
+                    tolls,
+                    highways,
+                    user_id: id,
+                    selectedRoute,
+                    selectedStops
+                }),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
@@ -504,7 +540,7 @@ const CreateTrip = () => {
                             <button onClick={()=>{setShowStopPref(!showStopPref)}}>Close</button>
                         </div>}
                         { showStops && <div className={styles.stopFloat}>
-                            <StopResultsNew results={stopsResponse} markers={markers}/><button onClick={()=>setShowStops(!showStops)}>Close</button></div>
+                            <StopResultsNew results={stopsResponse} markers={markers} onStopChange={setSelectedStops} /><button onClick={()=>setShowStops(!showStops)}>Close</button></div>
                         }
                         {isLoaded && <GoogleMap id="map" zoom={10} center={defaultStart} onLoad={onLoad} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
                             {selectedStart && <Marker position={selectedStart}/>}
