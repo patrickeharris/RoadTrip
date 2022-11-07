@@ -423,7 +423,7 @@ const CreateTrip = () => {
             console.log(id);
             console.log(selectedStops)
             const response = await myAxios.post(
-                "http://localhost:8080/create-trip",
+                "/create-trip",
                 JSON.stringify({
                     tripName,
                     start,

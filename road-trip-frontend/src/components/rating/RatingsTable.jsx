@@ -5,7 +5,7 @@ import axios from "axios";
 const RatingsTable = ({tripId}) => {
     const [ratings, setRatings] = useState([]);
 
-    let url = "http://localhost:8080/rating/ratings";
+    let url = "/rating/ratings";
 
     if (tripId != null) {
         url += "?tripId=" + tripId
