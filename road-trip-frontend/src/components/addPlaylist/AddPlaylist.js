@@ -31,11 +31,11 @@ export default class AddPlaylist extends Component {
         };
     }
     async componentDidMount() {
-
-
-
+        const curUser = (await myAxios.get("/register/curUser")).data.user_id;
         const data = (await myAxios.get(
-            "/playlists-all"
+            "/playlists-all",
+            {params: {curUser}
+            }
         )).data;
         this.setState({ data });
     }

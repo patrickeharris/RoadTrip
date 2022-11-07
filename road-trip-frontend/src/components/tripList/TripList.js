@@ -54,7 +54,7 @@ export default class TripList extends Component {
                                           window.location.replace("/add-playlist");
                                       } else {
                                           window.sessionStorage.setItem('spotifyLogged', 'true');
-                                          fetch("http://localhost:8080/spotify/login",  {headers: {"Content-Type": "application/json",
+                                          fetch("http://trailblazers.gq:8080/spotify-login",  {headers: {"Content-Type": "application/json",
                                                   'Access-Control-Allow-Origin' : '*',
                                                   'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',}})
                                               .then((response) => response.text())
