@@ -76,3 +76,18 @@
     color: rgb(250 204 21);
     cursor: pointer;
 }
+
+.ratings__tableWrapper {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    color: white;
+}
+
+.ratings__tr {
+
+}
+
+.ratings__tr:nth-child(even) {
+    background-color: #042c54;
+}

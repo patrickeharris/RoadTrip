@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import styles from "./rating.module.css"
 import axios from "axios";
 
 const RatingsTable = ({tripId}) => {
@@ -20,8 +21,8 @@ const RatingsTable = ({tripId}) => {
     }, [])
 
     return (
-        <div>
-            <table style={{ color: "white", textAlign: "left", width: "100%", paddingLeft: "100px", paddingRight: "100px" }}>
+        <div style={{ paddingLeft: "100px", paddingRight: "100px" }}>
+            <table className={styles.ratings__tableWrapper}>
                 <tr>
                     <th>ID</th>
                     <th>Trip ID</th>
@@ -31,7 +32,7 @@ const RatingsTable = ({tripId}) => {
                 </tr>
                 {ratings.map((r) => {
                     return (
-                        <tr>
+                        <tr className={styles.ratings__tr}>
                             <td>{r.id}</td>
                             <td>{r.trip_id}</td>
                             <td>{r.score}</td>
