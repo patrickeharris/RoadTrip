@@ -6,8 +6,12 @@
     "docker-start": "next start -p 80",
     "test": "jest"
   },
+  "engines": {
+  "node": "16.17.0"
+  },
   "dependencies": {
     "@bessemer/cornerstone": "^1.0.17",
+    "@emailjs/browser": "^3.9.0",
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
     "@reach/combobox": "^0.17.0",
