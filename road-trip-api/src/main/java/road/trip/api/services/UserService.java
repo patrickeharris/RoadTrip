@@ -62,22 +62,15 @@ public class UserService {
         return findAccountByEnabled(true);
     }
 
-
     public User logout() {
         User user = findCurUser();
         user.setEnabled(false);
         return userRepository.save(user);
     }
 
-    /*
-    public User deleteAccount() {
-
+    public User deleteAccount(Long user_id) {
+        User user = findAccountById(user_id);
+        userRepository.delete(user);
+        return user;
     }
-
-    public void generateToken() {
-
-    }
-     */
-
-
 }

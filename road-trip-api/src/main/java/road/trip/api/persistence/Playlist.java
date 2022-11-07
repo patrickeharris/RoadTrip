@@ -20,12 +20,15 @@ public class Playlist {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long playlistID;
 
-    @Column(name = "trip_ID")
-    private Long trip_ID;
+    @Column(name = "user_id")
+    private Long user_id;
 
     @Column(name = "playlistName")
     String playlistName;
 
     @Column(name = "playlistLink")
     String playlistLink;
+
+    @Column(name = "imageLink")
+    String imageLink;
 }

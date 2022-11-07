@@ -50,7 +50,22 @@ export default class TripList extends Component {
                 return <div><Card title={item.tripName} description={description}
                                   playlistButton={<button onClick={function addPlaylist() {
                                       window.sessionStorage.setItem('curTrip', item.trip_id);
-                                      window.location.replace("/add-playlist");
+                                      if (window.sessionStorage.getItem('spotifyLogged') === 'true') {
+                                          window.location.replace("/add-playlist");
+                                      } else {
+                                          window.sessionStorage.setItem('spotifyLogged', 'true');
+                                          fetch("http://localhost:8080/spotify/login",  {headers: {"Content-Type": "application/json",
+                                                  'Access-Control-Allow-Origin' : '*',
+                                                  'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',}})
+                                              .then((response) => response.text())
+                                              .then((response) => {
+                                                  window.location.replace(response);
+                                              })
+                                              .catch((error) => {
+                                                  console.log(error);
+                                              })
+                                          window.location.replace("/add-playlist");
+                                      }
                                   }}>Add Playlist</button>}
                                   editButton={<button onClick={function editTrip() {
                                       window.sessionStorage.setItem('curTrip', item.trip_id);

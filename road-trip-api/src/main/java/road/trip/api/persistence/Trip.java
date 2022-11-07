@@ -52,6 +52,8 @@ public class Trip {
     @Column(name = "selectedRoute")
     private String selectedRoute;
 
+    @Column(name = "playlist_id")
+    private Long playlist_id;
     @Transient
     private List<Stop> selectedStops = new ArrayList<>();
 

@@ -13,9 +13,10 @@ public class RatingServiceTest {
     @Autowired
     RatingService ratingService;
 
+    /*
     @Test
     public void testGetRatings() throws Exception {
         assertNotNull(ratingService.getRatings());
     }
-
+*/
 }
