@@ -25,19 +25,13 @@ class Admin extends React.Component{
     handleRemove = async (user_id) => {
         console.log(user_id)
         try {
-            const response = await myAxios.post(
-                "/register/remove",
-                null,
-                {
-                    params: {user_id},
-                    headers: {
+            const response = await myAxios.delete(
+                "/profile/delete", {headers: {
                         "Content-Type": "application/json",
                         'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Headers': '*',
                         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
                     },
-                    withCredentials: true,
-                });
+                    data: {user_id}});
         } catch (err) {
             if (!err?.response) {
                 console.log("No Server Response");
