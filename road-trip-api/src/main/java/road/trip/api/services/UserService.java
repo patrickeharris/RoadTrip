@@ -62,7 +62,6 @@ public class UserService {
         return findAccountByEnabled(true);
     }
 
-
     public User logout() {
         User user = findCurUser();
         user.setEnabled(false);
