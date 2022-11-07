@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -49,6 +51,9 @@ public class Trip {
 
     @Column(name = "selectedRoute")
     private String selectedRoute;
+
+    @Transient
+    private List<Stop> selectedStops = new ArrayList<>();
 
     /*
     @Column(name = "routePref")

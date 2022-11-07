@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,8 +30,14 @@ public class Rating {
     int score;
 
     @Column
-    int stopScore;
+    String name;
 
     @Column
     String message;
+
+    @Column
+    String type;
+
+    @Transient
+    private List<Rating> stopRatings = new ArrayList<>();
 }
