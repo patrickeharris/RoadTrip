@@ -1,5 +1,5 @@
 import styles from "./styles/index.module.css";
-import {Navbar} from "../components";
+import {Navbar, AddPlaylist} from "../components";
 import {Footer} from "../containers";
 import React from "react";
 
