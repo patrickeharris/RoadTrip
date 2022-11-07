@@ -44,15 +44,8 @@ public class UserController {
         return userService.logout();
     }
 
-    /*
-
     @DeleteMapping("/profile/delete")
     public User deleteAccount(Long user_id) {
-
+        return userService.deleteAccount(user_id);
     }
-
-    public void connectSpotifyAccount() {
-
-    }
-     */
 }
