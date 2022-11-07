@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import road.trip.api.persistence.Stop;
 import road.trip.api.persistence.StopRepository;
 
+import java.util.List;
+
 @Service
 public class StopService {
 
@@ -13,6 +15,13 @@ public class StopService {
 
     public Stop findStopById(Long id) {
         return stopRepository.findById(id).get();
+    }
+
+    public void addStops(List<Stop> stops, long trip_id) {
+        stops.forEach(s -> {
+            s.setTrip_id(trip_id);
+        });
+        stopRepository.saveAll(stops);
     }
 
     /*

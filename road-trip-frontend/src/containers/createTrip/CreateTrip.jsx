@@ -87,12 +87,8 @@ const StopResultsNew = ({results, markers, onStopChange}) => {
         // Append stop info to stored state
         const marker = markers.find(element => element.title === thing.target.value)
         let stop = {
-            Name: marker.title,
-            Location: {
-                Lat: marker.position.lat(),
-                Lon: marker.position.lng()
-            },
-            Type: ""
+            name: marker.title,
+            location: String(marker.position.lat() + ", " + marker.position.lng()),
         }
         onStopChange(current => [...current, stop]);
 
@@ -288,10 +284,7 @@ const CreateTrip = () => {
 
             let stop = {
                 Name: marker.title,
-                Location: {
-                    Lat: marker.position.lat(),
-                    Lon: marker.position.lng()
-                },
+                Location: String(marker.position.lat() + ", " + marker.position.lng()),
                 Type: ""
             }
 
@@ -430,7 +423,7 @@ const CreateTrip = () => {
             console.log(id);
             console.log(selectedStops)
             const response = await myAxios.post(
-                "/create-trip",
+                "http://localhost:8080/create-trip",
                 JSON.stringify({
                     tripName,
                     start,

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import road.trip.api.persistence.Stop;
 import road.trip.api.persistence.Trip;
 import road.trip.api.services.RouteService;
+import road.trip.api.services.StopService;
 import road.trip.api.services.TripService;
 
 import javax.mail.MessagingException;
@@ -23,9 +24,14 @@ public class TripController {
     @Autowired
     private RouteService routeService;
 
+    @Autowired
+    private StopService stopService;
+
     @PostMapping("/create-trip")
     public Trip createTrip(@RequestBody Trip trip) throws GeneralSecurityException, IOException, MessagingException {
-        return tripService.makeTrip(trip);
+        Trip t = tripService.makeTrip(trip);
+        stopService.addStops(trip.getSelectedStops(), t.getTrip_id());
+        return t;
     }
 
     @PostMapping("/edit-trip")

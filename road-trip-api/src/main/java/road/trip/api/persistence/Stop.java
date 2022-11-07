@@ -16,12 +16,16 @@ public class Stop {
     public static final String TABLE_NAME = "Stop";
 
     @Id
+    @Column(name = "stop_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long stopId;
+    private Long id;
 
-    private String stopName;
+    @Column(name = "trip_id")
+    private Long trip_id;
 
-    private Double stopLoc;
+    @Column(name = "stop_name")
+    private String name;
 
-    private Enum stopType;
+    @Column(name = "stop_location")
+    private String location;
 }
