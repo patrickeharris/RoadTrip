@@ -44,6 +44,11 @@ public class TripController {
         return tripService.getTrips();
     }
 
+    @GetMapping("/stops")
+    public @ResponseBody Iterable<Stop> findStopsByTripId(@RequestParam(value = "tripId", required = false) Long tripId) {
+        return stopService.getStopsByTripId(tripId);
+    }
+
     /*
     @DeleteMapping("/delete-trip")
     public Trip deleteTrip(Long tripId) {

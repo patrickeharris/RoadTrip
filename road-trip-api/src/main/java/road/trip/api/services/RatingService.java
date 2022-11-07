@@ -35,6 +35,13 @@ public class RatingService {
     }
 
     public Rating saveRating(Rating rating) {
+        rating.getStopRatings().forEach(r -> {
+            r.setTrip_id(rating.getTrip_id());
+            r.setType("stop");
+            ratingRepository.save(r);
+        });
+
+        rating.setType("trip");
         return ratingRepository.save(rating);
     }
 }

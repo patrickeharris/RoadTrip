@@ -91,3 +91,10 @@
 .ratings__tr:nth-child(even) {
     background-color: #042c54;
 }
+
+.rateTrip__stopStarWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
