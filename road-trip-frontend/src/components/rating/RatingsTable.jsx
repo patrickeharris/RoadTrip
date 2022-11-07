@@ -13,20 +13,34 @@ const RatingsTable = ({tripId}) => {
     useEffect(() => {
         const fetchRatings = async () => {
             const response = await axios.get(url);
-
-            setRatings(response.data)
+            return response.data
         }
 
-        fetchRatings();
+        fetchRatings().then(r => setRatings(r));
     }, [])
 
     return (
         <div>
-            {ratings.map((r) => {
-                return (
-                    <div>{JSON.stringify(r)}</div>
-                )
-            })}
+            <table style={{ color: "white", textAlign: "left", width: "100%", paddingLeft: "100px", paddingRight: "100px" }}>
+                <tr>
+                    <th>ID</th>
+                    <th>Trip ID</th>
+                    <th>Score</th>
+                    <th>Message</th>
+                    <th>Type</th>
+                </tr>
+                {ratings.map((r) => {
+                    return (
+                        <tr>
+                            <td>{r.id}</td>
+                            <td>{r.trip_id}</td>
+                            <td>{r.score}</td>
+                            <td>{r.message}</td>
+                            <td>Todo</td>
+                        </tr>
+                    )
+                })}
+            </table>
         </div>
     )
 }
