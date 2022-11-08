@@ -1067,7 +1067,7 @@ const EditTrip = () => {
             setUserID("");
             setSelectedRoute("");
             console.log(response);
-            toast.success('Successfully Added Trip!', {
+            toast.success('Successfully Edited Trip!', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
