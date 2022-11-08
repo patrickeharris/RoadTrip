@@ -105,7 +105,7 @@ const Register = () => {
                 console.log(err?.response);
             }
         }
-        /*const emailParams = {
+        const emailParams = {
             send_to: email,
             to_name: firstName + ' ' + lastName
         };
@@ -114,7 +114,7 @@ const Register = () => {
                 console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
                 console.log('FAILED...', error);
-            });*/
+            });
         window.location.replace("login");
     }
 
