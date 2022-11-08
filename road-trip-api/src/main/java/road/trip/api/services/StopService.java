@@ -14,26 +14,31 @@ public class StopService {
     @Autowired
     StopRepository stopRepository;
 
+    @Autowired
+    TripService tripService;
+
     public List<Stop> getStopsByTripId(long tripId) {
         List<Stop> finalStops = new ArrayList<>();
         List<Stop> stops = stopRepository.findAll();
 
-        stops.forEach(s -> {
+        /*stops.forEach(s -> {
             Long id = s.getTrip_id();
             if (id != null) {
                 if (s.getTrip_id().equals(tripId)) {
                     finalStops.add(s);
                 }
             }
-        });
+        });*/
+        finalStops = tripService.findTripById(tripId).getRoute().getStops();
 
         return finalStops;
     }
 
     public void addStops(List<Stop> stops, long trip_id) {
-        stops.forEach(s -> {
-            s.setTrip_id(trip_id);
-        });
+        List<Stop> curStops = tripService.findTripById(trip_id).getRoute().getStops();
+        for(int i = 0; i < curStops.size(); i++){
+            stops.add(curStops.get(i));
+        }
         stopRepository.saveAll(stops);
     }
 
