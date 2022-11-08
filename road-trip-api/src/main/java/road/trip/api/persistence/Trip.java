@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class Trip {
-    public static final String TABLE_NAME = "Trip";
+    public static final String TABLE_NAME = "trip";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -57,6 +57,17 @@ public class Trip {
 
     @Transient
     private List<Stop> selectedStops = new ArrayList<>();
+
+    @OneToOne
+    private Route route;
+
+    /*
+    @Column(name = "routePref")
+    private Enum routePref;
+
+    @Column(name = "playlistPref")
+    private Enum playlistPref;
+     */
 
     public void setUser_id(Long user_id) {
         this.user_id = user_id;

@@ -97,7 +97,7 @@ export default class TripList extends Component {
                                       window.location.replace("/trip-dashboard");
 
                                   }}>Cancel Trip</button>}
-                                  startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute}/>
+                                  startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute} stops={item.route.stops}/>
                 </div>
             }
         });

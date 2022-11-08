@@ -35,8 +35,7 @@ const Login = () => {
                 }
 
                 if (found === true) {
-                    if (response[index].password === password) {
-
+                    if (bcrypt.compareSync(password, response[index].password)) {
                         window.sessionStorage.setItem('loggedIn', 'true');
                         const response = await myAxios.post(
                             "/login",
@@ -62,7 +61,15 @@ const Login = () => {
                         window.sessionStorage.setItem('spotifyLogged', 'false');
                         window.location.replace("/trip-dashboard");
                     } else {
-                        alert("This is the wrong password. Please try again!")
+                        toast.warn('Your password is incorrect.', {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                        });
                     }
                 } else {
                     if (confirm("This email is not registered. Do you want to be directed to the sign up page?")) {

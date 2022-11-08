@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
 
 import javax.persistence.*;
+import java.util.Objects;
+
 @Data
 @Entity
 @Table(name = User.TABLE_NAME)
@@ -14,10 +16,10 @@ import javax.persistence.*;
 public class User {
     public static final String TABLE_NAME = "User";
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     String lastName;
 
     @Column(name = "email")
@@ -25,6 +27,9 @@ public class User {
 
     @Column(name = "password")
     String password;
+
+    @Column(name = "password_hash")
+    String salt;
 
     /*
 
@@ -64,5 +69,18 @@ public class User {
 
     public Long getUser_id() {
         return user_id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(user_id, user.user_id) && Objects.equals(salt, user.salt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, email, password, user_id, salt);
     }
 }

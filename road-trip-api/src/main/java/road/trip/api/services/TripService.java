@@ -2,8 +2,7 @@ package road.trip.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import road.trip.api.persistence.Trip;
-import road.trip.api.persistence.TripRepository;
+import road.trip.api.persistence.*;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -20,6 +19,10 @@ import java.util.Properties;
 public class TripService {
     @Autowired
     private TripRepository tripRepository;
+    @Autowired
+    private RouteRepository routeRepository;
+    @Autowired
+    private StopRepository stopRepository;
 
     @Autowired
     private UserService userService;
@@ -33,12 +36,14 @@ public class TripService {
     //}
 
     public Trip makeTrip (Trip trip) throws GeneralSecurityException, IOException, MessagingException {
-        System.out.println("test1");
-        System.out.println(trip);
+        for(int i = 0; i < trip.getRoute().getStops().size(); i++){
+            System.out.println(trip.getRoute().getStops().get(i).getStopName());
+            Stop s = stopRepository.save(trip.getRoute().getStops().get(i));
+            System.out.println(s.getStopName());
+        }
+        Route r = routeRepository.save(trip.getRoute());
         Trip t = tripRepository.save(trip);
         sendEmail(t);
-        System.out.println(t);
-        System.out.println("test2");
 
         return t;
     }

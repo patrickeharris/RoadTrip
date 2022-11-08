@@ -5,7 +5,16 @@ import org.springframework.stereotype.Service;
 import road.trip.api.persistence.UserRepository;
 import road.trip.api.persistence.User;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 
 @Service
 public class UserService {
@@ -35,6 +44,13 @@ public class UserService {
     public User register(User user) {
         user.setEnabled(false);
         return userRepository.save(user);
+    }
+
+    public User remove(Long id){
+        Optional<User> user = userRepository.findById(id);
+        User u = user.get();
+        userRepository.delete(u);
+        return u;
     }
 
     public User update(User user) {
@@ -73,4 +89,10 @@ public class UserService {
         userRepository.delete(user);
         return user;
     }
+
+    public void generateToken() {
+
+    }
+
+
 }

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import styles from './profile.module.css'
+import styles from './editprofile.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
 import { ToastContainer, toast } from 'react-toastify';
@@ -40,7 +40,7 @@ function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
 }
 
-const Profile = () => {
+const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
     /*useEffect(() => {
         getFirstName().then((firstName) => setFirstName(firstName));
@@ -79,7 +79,7 @@ const Profile = () => {
                         withCredentials: true,
                     }
                 );
-                toast.success('Successfully Updated Profile!', {
+                toast.success('Successfully Updated EditProfile!', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -93,7 +93,7 @@ const Profile = () => {
                 if (!err?.response) {
                     console.log("No Server Response");
                 } else {
-                    console.log("Profile Update Failed");
+                    console.log("EditProfile Update Failed");
                     console.log(err?.response);
                 }
             }
@@ -118,4 +118,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default EditProfile

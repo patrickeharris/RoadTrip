@@ -52,6 +52,16 @@ function CardContent(props) {
     );
 }
 
+const Markers = (props) => {
+    return props.stops.map((stop) => {
+        if(stop.stopLocLat === undefined || stop.stopLocLong === undefined){
+            return <Marker position={{lat: -25.363, lng: 131.044}}/>
+        }
+        return <Marker position={{lat: stop.stopLocLat, lng: stop.stopLocLong}}/>
+    })
+
+}
+
 const Map = (props) => {
     const [results, setResults] = useState(null)
     async function getResults() {
@@ -81,7 +91,7 @@ const Map = (props) => {
                     //console.log(item);
                     const t = [];
                     t.push(item);
-                    if (item.legs[0].distance.text === props.selectedRoute) {
+                    if (item.summary === props.selectedRoute) {
                         return t;
                     }
 
@@ -96,16 +106,17 @@ const Map = (props) => {
     return (<>{isLoaded ?
         <GoogleMap zoom={10} center={selected} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
             <DirectionsRenderer directions={results}/>
+            <Markers stops={props.stops}/>
         </GoogleMap> : <></>}</>);
 }
 
 export default class Card extends React.Component {
     render() {
-        console.log(this.props.startLoc)
+        console.log(this.props)
         return (
             <div style={{ width: this.props.width + "px" }}>
                 <div className={styles.styleCard}>
-                    <Map startLoc={this.props.startLoc} endLoc={this.props.endLoc} selectedRoute={this.props.selectedRoute}/>
+                    <Map startLoc={this.props.startLoc} endLoc={this.props.endLoc} selectedRoute={this.props.selectedRoute} stops={this.props.stops}/>
                     <CardImage image={this.props.image} width={this.props.width} />
                     <CardContent
                         title={this.props.title}
