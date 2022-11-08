@@ -32,7 +32,7 @@ public class TripController {
     @PostMapping("/create-trip")
     public Trip createTrip(@RequestBody Trip trip) throws GeneralSecurityException, IOException, MessagingException {
         Trip t = tripService.makeTrip(trip);
-        stopService.addStops(trip.getSelectedStops(), t.getTrip_id());
+        stopService.addStops(trip.getRoute().getStops(), t.getTrip_id());
         return t;
     }
 
