@@ -4740,6 +4740,11 @@ react-redux@7.2.1:
     prop-types "^15.7.2"
     react-is "^16.9.0"
 
+react-stars@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-stars/-/react-stars-2.2.5.tgz#911852018e1574a0f9a2c1dfa4f0bc9af071b921"
+  integrity sha512-O//KS6Z9RZnUOU/r+3+wxCzNalVn/wEWIcbAQFRV3dw8WbV+ys/kgcpBPijqTiNpHGrcwZdtb/7wF/UVem20CQ==
+
 react-toast-notifier@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-toast-notifier/-/react-toast-notifier-1.0.3.tgz#7c14b25d218c51451dec48f219f91b3f4cd5fe1f"
