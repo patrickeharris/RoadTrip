@@ -75,7 +75,7 @@ export default class TripList extends Component {
                                       window.sessionStorage.setItem('curTrip', item.trip_id);
                                       window.location.replace('/rate-trip');
                                   }}>Rate Trip</button>}
-                                  startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute}/>
+                                  startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute} stops={item.route.stops}/>
                 </div>
             }
         });

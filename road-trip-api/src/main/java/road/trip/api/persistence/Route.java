@@ -3,6 +3,8 @@ package road.trip.api.persistence;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,6 +23,9 @@ public class Route {
 
     private String routeName;
 
-    private Enum stopPref;
+    /*private Enum stopPref;*/
+
+    @OneToMany
+    private List<Stop> stops = new ArrayList<>();
 
 }

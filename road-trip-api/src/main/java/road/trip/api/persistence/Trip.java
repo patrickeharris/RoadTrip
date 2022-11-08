@@ -58,6 +58,9 @@ public class Trip {
     @Transient
     private List<Stop> selectedStops = new ArrayList<>();
 
+    @OneToOne
+    private Route route;
+
     /*
     @Column(name = "routePref")
     private Enum routePref;

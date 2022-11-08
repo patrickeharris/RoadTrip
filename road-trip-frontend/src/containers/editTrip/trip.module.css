@@ -45,23 +45,6 @@
     align-items: center;
 }
 
-.floatRoutes {
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    min-width: 1300px;
-    z-index: 5;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #999;
-    text-align: center;
-    font-family: 'Roboto','sans-serif';
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-}
-
 .stopFloat {
     position: absolute;
     top: 50%;
@@ -257,6 +240,10 @@
     transform: translateY(-50%);
 }
 
+.results h2 {
+    color: white;
+}
+
 .menu {
     width: 200px;
     display: flex;
@@ -416,8 +403,4 @@
 /* Handle on hover */
 .scrollable::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-
-.routes h2 {
-    color: #031B34;
 }

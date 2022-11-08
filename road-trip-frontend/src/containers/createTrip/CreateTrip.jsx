@@ -12,29 +12,13 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import {Checkbox} from "@material-ui/core";
 import * as emailjs from "@emailjs/browser";
+import ReactStars from 'react-stars';
 
-const Test = ({start, end, selectedStart, selectedEnd, setDirectionsResponse, highways, tolls, directionsResponse}) => {
-    async function calc() {
-        console.log("calculating...")
-        if (start === "" || end === "") {
-            return;
-        }
-        const directionsService = new google.maps.DirectionsService();
-        const results = await directionsService.route({
-            origin: selectedStart,
-            destination: selectedEnd,
-            travelMode: google.maps.TravelMode.DRIVING,
-            provideRouteAlternatives: true,
-            avoidHighways: !highways,
-            avoidTolls: !tolls
-        })
-        console.log(results);
-        setDirectionsResponse(results);
-    }
-    if(directionsResponse == null) {
-        calc();
-    }
-    return <div></div>
+const Trip = ({trip}) => {
+    return trip.map(function (item) {
+        console.log(item);
+        return <div><h2>Name: {item.stopName}</h2></div>
+    });
 }
 
 const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
@@ -50,6 +34,7 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
         });
         id.target.checked = true;
 
+        selectedRoute = id.target.value;
         setSelectedRoute(id.target.value);
     }
 
@@ -67,45 +52,32 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
         var directionsRenderer = new window.google.maps.DirectionsRenderer();
         directionsRenderer.setDirections(t);
         directionsRenderer.setMap(map);
-        return <div><h2>Distance: {item.legs[0].distance.text}</h2><h2>Duration: {item.legs[0].duration.text}</h2>
+        return <div className={styles.routes}><h2>Distance: {item.legs[0].distance.text}</h2><h2>Duration: {item.legs[0].duration.text}</h2>
             <GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> <DirectionsRenderer
                 directions={t}/> </GoogleMap><input
-                type="checkbox" name="myCheckbox" value={item.legs[0].distance.text} onClick={selectOnlyThis}
+                type="checkbox" name="myCheckbox" value={item.summary} onClick={selectOnlyThis}
                 checked={getChecked}/></div>
     });
 }
 
-const StopResults = ({results}) => {
-    return results.map(function (item) {
-        return <div><h2 className={globalStyles.gradientText}>Name: {item.name}</h2><h2
-            className={globalStyles.gradientText}>Address: {item.vicinity}</h2><input
-            type="checkbox" name="stops" value={item.name}/></div>
-    });
-}
-
-const StopResultsNew = ({results, markers, onStopChange}) => {
-    function test(thing){
-        // Append stop info to stored state
-        const marker = markers.find(element => element.title === thing.target.value)
-        let stop = {
-            name: marker.title,
-            location: String(marker.position.lat() + ", " + marker.position.lng()),
+const StopResultsNew = ({results, markers, trip, setTrip, updateTrip}) => {
+    function test(thing) {
+        const test = results.find(element => element.vicinity === thing.target.value)
+        console.log(thing.target.checked)
+        if (trip.find(element => element.stopName === test.stopName) === undefined){
+            if(thing.target.checked) {
+                trip.splice(1, 0, test);
+            }
         }
-        onStopChange(current => [...current, stop]);
-
-        // Notify user if stop was successfully added
-        toast.success('Successfully Added Stop!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-        });
+        else if(!thing.target.check){
+            trip.splice(trip.findIndex(element => element.stopName === test.stopName), 1);
+        }
+        setTrip(trip);
     }
     return results.map(function (item) {
-        return <div onClick={test}><h6>Name: {item.name}</h6><button value={item.name}>Add Stop</button></div>
+        return <div className={styles.stopResults}><h4>{item.stopName}</h4><h6>{item.vicinity}</h6><ReactStars count={5}
+            size={24}
+            color2={'#ffd700'} /><input onClick={test} value={item.vicinity} type="checkbox" ></input></div>
     });
 }
 
@@ -149,7 +121,7 @@ const PlacesAutocomplete = ({setSelected, placeholderText, start, setStart}) => 
 
         const results = await getGeocode({ address: val });
         const {lat, lng} = await getLatLng(results[0]);
-        setSelected({lat, lng});
+        setSelected({lat, lng, name: val});
     }
 
     return <Combobox onSelect={handleSelect}>
@@ -188,11 +160,11 @@ const CreateTrip = () => {
     const [distance, setDistance] = useState(1);
     const [showStopPref, setShowStopPref] = useState(false);
     const [showStops, setShowStops] = useState(false);
+    const [trip, setTrip] = useState([]);
     const MAX = 50;
     const maxRating = 5;
     const [rating, setRating] = useState(maxRating);
-    const [markers, setMarkers] = useState([])
-    const [selectedStops, setSelectedStops] = useState([]);
+    const markers = [];
 
     const onLoad = useCallback((map) => setMap(map), []);
     const getBackgroundSize = () => {
@@ -213,14 +185,22 @@ const CreateTrip = () => {
             map.fitBounds(bounds);
         }
         if (map && selectedStart && selectedEnd) {
+            while(trip.length > 0){
+                trip.pop();
+            }
+            setTrip([]);
             var bounds = new google.maps.LatLngBounds();
             bounds.extend(selectedStart);
             bounds.extend(selectedEnd);
             map.fitBounds(bounds);
             calculateRoute();
-            setOpen(o => !o);
+            console.log("hmm")
+            trip.push({stopName: selectedStart.name, })
+            trip.push({stopName: selectedEnd.name})
+            setTrip(trip);
+
         }
-    }, [map, selectedStart, selectedEnd]);
+    }, [map, selectedStart, selectedEnd, trip]);
 
     async function calculateRoute(){
         console.log("calculating...")
@@ -252,22 +232,6 @@ const CreateTrip = () => {
         }
     }
 
-    function PolygonArray(latitude) {
-        const R = 6378137;
-        const pi = 3.14;
-        const upper_offset = 1000;
-        const lower_offset = -1000;
-        let Lat_up = upper_offset / R;
-        let Lat_down = lower_offset / R;
-        let lat_upper = latitude + (Lat_up * 180) / pi;
-        let lat_lower = latitude + (Lat_down * 180) / pi;
-        return [lat_upper, lat_lower];
-    }
-
-    function PolygonPoints() {
-
-    }
-
     function bindInfoWindow(marker, map, infowindow, html) {
         google.maps.event.addListener(marker, 'click', function() {
             infowindow.setContent(html);
@@ -282,43 +246,13 @@ const CreateTrip = () => {
                 anchor: new google.maps.Point(18, 27),
             };
             marker.setIcon(svgMarker);
-
-            let stop = {
-                Name: marker.title,
-                Location: String(marker.position.lat() + ", " + marker.position.lng()),
-                Type: ""
-            }
-
-            setSelectedStops(current => [...current, stop]);
         });
     }
 
     async function calculateStops() {
-        //setStopsResponse([]);
         let waypoints = []
         let polyline = require( 'google-polyline' );
         waypoints = polyline.decode( directionsResponse.routes[0].overview_polyline );
-
-        /*let polypoints = waypoints
-        let PolyLength = polypoints.length;
-        let UpperBound = [];
-        let LowerBound = [];
-        for (let j = 0; j <= PolyLength - 1; j++) {
-            let NewPoints = PolygonArray(polypoints[j][0]);
-            UpperBound.push({ lat: NewPoints[0], lng: polypoints[j][1] });
-            LowerBound.push({ lat: NewPoints[1], lng: polypoints[j][1] });
-        }
-        let reversebound = LowerBound.reverse();
-        let FullPoly = UpperBound.concat(reversebound);
-
-        const PolygonBound = new google.maps.Polygon({
-            paths: FullPoly,
-            strokeColor: "#FF0000",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#FF0000",
-            fillOpacity: 0.35,
-        });*/
         var service = new google.maps.places.PlacesService(map);
         var infowindow =  new google.maps.InfoWindow({
             content: ''
@@ -333,7 +267,7 @@ const CreateTrip = () => {
             function callback(results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     for (var i = 0; i < results.length; i++) {
-
+                        //console.log(results[i]);
                         if(stopsResponse.findIndex(e => e.name === results[i].name) == -1)
                         {
                             var marker = new google.maps.Marker({
@@ -341,63 +275,16 @@ const CreateTrip = () => {
                                 map,
                                 title: results[i].name
                             });
-                            //markers.push(marker);
-                            setMarkers(current => [...current, marker]);
+                            markers.push(marker);
+                            console.log(results[i]);
                             bindInfoWindow(marker, map, infowindow, "<p>" + marker.title + "</p> <button>Add Stop</button>");
-                            stopsResponse.push({name: results[i].name});
+                            stopsResponse.push({stopName: results[i].name, vicinity: results[i].vicinity, stopLocLat: results[i].geometry.location.lat(), stopLocLong: results[i].geometry.location.lng(), stopType: results[i].types[0]});
                             setStopsResponse(stopsResponse);
                         }
                     }
                 }
             }
         }
-
-
-        /*while (stopsResponse.length > 0) {
-            stopsResponse.pop();
-            setStopsResponse(stopsResponse);
-            console.log("popp")
-        }
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: selectedStart,
-            zoom: 10
-        });
-        var request;
-        var service = new google.maps.places.PlacesService(map);
-        if (restaurants) {
-            request = {
-                location: selectedStart,
-                radius: '500',
-                types: ['restaurant']
-            };
-            service.nearbySearch(request, callback);
-        }
-        if(gasStations) {
-            request = {
-                location: selectedStart,
-                radius: '500',
-                types: ['gas_station']
-            };
-            service.nearbySearch(request, callback);
-        }
-
-        if(lodging){
-            request = {
-                location: selectedStart,
-                radius: '500',
-                types: ['lodging']
-            };
-            service.nearbySearch(request, callback);
-        }
-
-        if(attractions) {
-            request = {
-                location: selectedStart,
-                radius: '500',
-                types: ['amusement_park']
-            };
-            service.nearbySearch(request, callback);
-        }*/
     }
     const handleTolls = () => {
         setTolls(!tolls);
@@ -422,22 +309,9 @@ const CreateTrip = () => {
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
             let id = (await myAxios.get("/register/curUser")).data.user_id;
             console.log(id);
-            console.log(selectedStops)
             const response = await myAxios.post(
                 "/create-trip",
-                JSON.stringify({
-                    tripName,
-                    start,
-                    startLoc,
-                    end,
-                    endLoc,
-                    date,
-                    tolls,
-                    highways,
-                    user_id: id,
-                    selectedRoute,
-                    selectedStops
-                }),
+                JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, userid: id, user_id: id, selectedRoute, route: {routeName : selectedRoute, stops: trip}}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
@@ -512,11 +386,12 @@ const CreateTrip = () => {
                                                                                           value={highways} checked={highways}
                                                                                           onChange={handleHighways}
                             /></h2>
+                            {selectedRoute != "" && calculateStops() && <div className={styles.scrollable}><StopResultsNew results={stopsResponse} markers={markers} trip={trip} setTrip={setTrip}/></div>}
                         </div>
                         { !showStopPref &&
                         <div className={styles.stopFloatButton}>
                             <button onClick={()=>{setShowStopPref(!showStopPref)}}>Stop Preferences</button>
-                            { selectedRoute != "" && <button onClick={()=>{calculateStops().then(r => setShowStops(!showStops)); }}>Stop Suggestions</button>}
+                            { trip.length > 0 && <Trip trip={trip} /> }
                         </div>}
                         { showStopPref && <div className={styles.stopFloat}>
                             <h2 className={globalStyles.gradientText}>Distance to Route: <input type={"range"} min={"1"} style={getBackgroundSize()} max={MAX} onChange={(e) => setDistance(e.target.value)} value={distance}/></h2><h6>{distance} mi</h6>
@@ -539,20 +414,15 @@ const CreateTrip = () => {
                             /></h2>
                             <button onClick={()=>{setShowStopPref(!showStopPref)}}>Close</button>
                         </div>}
-                        { showStops && <div className={styles.stopFloat}>
-                            <StopResultsNew results={stopsResponse} markers={markers} onStopChange={setSelectedStops} /><button onClick={()=>setShowStops(!showStops)}>Close</button></div>
-                        }
                         {isLoaded && <GoogleMap id="map" zoom={10} center={defaultStart} onLoad={onLoad} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
                             {selectedStart && <Marker position={selectedStart}/>}
                             {selectedEnd && <Marker position={selectedEnd}/>}
                         </GoogleMap>}
-                        <Popup open={open} closeOnDocumentClick onClose={closeModal}>
-                        <div className={styles.results}>
+                        {selectedStart && selectedEnd && (!selectedRoute || open) && <div className={styles.floatRoutes}>
 
                             {directionsResponse != null ? (<div className={styles.menu}><Results results={directionsResponse} setSelectedRoute={setSelectedRoute} selectedRoute={selectedRoute} map={map}/></div>) : (<></>)}
-                        </div>
                         <h2 className={globalStyles.gradientText}>Chosen Route: {selectedRoute}</h2>
-                        </Popup>
+                        </div>}
                         <button type="button" onClick={handleSubmit}>Create Trip</button>
                     </div>
                 </div>
@@ -560,5 +430,4 @@ const CreateTrip = () => {
         </div>
     )
 }
-
 export default CreateTrip
