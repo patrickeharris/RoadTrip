@@ -1,5 +1,5 @@
 import styles from "./styles/index.module.css";
-import {Navbar} from "../components";
+import {Navbar, AddAPlaylist} from "../components";
 import {Footer} from "../containers";
 import React from "react";
 
@@ -10,7 +10,7 @@ function AddPlaylist() {
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
-                <AddPlaylist />
+                <AddAPlaylist />
                 <Footer />
             </div>
         </div>

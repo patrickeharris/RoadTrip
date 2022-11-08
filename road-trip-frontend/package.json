@@ -7,8 +7,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@bessemer/cornerstone": "^1.0.17",
-    "@emailjs/browser": "3.3.0",
+    "@bessemer/cornerstone": "1.0.23",
+    "@emailjs/browser": "^3.9.1",
     "@material-ui/core": "4.11.0",
     "@material-ui/icons": "4.9.1",
     "@reach/combobox": "^0.17.0",

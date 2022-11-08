@@ -979,7 +979,7 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bessemer/cornerstone@^1.0.17":
+"@bessemer/cornerstone@1.0.23":
   version "1.0.23"
   resolved "https://registry.yarnpkg.com/@bessemer/cornerstone/-/cornerstone-1.0.23.tgz#b5d2f992a8bda7a0f160fb378040420e60d63705"
   integrity sha512-8+aQ/t/+I6Ef1lyk/SF55bnxhPtlbCEHWSNb8YgdshQLio0RtifJgshSA5fGMcP3c21H/6hmRX47Jtq4dojNGA==
@@ -995,10 +995,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@emailjs/browser@3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@emailjs/browser/-/browser-3.3.0.tgz#d2556552b3b716a1a9a3ca3635cc1f8e02ce8723"
-  integrity sha512-FytlkhIfHC6E5mEaFEpDtM2FmGv8U3SInH91dMglpOu+vQqchrlNIWE6e58TN8EJp+1uW99tUbzuopouigVvbQ==
+"@emailjs/browser@^3.9.1":
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/@emailjs/browser/-/browser-3.9.1.tgz#9d3824ba332e7441725d07a157cb913bc34a9928"
+  integrity sha512-8xhwTUoTDG5Tqjt8uC28zwmrwcjGhApXwUMyUaEmhhUVmCHhefetTlIR7Mlm4Ae8+Nm0+sC3oPe3K+BcR12QWA==
 
 "@emotion/hash@^0.8.0":
   version "0.8.0"
