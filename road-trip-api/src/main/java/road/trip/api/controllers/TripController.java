@@ -51,12 +51,13 @@ public class TripController {
         return stopService.getStopsByTripId(tripId);
     }
 
-    /*
-    @DeleteMapping("/delete-trip")
-    public Trip deleteTrip(Long tripId) {
+
+    @DeleteMapping("/cancel-trip")
+    public Trip deleteTrip(@RequestParam Long tripId) {
         return tripService.deleteTrip(tripId);
     }
 
+/*
     @GetMapping("/recommended-stops")
     public Iterable<Stop> getRecommendedStops(Long routeId) {
 

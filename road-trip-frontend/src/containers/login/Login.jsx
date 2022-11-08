@@ -58,6 +58,7 @@ const Login = () => {
                             draggable: true,
                             progress: undefined,
                         });
+                        window.sessionStorage.setItem('spotifyLogged', 'false');
                         window.location.replace("/trip-dashboard");
                     } else {
                         toast.warn('Your password is incorrect.', {

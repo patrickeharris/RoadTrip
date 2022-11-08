@@ -38,7 +38,7 @@ enum Keys {
 }
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(allowCredentials = "true", origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class PlaylistController {
 
     @Autowired
@@ -54,7 +54,7 @@ public class PlaylistController {
 
     UserService userService;
 
-    @GetMapping("spotify-login")
+    @GetMapping("/spotify-login")
     @ResponseBody
     public String spotifyLogin() {
         AuthorizationCodeUriRequest authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
@@ -66,7 +66,7 @@ public class PlaylistController {
         return uri.toString();
     }
 
-    @GetMapping(value = "get-spotify-user-code")
+    @GetMapping(value = "/get-spotify-user-code")
     public String getSpotifyUserCode(@RequestParam("code") String userCode, HttpServletResponse response)
             throws IOException {
         code = userCode;
@@ -86,38 +86,34 @@ public class PlaylistController {
             System.out.println("Error: " + e.getMessage());
         }
 
-        final GetListOfCurrentUsersPlaylistsRequest getListOfCurrentUsersPlaylistsRequest =
-                spotifyApi.getListOfCurrentUsersPlaylists().build();
-
-        try {
-
-            final Paging<PlaylistSimplified> playlistPaging = getListOfCurrentUsersPlaylistsRequest.execute();
-            for (int i = 0; i < playlistPaging.getItems().length; i++) {
-                System.out.println(playlistPaging.getItems()[i].getName());
-                playlistService.store(playlistPaging.getItems()[i]);
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        response.sendRedirect("http://trailblazers.gq/");
+        response.sendRedirect("http://trailblazers.gq/add-playlist");
         return spotifyApi.getAccessToken();
     }
 
-    @GetMapping(value="playlists-all")
-    public Iterable<Playlist> getAllPlaylistsByUser(@RequestParam Long user_id) {
+    @GetMapping(value="/playlists-all")
+    public @ResponseBody Iterable<Playlist> getAllPlaylistsByUser(@RequestParam Long user_id) {
+        System.out.println("here");
         return playlistService.getAllPlaylistsByUser(user_id);
     }
 
-    @PostMapping(value="add-playlist")
+    @PostMapping(value="/add-playlist")
     public Playlist addPlaylist(@RequestParam Long trip_id, @RequestParam Long playlistID) {
         return playlistService.addPlaylist(trip_id, playlistID);
     }
 
-    /*
-    @GetMapping(value="user-playlists")
-    public PlaylistSimplified[] getUserTopArtists() {
+    @PostMapping(value="/save-playlist")
+    public long savePlaylist(@RequestBody Playlist playlist) {
+        return playlistService.savePlaylist(playlist);
+
+    }
+
+    @GetMapping(value="/find-playlist")
+    public @ResponseBody Playlist findPlaylist(@RequestParam Long id) {
+        return playlistService.findPlaylistById(id);
+    }
+
+    @GetMapping(value="/user-playlists")
+    public PlaylistSimplified[] getUserTopPlaylists() {
 
         final GetListOfCurrentUsersPlaylistsRequest getListOfCurrentUsersPlaylistsRequest =
                 spotifyApi.getListOfCurrentUsersPlaylists().build();
@@ -133,8 +129,4 @@ public class PlaylistController {
 
         return new se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified[0];
     }
-
-     */
-
-
 }
