@@ -105,21 +105,15 @@ public class TripService {
         return tripRepository.findAll();
     }
 
-    /*
+
     public Trip deleteTrip(Long trip_Id) {
-
+        Trip trip = findTripById(trip_Id);
+        tripRepository.deleteById(trip_Id);
+        return trip;
     }
-
+/*
     public void chooseRoute(Long routeId) {
 
     }
-
-    public void choosePlaylist(Long playlistId) {
-
-    }
-
-    public List<Playlist> getRecommendedPlaylists(Long tripId) {
-
-    }
-    */
+*/
 }

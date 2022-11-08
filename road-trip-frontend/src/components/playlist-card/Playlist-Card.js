@@ -21,15 +21,15 @@ import styles from "./playlist.card.module.css"
 
 // 1. Card Class /////////////////////////////////////////////
 function CardImage(props) {
-    const isImageURL = props.image;
+    const isImageURL = "https://www.protocol.com/media-library/spotify-app-with-headphones-on.png?id=29171621&width=1245&height=700&quality=85&coordinates=0%2C0%2C0%2C0";
     // If an image was passed:
     if (isImageURL) {
         return (
             <div className={styles.styleImage}>
                 <img
                     style={{ width: props.width + "px", marginTop: "-8%" }}
-                    src={props.image}
-                    alt="Seattle"
+                    src={"https://www.protocol.com/media-library/spotify-app-with-headphones-on.png?id=29171621&width=1245&height=700&quality=85&coordinates=0%2C0%2C0%2C0"}
+                    alt="Spotify"
                 />
             </div>
         );

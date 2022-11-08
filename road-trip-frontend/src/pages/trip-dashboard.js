@@ -1,11 +1,9 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
 import styles from "./styles/index.module.css";
 import {Navbar, Card, TripList} from "../components";
 import {Footer} from "../containers";
-import {Button} from "react-bootstrap";
-import Carousel from "react-multi-carousel";
 import 'react-multi-carousel/lib/styles.css';
+
 const responsive = {
     superLargeDesktop: {
         // the naming can be any, depends on you.
