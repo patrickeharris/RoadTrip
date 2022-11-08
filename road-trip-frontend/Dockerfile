@@ -1,11 +1,11 @@
-FROM node:12 AS build
+FROM node:16.17.0 AS build
 WORKDIR /build
 COPY . .
 
 RUN yarn install
 RUN yarn run build
 
-FROM node:12
+FROM node:16.17.0
 WORKDIR /app
 COPY --from=build /build .
 
