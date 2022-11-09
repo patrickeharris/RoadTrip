@@ -99,3 +99,23 @@
         line-height: 16px;
     }
 }
+
+.table{
+    border: 1px solid;
+    color: orange;
+}
+
+.tr{
+    border: 1px solid;
+    color: orange;
+}
+
+.th{
+    border: 1px solid orange;
+    color: mediumpurple;
+}
+
+.td{
+    border: 1px solid orange;
+    color: white;
+}

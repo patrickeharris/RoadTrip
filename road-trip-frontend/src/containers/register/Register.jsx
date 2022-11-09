@@ -115,7 +115,6 @@ const Register = () => {
             }, function(error) {
                 console.log('FAILED...', error);
             });
-        window.location.replace("login");
     }
 
     return (

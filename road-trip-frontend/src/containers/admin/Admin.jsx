@@ -12,31 +12,34 @@ class Admin extends React.Component{
     }
 
     componentDidMount() {
-        const fetchUserEmail = async () => {
+        const fetchUserData = async () => {
             const response = (await myAxios.get("/register/users")).data;
             const users  = response;
             this.setState({
                 users
             });
         };
-        fetchUserEmail();
+        fetchUserData();
     }
 
     handleRemove = async (user_id) => {
         console.log(user_id)
         try {
-            const response = await myAxios.delete(
-                "/profile/delete", {headers: {
+            const response = await myAxios.delete("/profile/delete", {
+                    headers: {
                         "Content-Type": "application/json",
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
                     },
-                    data: {user_id}});
+                    data: {
+                        user_id
+                    }
+                });
         } catch (err) {
             if (!err?.response) {
                 console.log("No Server Response");
             } else {
-                console.log("Registration Failed");
+                console.log("User Delete Failed");
                 console.log(err?.response);
             }
         }
@@ -44,24 +47,25 @@ class Admin extends React.Component{
 
     render(){
         return (
-            <div>
-                <table>
+            <div className={styles.admin}>
+                <h1 className={globalStyles.gradientText}>All Users</h1>
+                <table className={styles.table}>
                     <tbody>
-                        <tr>
-                            <th>User ID</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Remove User</th>
+                        <tr className={styles.tr}>
+                            <th className={styles.th}>User ID</th>
+                            <th className={styles.th}>First Name</th>
+                            <th className={styles.th}>Last Name</th>
+                            <th className={styles.th}>Email</th>
+                            <th className={styles.th}>Remove User</th>
                         </tr>
                         {this.state.users.map(user =>{
                             return [
-                                <tr>
-                                    <td>{user.user_id}</td>
-                                    <td>{user.firstName}</td>
-                                    <td>{user.lastName}</td>
-                                    <td>{user.email}</td>
-                                    <td><button onClick={() => this.handleRemove(user.user_id)}>Remove User</button></td>
+                                <tr className={styles.tr}>
+                                    <td className={styles.td}>{user.user_id}</td>
+                                    <td className={styles.td}>{user.firstName}</td>
+                                    <td className={styles.td}>{user.lastName}</td>
+                                    <td className={styles.td}>{user.email}</td>
+                                    <td className={styles.td}><button className={styles.button} onClick={() => this.handleRemove(user.user_id)}>Remove User</button></td>
                                 </tr>
                             ];
                         })}
