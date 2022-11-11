@@ -369,7 +369,7 @@ const CreateTrip = () => {
             }
         }
         //Sending trip confirmation email
-        const response = (await myAxios.get("/register/curUser")).data;
+        /*const response = (await myAxios.get("/register/curUser")).data;
         let email = response.email;
         const emailParams = {
             send_to: email,
@@ -383,7 +383,7 @@ const CreateTrip = () => {
                 console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
                 console.log('FAILED...', error);
-            });
+            });*/
     }
     const containerStyle = {
         width: '1280px',
