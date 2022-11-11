@@ -21,14 +21,6 @@ public class StopService {
         List<Stop> finalStops = new ArrayList<>();
         List<Stop> stops = stopRepository.findAll();
 
-        /*stops.forEach(s -> {
-            Long id = s.getTrip_id();
-            if (id != null) {
-                if (s.getTrip_id().equals(tripId)) {
-                    finalStops.add(s);
-                }
-            }
-        });*/
         finalStops = tripService.findTripById(tripId).getRoute().getStops();
 
         return finalStops;
