@@ -42,31 +42,41 @@ export default class TripList extends Component {
     render() {
         const { data, curID } = this.state;
 
-        const itemList = data.map(function (item) {
+        const itemList = data.map( function (item) {
             console.log(item);
             if (item.user_id === curID) {
                 console.log(item);
                 const description = "Start: " + item.start + "\n End: " + item.end + "\n Date: " + item.date;
+                const id = item.trip_id;
+
                 return <div><Card title={item.tripName} description={description}
-                                  playlistButton={<button onClick={function addPlaylist() {
-                                      window.sessionStorage.setItem('curTrip', item.trip_id);
-                                      if (window.sessionStorage.getItem('spotifyLogged') === 'true') {
-                                          window.location.replace("/add-playlist");
-                                      } else {
-                                          window.sessionStorage.setItem('spotifyLogged', 'true');
-                                          fetch("http://trailblazers.gq:8080/spotify-login",  {headers: {"Content-Type": "application/json",
-                                                  'Access-Control-Allow-Origin' : '*',
-                                                  'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',}})
-                                              .then((response) => response.text())
-                                              .then((response) => {
-                                                  window.location.replace(response);
+                                  playlistButton=
+                                      {
+
+                                          <button onClick={function addPlaylist() {
+                                          window.sessionStorage.setItem('curTrip', item.trip_id);
+                                          console.log(window.sessionStorage.getItem('spotifyLogged'));
+                                          if (window.sessionStorage.getItem('spotifyLogged') === 'true') {
+                                              window.location.replace("/add-playlist");
+                                          } else {
+                                              window.sessionStorage.setItem('spotifyLogged', 'true');
+                                              fetch("http://trailblazers.gq:8080/spotify-login", {
+                                                  headers: {
+                                                      "Content-Type": "application/json",
+                                                      'Access-Control-Allow-Origin': '*',
+                                                      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                                                  }
                                               })
-                                              .catch((error) => {
-                                                  console.log(error);
-                                              })
-                                          window.location.replace("/add-playlist");
-                                      }
-                                  }}>Add Playlist</button>}
+                                                  .then((response) => response.text())
+                                                  .then((response) => {
+                                                      window.location.replace(response);
+                                                  })
+                                                  .catch((error) => {
+                                                      console.log(error);
+                                                  })
+                                          }
+                                      }}>Add Playlist</button>
+                                  }
                                   editButton={<button onClick={function editTrip() {
                                       window.sessionStorage.setItem('curTrip', item.trip_id);
                                       window.location.replace('/edit-trip');
@@ -75,6 +85,18 @@ export default class TripList extends Component {
                                       window.sessionStorage.setItem('curTrip', item.trip_id);
                                       window.location.replace('/rate-trip');
                                   }}>Rate Trip</button>}
+                                  cancelButton={<button onClick={async function cancelTrip(){
+
+                                      await myAxios.delete("/cancel-trip",{
+                                          params: {tripId: id},
+                                          headers: {
+                                              "Content-Type": "application/json",
+                                              'Access-Control-Allow-Origin': '*',
+                                              'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                                          }});
+                                      window.location.replace("/trip-dashboard");
+
+                                  }}>Cancel Trip</button>}
                                   startLoc={item.startLoc} endLoc={item.endLoc} selectedRoute={item.selectedRoute} stops={item.route.stops}/>
                 </div>
             }

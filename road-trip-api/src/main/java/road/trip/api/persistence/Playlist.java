@@ -28,7 +28,4 @@ public class Playlist {
 
     @Column(name = "playlistLink")
     String playlistLink;
-
-    @Column(name = "imageLink")
-    String imageLink;
 }

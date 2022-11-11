@@ -17,7 +17,11 @@ import ReactStars from 'react-stars';
 const Trip = ({trip}) => {
     return trip.map(function (item) {
         console.log(item);
-        return <div><h2>Name: {item.stopName}</h2></div>
+        //return <div><h2>Name: {item.stopName}</h2></div>
+        return <li className={`${styles.listContainer} ${styles.show}`}>
+            <div className={`${styles.listItem} ${styles.show}`}>{item.stopName}</div>
+        </li>
+
     });
 }
 
@@ -61,12 +65,32 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
 }
 
 const StopResultsNew = ({results, markers, trip, setTrip, updateTrip}) => {
+    function removeListItem(e){
+        let container = e.target;
+        container.classList.remove(styles.show);
+        container.parentElement.classList.remove(styles.show);
+        /*const listItem = container.querySelector('.listItem');
+        listItem.classList.remove(styles.show);
+        container.ontransitionend = function(){
+            container.remove();
+        }*/
+    }
     function test(thing) {
         const test = results.find(element => element.vicinity === thing.target.value)
         console.log(thing.target.checked)
         if (trip.find(element => element.stopName === test.stopName) === undefined){
             if(thing.target.checked) {
-                trip.splice(1, 0, test);
+                trip.splice(trip.length - 1, 0, test);
+                console.log(trip);
+                const t = document.getElementById("tripList");
+                const container = document.createElement('li'); container.classList.add(styles.listContainer); container.setAttribute('role', 'listitem');
+                const listItem = document.createElement('div'); listItem.classList.add(styles.listItem); listItem.innerHTML = test.stopName;
+                container.onclick = removeListItem;
+                container.append(listItem);
+                t.insertBefore(container, t.lastChild);
+                setTimeout(function(){
+                    container.classList.add(styles.show); listItem.classList.add(styles.show);
+                }, 15);
             }
         }
         else if(!thing.target.check){
@@ -391,7 +415,11 @@ const CreateTrip = () => {
                         { !showStopPref &&
                         <div className={styles.stopFloatButton}>
                             <button onClick={()=>{setShowStopPref(!showStopPref)}}>Stop Preferences</button>
-                            { trip.length > 0 && <Trip trip={trip} /> }
+                            { trip.length > 0 && <ul className={styles.list} id="tripList"><li className={`${styles.listContainer} ${styles.show}`}>
+                                <div className={`${styles.listItem} ${styles.show}`}>{start}</div>
+                            </li><li className={`${styles.listContainer} ${styles.show}`}>
+                                <div className={`${styles.listItem} ${styles.show}`}>{end}</div>
+                            </li></ul>}
                         </div>}
                         { showStopPref && <div className={styles.stopFloat}>
                             <h2 className={globalStyles.gradientText}>Distance to Route: <input type={"range"} min={"1"} style={getBackgroundSize()} max={MAX} onChange={(e) => setDistance(e.target.value)} value={distance}/></h2><h6>{distance} mi</h6>

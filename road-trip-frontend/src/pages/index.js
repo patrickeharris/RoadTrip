@@ -12,7 +12,11 @@ function HomePage() {
         if (window.sessionStorage.getItem('loggedIn') === null) {
             window.sessionStorage.setItem('loggedIn', 'false');
         }
+        if (window.sessionStorage.getItem('spotifyLogged') === null) {
+            window.sessionStorage.setItem('spotifyLogged', 'false');
+        }
     });
+
 
     return (
         <div className={styles.wrapper}>

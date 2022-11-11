@@ -32,7 +32,7 @@ public class TripController {
     @PostMapping("/create-trip")
     public Trip createTrip(@RequestBody Trip trip) throws GeneralSecurityException, IOException, MessagingException {
         Trip t = tripService.makeTrip(trip);
-        stopService.addStops(trip.getSelectedStops(), t.getTrip_id());
+        stopService.addStops(trip.getRoute().getStops(), t.getTrip_id());
         return t;
     }
 
@@ -51,12 +51,13 @@ public class TripController {
         return stopService.getStopsByTripId(tripId);
     }
 
-    /*
-    @DeleteMapping("/delete-trip")
-    public Trip deleteTrip(Long tripId) {
+
+    @DeleteMapping("/cancel-trip")
+    public Trip deleteTrip(@RequestParam Long tripId) {
         return tripService.deleteTrip(tripId);
     }
 
+/*
     @GetMapping("/recommended-stops")
     public Iterable<Stop> getRecommendedStops(Long routeId) {
 
