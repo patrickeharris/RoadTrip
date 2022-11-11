@@ -109,7 +109,7 @@ const Register = () => {
             send_to: email,
             to_name: firstName + ' ' + lastName
         };
-        emailjs.send('service_qf6j9ma', 'template_iwzl8bb', emailParams, 'BhNdV_jnMUg4W-obV')
+        emailjs.send('service_9hfbdhb', 'template_iwzl8bb', emailParams, 'BhNdV_jnMUg4W-obV')
             .then(function(response) {
                 console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
