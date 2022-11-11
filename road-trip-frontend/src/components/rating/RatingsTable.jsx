@@ -5,7 +5,7 @@ import axios from "axios";
 const RatingsTable = ({tripId}) => {
     const [ratings, setRatings] = useState([]);
 
-    let url = "/rating/ratings";
+    let url = "http://trailblazers.gq:8080/rating/ratings";
 
     if (tripId != null) {
         url += "?tripId=" + tripId
