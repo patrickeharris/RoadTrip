@@ -103,7 +103,7 @@ const Rating = ({ tripId }) => {
                     {
                         stops.map((stop, index) => {
                             return (
-                                <RatingCard name={stop.name} stopRatings={stopRatings} setStopRatings={setStopRatings} />
+                                <RatingCard name={stop.stopName} stopRatings={stopRatings} setStopRatings={setStopRatings} />
                             )
                         })
                     }
