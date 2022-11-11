@@ -83,7 +83,7 @@ export default class TripList extends Component {
                                   }}>Edit Trip</button>}
                                   rateButton={<button onClick={function rateTrip() {
                                       window.sessionStorage.setItem('curTrip', item.trip_id);
-                                      window.location.replace('/rate-trip');
+                                      window.location.replace('/rate-trip?tripId=' + item.trip_id);
                                   }}>Rate Trip</button>}
                                   cancelButton={<button onClick={async function cancelTrip(){
 
