@@ -64,7 +64,11 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
     });
 }
 
-const StopResultsNew = ({results, markers, trip, setTrip, updateTrip}) => {
+const StopResultsNew = ({results, markers, trip, setTrip, updateTrip, city}) => {
+    let numRestaurants = 0;
+    let numGas = 0;
+    let numLodging = 0;
+    let numAttractions = 0;
     function removeListItem(e){
         let container = e.target;
         container.classList.remove(styles.show);
@@ -99,9 +103,34 @@ const StopResultsNew = ({results, markers, trip, setTrip, updateTrip}) => {
         setTrip(trip);
     }
     return results.map(function (item) {
-        return <div className={styles.stopResults}><h4>{item.stopName}</h4><h6>{item.vicinity}</h6><ReactStars count={5}
-            size={24}
-            color2={'#ffd700'} /><input onClick={test} value={item.vicinity} type="checkbox" ></input></div>
+        if(city === "" || item.vicinity.toLowerCase().includes(city.toLowerCase())) {
+            console.log(item.stopType);
+            if(item.stopType === "restaurant" || item.stopType === "meal_takeaway" || item.stopType === "meal_delivery" || item.stopType === "cafe" || item.stopType === "bar"){
+                if(numRestaurants > 10){
+                    return;
+                }
+                numRestaurants++;
+            }
+            if(item.stopType === "gas_station" || item.stopType === "convenience_store" ){
+                if(numGas > 10){
+                    return;
+                }
+                numGas++;
+            }
+            if(item.stopType === "lodging"){
+                if(numLodging > 10){
+                    return;
+                }
+                numLodging++;
+            }
+            return <div className={styles.stopResults}><img src={item.image} width="50" height="50"/>
+                <h4>{item.stopName}</h4><h6>{item.vicinity}</h6><ReactStars count={5} value={item.rating} edit={false}
+                                                                            size={24}
+                                                                            color2={'#ffd700'}/><input onClick={test}
+                                                                                                       value={item.vicinity}
+                                                                                                       type="checkbox"></input>
+            </div>
+        }
     });
 }
 
@@ -185,6 +214,9 @@ const CreateTrip = () => {
     const [showStopPref, setShowStopPref] = useState(false);
     const [showStops, setShowStops] = useState(false);
     const [trip, setTrip] = useState([]);
+    const [city, setCity] = useState("");
+    let calc = false;
+    const [calcFinsihed, setCalcFinished] = useState(false);
     const MAX = 50;
     const maxRating = 5;
     const [rating, setRating] = useState(maxRating);
@@ -274,6 +306,8 @@ const CreateTrip = () => {
     }
 
     async function calculateStops() {
+        stopsResponse.splice(0, stopsResponse.length)
+        setStopsResponse(stopsResponse)
         let waypoints = []
         let polyline = require( 'google-polyline' );
         waypoints = polyline.decode( directionsResponse.routes[0].overview_polyline );
@@ -281,18 +315,44 @@ const CreateTrip = () => {
         var infowindow =  new google.maps.InfoWindow({
             content: ''
         });
+        console.log("calc")
+
         for(let j = 0;j< waypoints.length;j+=20) {
-            service.nearbySearch({
-                location: {lat: waypoints[j][0], lng: waypoints[j][1]},
-                radius: distance * 1000,
-                type: ['restaurant']
-            }, callback);
+            if(restaurants) {
+                service.nearbySearch({
+                    location: {lat: waypoints[j][0], lng: waypoints[j][1]},
+                    radius: distance * 1000,
+                    type: ['restaurant']
+                }, callback);
+            }
+            if(lodging) {
+                service.nearbySearch({
+                    location: {lat: waypoints[j][0], lng: waypoints[j][1]},
+                    radius: distance * 1000,
+                    type: ['lodging']
+                }, callback);
+            }
+            if(gasStations) {
+                service.nearbySearch({
+                    location: {lat: waypoints[j][0], lng: waypoints[j][1]},
+                    radius: distance * 1000,
+                    type: ['gas_station']
+                }, callback);
+            }
+            if(attractions) {
+                service.nearbySearch({
+                    location: {lat: waypoints[j][0], lng: waypoints[j][1]},
+                    radius: distance * 1000,
+                    type: ['landmark']
+                }, callback);
+            }
+
 
             function callback(results, status) {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     for (var i = 0; i < results.length; i++) {
                         //console.log(results[i]);
-                        if(stopsResponse.findIndex(e => e.name === results[i].name) == -1)
+                        if(stopsResponse.findIndex(e => e.stopName === results[i].name) === -1 && results[i].rating >= rating)
                         {
                             var marker = new google.maps.Marker({
                                 position: results[i].geometry.location,
@@ -300,12 +360,13 @@ const CreateTrip = () => {
                                 title: results[i].name
                             });
                             markers.push(marker);
-                            console.log(results[i]);
                             bindInfoWindow(marker, map, infowindow, "<p>" + marker.title + "</p> <button>Add Stop</button>");
-                            stopsResponse.push({stopName: results[i].name, vicinity: results[i].vicinity, stopLocLat: results[i].geometry.location.lat(), stopLocLong: results[i].geometry.location.lng(), stopType: results[i].types[0]});
+                            stopsResponse.push({stopName: results[i].name, vicinity: results[i].vicinity, stopLocLat: results[i].geometry.location.lat(), stopLocLong: results[i].geometry.location.lng(), stopType: results[i].types[0], image: results[i].icon, rating: results[i].rating});
                             setStopsResponse(stopsResponse);
                         }
                     }
+                    stopsResponse.sort(function(a, b){return b.rating - a.rating});
+                    setStopsResponse(stopsResponse)
                 }
             }
         }
@@ -410,11 +471,11 @@ const CreateTrip = () => {
                                                                                           value={highways} checked={highways}
                                                                                           onChange={handleHighways}
                             /></h2>
-                            {selectedRoute != "" && calculateStops() && <div className={styles.scrollable}><StopResultsNew results={stopsResponse} markers={markers} trip={trip} setTrip={setTrip}/></div>}
+                            {selectedRoute != "" && <div className={styles.scrollable}><input type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} value={city}/><StopResultsNew results={stopsResponse} markers={markers} trip={trip} setTrip={setTrip} city={city}/></div>}
                         </div>
                         { !showStopPref &&
                         <div className={styles.stopFloatButton}>
-                            <button onClick={()=>{setShowStopPref(!showStopPref)}}>Stop Preferences</button>
+                            <button onClick={()=>{setShowStopPref(!showStopPref)}}>Preferences</button>
                             { trip.length > 0 && <ul className={styles.list} id="tripList"><li className={`${styles.listContainer} ${styles.show}`}>
                                 <div className={`${styles.listItem} ${styles.show}`}>{start}</div>
                             </li><li className={`${styles.listContainer} ${styles.show}`}>
@@ -440,6 +501,7 @@ const CreateTrip = () => {
                                                                                              value={attractions} checked={attractions}
                                                                                              onChange={() => {setAttractions(!attractions)}}
                             /></h2>
+                            <button onClick={()=>{calculateStops()}}>Submit</button>
                             <button onClick={()=>{setShowStopPref(!showStopPref)}}>Close</button>
                         </div>}
                         {isLoaded && <GoogleMap id="map" zoom={10} center={defaultStart} onLoad={onLoad} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
