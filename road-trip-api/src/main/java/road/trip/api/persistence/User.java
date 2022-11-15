@@ -3,9 +3,12 @@ package road.trip.api.persistence;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+
 import java.util.Objects;
 
 @Data
@@ -13,7 +16,7 @@ import java.util.Objects;
 @Table(name = User.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
     public static final String TABLE_NAME = "User";
 
     @Column(name = "first_name")
@@ -27,6 +30,9 @@ public class User {
 
     @Column(name = "password")
     String password;
+
+    @Column(name = "username")
+    String username;
 
     @Column(name = "password_hash")
     String salt;
@@ -47,8 +53,6 @@ public class User {
 
      */
 
-    AuthorizationCodeCredentials spotifyAccountToken;
-
     Boolean enabled = false;
 
     @Id
@@ -61,6 +65,7 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.username = email;
     }
 
     public void setUser_id(Long user_id) {
@@ -69,6 +74,36 @@ public class User {
 
     public Long getUser_id() {
         return user_id;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     @Override

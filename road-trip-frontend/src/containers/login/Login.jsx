@@ -37,7 +37,7 @@ const Login = () => {
                 if (found === true) {
                     if (bcrypt.compareSync(password, response[index].password)) {
                         window.sessionStorage.setItem('loggedIn', 'true');
-                        const response = await myAxios.post(
+                        await myAxios.post(
                             "/login",
                             null,
                             {
@@ -48,7 +48,22 @@ const Login = () => {
                                     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
                                 },
                                 withCredentials: true,
+                            }
+                        );
+
+                        const response = await myAxios.post(
+                            "/authenticate",
+                            null,
+                            {
+                                params: {username: email, password: password},
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                                },
+                                withCredentials: true,
                             });
+                        window.sessionStorage.setItem('token', response.data);
                         toast.success('Successfully Logged In!', {
                             position: "top-right",
                             autoClose: 5000,
