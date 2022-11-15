@@ -23,15 +23,25 @@ class Admin extends React.Component{
     }
 
     handleRemove = async (user_id) => {
-        console.log(user_id)
+        const fetchUserEmail = async () => {
+            const response = (await myAxios.get("/register/users")).data;
+            const users  = response;
+            this.setState({
+                users
+            });
+        };
         try {
             const response = await myAxios.delete(
-                "/profile/delete", {headers: {
+                "/profile/delete",
+                {
+                    params: {user_id},
+                    headers: {
                         "Content-Type": "application/json",
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
                     },
-                    data: {user_id}});
+                    withCredentials: true,
+                });
         } catch (err) {
             if (!err?.response) {
                 console.log("No Server Response");
@@ -40,11 +50,12 @@ class Admin extends React.Component{
                 console.log(err?.response);
             }
         }
+        fetchUserEmail();
     }
 
     render(){
         return (
-            <div>
+            <div className={styles.profileContent}>
                 <table>
                     <tbody>
                         <tr>

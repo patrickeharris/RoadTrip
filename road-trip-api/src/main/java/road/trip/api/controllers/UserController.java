@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @DeleteMapping("/profile/delete")
-    public User deleteAccount(Long user_id) {
+    public User deleteAccount(@RequestParam Long user_id) {
         return userService.deleteAccount(user_id);
     }
 }
