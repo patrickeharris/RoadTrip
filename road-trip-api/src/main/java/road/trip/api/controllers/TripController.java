@@ -24,9 +24,6 @@ public class TripController {
     private TripService tripService;
 
     @Autowired
-    private RouteService routeService;
-
-    @Autowired
     private StopService stopService;
 
     @PostMapping("/create-trip")
@@ -51,17 +48,8 @@ public class TripController {
         return stopService.getStopsByTripId(tripId);
     }
 
-
     @DeleteMapping("/cancel-trip")
     public Trip deleteTrip(@RequestParam Long tripId) {
         return tripService.deleteTrip(tripId);
     }
-
-/*
-    @GetMapping("/recommended-stops")
-    public Iterable<Stop> getRecommendedStops(Long routeId) {
-
-        return routeService.getRecommendedStops(routeId);
-    }
-     */
 }

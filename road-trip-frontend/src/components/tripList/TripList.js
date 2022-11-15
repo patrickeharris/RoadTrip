@@ -34,7 +34,11 @@ export default class TripList extends Component {
     }
     async componentDidMount() {
         const data = (await myAxios.get(
-            "/trips"
+            "/trips", {
+                headers: {
+                    'Token': window.sessionStorage.getItem('token'),
+                }
+            }
         )).data;
         const curID = (await myAxios.get("/register/curUser")).data.user_id;
         this.setState({ data, curID });
