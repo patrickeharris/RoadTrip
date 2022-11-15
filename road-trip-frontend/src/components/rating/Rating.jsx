@@ -25,7 +25,7 @@ const Rating = ({ tripId }) => {
 
     useEffect(() => {
         const fetchStops = async () => {
-            const response = await axios.get("/stops?tripId=" + tripId);
+            const response = await axios.get("http://trailblazers.gq:8080/stops?tripId=" + tripId);
             return response.data
         }
 
@@ -58,7 +58,7 @@ const Rating = ({ tripId }) => {
 
         setTrip_Id(window.sessionStorage.getItem('curTrip'));
 
-        const response = await myAxios.post("/rating/add-rating", JSON.stringify({
+        const response = await myAxios.post("http://trailblazers.gq:8080/rating/add-rating", JSON.stringify({
             trip_id: parseInt(tripId),
             score: rating,
             stopRatings: stopRatings,
@@ -103,7 +103,7 @@ const Rating = ({ tripId }) => {
                     {
                         stops.map((stop, index) => {
                             return (
-                                <RatingCard name={stop.name} stopRatings={stopRatings} setStopRatings={setStopRatings} />
+                                <RatingCard name={stop.stopName} stopRatings={stopRatings} setStopRatings={setStopRatings} />
                             )
                         })
                     }

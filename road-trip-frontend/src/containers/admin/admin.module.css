@@ -73,39 +73,3 @@
     font-weight: bold;
     color: #fff;
 }
-
-@media screen and (max-width: 1050px) {
-    .profile {
-        flex-direction: column;
-    }
-
-    .profileContent {
-        margin: 0 0 3rem;
-    }
-}
-
-@media screen and (max-width: 650px) {
-    .profile h1 {
-        font-size: 48px;
-        line-height: 60px;
-    }
-
-    .profileInput input,
-    .profileInput button {
-        font-size: 16px;
-        line-height: 24px;
-    }
-}
-
-@media screen and (max-width: 490px) {
-    .profile h1 {
-        font-size: 36px;
-        line-height: 48px;
-    }
-
-    .profileInput input,
-    .profileInput button {
-        font-size: 12px;
-        line-height: 16px;
-    }
-}

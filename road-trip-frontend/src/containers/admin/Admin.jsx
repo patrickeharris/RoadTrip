@@ -12,14 +12,14 @@ class Admin extends React.Component{
     }
 
     componentDidMount() {
-        const fetchUserEmail = async () => {
+        const fetchUserData = async () => {
             const response = (await myAxios.get("/register/users")).data;
             const users  = response;
             this.setState({
                 users
             });
         };
-        fetchUserEmail();
+        fetchUserData();
     }
 
     handleRemove = async (user_id) => {
@@ -46,7 +46,7 @@ class Admin extends React.Component{
             if (!err?.response) {
                 console.log("No Server Response");
             } else {
-                console.log("Registration Failed");
+                console.log("User Delete Failed");
                 console.log(err?.response);
             }
         }

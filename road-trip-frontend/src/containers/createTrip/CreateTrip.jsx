@@ -369,7 +369,7 @@ const CreateTrip = () => {
             }
         }
         //Sending trip confirmation email
-        const response = (await myAxios.get("/register/curUser")).data;
+        /*const response = (await myAxios.get("/register/curUser")).data;
         let email = response.email;
         const emailParams = {
             send_to: email,
@@ -378,12 +378,12 @@ const CreateTrip = () => {
             trip_end: end,
             trip_date: date
         };
-        emailjs.send('service_qf6j9ma', 'template_m697stp', emailParams, 'BhNdV_jnMUg4W-obV')
+        emailjs.send('service_9hfbdhb', 'template_m697stp', emailParams, 'BhNdV_jnMUg4W-obV')
             .then(function(response) {
                 console.log('SUCCESS!', response.status, response.text);
             }, function(error) {
                 console.log('FAILED...', error);
-            });
+            });*/
     }
     const containerStyle = {
         width: '1280px',
