@@ -6,7 +6,7 @@ import {myAxios} from "../util/helper";
 
 require('dotenv').config();
 
-function AddPlaylist() {
+function AddPlaylistPage() {
     const [playlistName, setPlaylistName] = useState("");
     return (
         <div className={styles.wrapper}>
@@ -60,4 +60,4 @@ function AddPlaylist() {
     )
 }
 
-export default AddPlaylist
+export default AddPlaylistPage
