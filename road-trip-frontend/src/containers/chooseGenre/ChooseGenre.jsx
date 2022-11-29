@@ -49,6 +49,8 @@ const ChooseGenre = () => {
                         "Content-Type": "application/json",
                         'Access-Control-Allow-Origin': '*',
                         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                        'Access-Control-Allow-Headers': 'Authorization',
+                        'Authorization': window.sessionStorage.getItem('token')
                     }
                 })
                     .then((response) => response.text())
