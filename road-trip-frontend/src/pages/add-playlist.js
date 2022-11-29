@@ -6,7 +6,7 @@ import {myAxios} from "../util/helper";
 
 require('dotenv').config();
 
-const {playlistName, setPlaylistName} = useState("");
+const [playlistName, setPlaylistName] = useState("");
 
 async function addPlaylistToTrip() {
 
