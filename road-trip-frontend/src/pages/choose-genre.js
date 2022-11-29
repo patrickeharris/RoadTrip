@@ -5,7 +5,7 @@ import React from "react";
 
 require('dotenv').config();
 
-function ChooseGenre() {
+function ChooseGenrePage() {
     return (
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
@@ -17,4 +17,4 @@ function ChooseGenre() {
     )
 }
 
-export default ChooseGenre
+export default ChooseGenrePage
