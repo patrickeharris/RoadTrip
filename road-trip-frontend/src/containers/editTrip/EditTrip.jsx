@@ -1056,7 +1056,9 @@ const EditTrip = () => {
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
-                        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',},
+                        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',
+                        'Access-Control-Allow-Headers': 'Authorization',
+                        'Authorization': window.sessionStorage.getItem('token')},
                     withCredentials: true,
                 }
             );
