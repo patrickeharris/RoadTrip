@@ -56,6 +56,7 @@ const Login = () => {
                             });
                         console.log(response.data);
                         window.sessionStorage.setItem('token', "Bearer " + response.data);
+                        console.log(window.sessionStorage.getItem('token'));
                         myAxios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
                         toast.success('Successfully Logged In!', {
                             position: "top-right",

@@ -1,4 +1,4 @@
-import React, {useState} from "@types/react";
+import React, {useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import globalStyles from "../container.module.css";
 import styles from "../profile/editprofile.module.css";

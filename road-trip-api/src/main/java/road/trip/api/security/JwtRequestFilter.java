@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
+import road.trip.api.persistence.User;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,11 +31,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         System.out.println(request.getHeader("access-control-request-headers"));
 
-        Enumeration<String> list = request.getHeaderNames();
-        while (list.hasMoreElements()) {
-            System.out.println(list.nextElement());
-        }
-
         String username = null;
         String jwt = null;
 
@@ -50,12 +46,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             System.out.println("Made ittttttttttt");
-            UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(username);
+            User user = this.myUserDetailsService.loadUserByUsername(username);
 
-            if (jwtUtil.validateToken(jwt, userDetails)) {
+            if (jwtUtil.validateToken(jwt, user)) {
                 System.out.println("Yayyyyyyyy");
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                        user, null, user.getAuthorities());
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
