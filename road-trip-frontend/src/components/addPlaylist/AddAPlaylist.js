@@ -34,9 +34,7 @@ export default function AddAPlaylist() {
         fetch("http://trailblazers.gq:8080/generate-recommendations" + params, {
                 headers: {
                     "Content-Type": "application/json",
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-                    'Access-Control-Allow-Headers': 'Authorization',
+                    'Access-Control-Allow-Origin' : '*',
                     'Authorization': window.sessionStorage.getItem('token')
                 }
             })

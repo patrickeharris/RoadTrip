@@ -66,8 +66,7 @@ const Rating = ({ tripId }) => {
         }), {
             headers: {
                 "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                'Authorization': window.sessionStorage.getItem('token')
             }, withCredentials: true,
         });
 
