@@ -8,3 +8,4 @@ export {default as CreateTrip} from './createTrip/CreateTrip';
 export {default as SpotifyLogin} from './spotify-login/SpotifyLogin';
 export {default as EditTrip} from './editTrip/EditTrip';
 export {default as Profile} from './profile/ViewProfile';
+export {default as ChooseGenre} from './chooseGenre/ChooseGenre'
