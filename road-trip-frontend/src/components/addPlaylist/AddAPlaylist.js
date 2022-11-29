@@ -23,15 +23,14 @@ const responsive = {
     }
 };
 
-export default function AddPlaylist() {
+export default function AddAPlaylist() {
 
     const [tracks, setTracks] = useState();
 
-    const params = new URLSearchParams({
-        genre: window.sessionStorage.getItem('genre'),
-    }).toString();
-
     useEffect(() => {
+        const params = new URLSearchParams({
+            genre: window.sessionStorage.getItem('genre'),
+        }).toString();
         fetch("http://trailblazers.gq:8080/generate-recommendations" + params)
             .then(response => response.json())
             .then(data => {
