@@ -4,19 +4,6 @@ import globalStyles from "../container.module.css";
 import styles from "../profile/editprofile.module.css";
 import Select from "react-select"
 
-//Function to show error message to the user
-function showError(errorMsg){
-    toast.error(errorMsg, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-    });
-}
-
 const ChooseGenre = () => {
 
     const [genre, setGenre] = useState("");
@@ -91,7 +78,7 @@ const ChooseGenre = () => {
                     <div className={styles.profileInput}>
                         <Select
                             value={genre}
-                            onChange={this.handleChange}
+                            onChange={handleChange}
                             options={options}
                         />
                         <button type="button" onClick={handleSubmit}>Choose Genre</button>
