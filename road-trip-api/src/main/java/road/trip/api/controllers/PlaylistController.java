@@ -4,24 +4,25 @@ import org.apache.hc.core5.http.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import road.trip.api.persistence.Playlist;
+import road.trip.api.persistence.Track;
 import road.trip.api.services.PlaylistService;
 import road.trip.api.services.UserService;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
-import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
+import se.michaelthelin.spotify.model_objects.specification.Recommendations;
+import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
-import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
+import se.michaelthelin.spotify.requests.data.browse.GetRecommendationsRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetListOfCurrentUsersPlaylistsRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Arrays;
 
 enum Keys {
     CLIENT_ID,
@@ -97,8 +98,8 @@ public class PlaylistController {
     }
 
     @PostMapping(value="/add-playlist")
-    public Playlist addPlaylist(@RequestParam Long trip_id, @RequestParam Long playlistID) {
-        return playlistService.addPlaylist(trip_id, playlistID);
+    public Playlist addPlaylistToTrip(@RequestParam Long trip_id, @RequestParam Long playlistID) {
+        return playlistService.addPlaylistToTrip(trip_id, playlistID);
     }
 
     @PostMapping(value="/save-playlist")
@@ -110,6 +111,28 @@ public class PlaylistController {
     @GetMapping(value="/find-playlist")
     public @ResponseBody Playlist findPlaylist(@RequestParam Long id) {
         return playlistService.findPlaylistById(id);
+    }
+
+    @GetMapping(value="/generate-recommendations")
+    public TrackSimplified[] generateRecommendations(@RequestParam String genre) {
+        final GetRecommendationsRequest getRecommendationsRequest = spotifyApi.getRecommendations()
+                .limit(15)
+                .seed_genres(genre)
+                .build();
+
+        try {
+            Recommendations recommendations = getRecommendationsRequest.execute();
+            return recommendations.getTracks();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return new se.michaelthelin.spotify.model_objects.specification.TrackSimplified[0];
+    }
+
+    @PostMapping(value="/create-playlist")
+    public Long createPlaylist(@RequestParam String name, @RequestParam TrackSimplified[] tracks) {
+        return playlistService.createPlaylist(name, tracks);
     }
 
     @GetMapping(value="/user-playlists")

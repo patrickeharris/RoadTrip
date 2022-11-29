@@ -2,7 +2,6 @@ import React, {Component, useState} from 'react';
 import {myAxios} from "../../util/helper";
 import Carousel from "react-multi-carousel";
 import {Card} from "../index";
-import styles from "./triplist.module.css";
 import "react-multi-carousel/lib/styles.css";
 
 const responsive = {
@@ -33,11 +32,15 @@ export default class TripList extends Component {
         };
     }
     async componentDidMount() {
+
         const data = (await myAxios.get(
             "/trips", {
                 headers: {
-                    'Token': window.sessionStorage.getItem('token'),
-                }
+                    'Access-Control-Allow-Origin': 'http://localhost:8080',
+                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                    'Access-Control-Allow-Headers': 'Authorization',
+                },
+                withCredentials: true,
             }
         )).data;
         const curID = (await myAxios.get("/register/curUser")).data.user_id;
@@ -56,29 +59,9 @@ export default class TripList extends Component {
                 return <div><Card title={item.tripName} description={description}
                                   playlistButton=
                                       {
-
                                           <button onClick={function addPlaylist() {
                                           window.sessionStorage.setItem('curTrip', item.trip_id);
-                                          console.log(window.sessionStorage.getItem('spotifyLogged'));
-                                          if (window.sessionStorage.getItem('spotifyLogged') === 'true') {
-                                              window.location.replace("/add-playlist");
-                                          } else {
-                                              window.sessionStorage.setItem('spotifyLogged', 'true');
-                                              fetch("http://trailblazers.gq:8080/spotify-login", {
-                                                  headers: {
-                                                      "Content-Type": "application/json",
-                                                      'Access-Control-Allow-Origin': '*',
-                                                      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-                                                  }
-                                              })
-                                                  .then((response) => response.text())
-                                                  .then((response) => {
-                                                      window.location.replace(response);
-                                                  })
-                                                  .catch((error) => {
-                                                      console.log(error);
-                                                  })
-                                          }
+                                          window.location.replace('/choose-genre');
                                       }}>Add Playlist</button>
                                   }
                                   editButton={<button onClick={function editTrip() {
