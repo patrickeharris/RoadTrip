@@ -17,7 +17,7 @@ public class RatingService {
         return ratingRepository.findById(id).get();
     }
 
-    public List<Rating> getAllRatings() {
+    public List<Rating> findAllRatings() {
         return ratingRepository.findAll();
     }
 
