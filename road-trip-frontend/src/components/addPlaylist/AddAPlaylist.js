@@ -1,8 +1,7 @@
 import React, {Component, useEffect, useState} from "react";
-import {myAxios} from "../../util/helper";
-import PlaylistCard from "../playlist-card/Playlist-Card";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import TrackCard from "../track-card/Track-Card";
 
 const responsive = {
     superLargeDesktop: {
@@ -26,78 +25,46 @@ const responsive = {
 
 export default function AddPlaylist() {
 
-    const [userTopPlaylists, setUserTopPlaylists] = useState();
+    const [tracks, setTracks] = useState();
+
+    const params = new URLSearchParams({
+        genre: window.sessionStorage.getItem('genre'),
+    }).toString();
 
     useEffect(() => {
-        fetch("http://trailblazers.gq:8080/user-playlists")
+        fetch("http://trailblazers.gq:8080/generate-recommendations" + params)
             .then(response => response.json())
             .then(data => {
-                console.log("hmm")
                 console.log(data)
-                setUserTopPlaylists(data);
+                setTracks(data);
             })
     }, []);
 
-    console.log(userTopPlaylists);
-
     return <Carousel responsive={responsive}>{
         <div>
-            {userTopPlaylists ? (
-                    userTopPlaylists.map((playlistResult) => {
-                        console.log(playlistResult);
-                        const description = "Link: " + playlistResult.externalUrls.externalUrls.spotify;
-                        const trip_id = window.sessionStorage.getItem('curTrip');
-                        return <PlaylistCard title={playlistResult.name} description={description}
+            {tracks ? (
+                    tracks.map((trackResult) => {
+                        console.log(trackResult);
+                        const link = "Link: " + trackResult.external_urls.spotify;
+                        let artists = "Artists: ";
+                        trackResult.artists.map((artist) => {
+                            artists = artists + artist.name + ", ";
+                        });
+                        return <TrackCard title={trackResult.name} artists={artists} link={link}
 
-                                             selectButton={<button onClick={async function selectPlaylist() {
-
-                                                 const curUser = (await myAxios.get("/register/curUser")).data.user_id;
-
-                                                 const id = await myAxios.post(
-                                                     "/save-playlist",
-                                                     JSON.stringify({
-                                                         user_id: curUser, playlistName: playlistResult.name,
-                                                         playlistLink: playlistResult.externalUrls.externalUrls.spotify
-                                                     }),
-                                                     {
-                                                         headers: {
-                                                             "Content-Type": "application/json",
-                                                             'Access-Control-Allow-Origin': '*',
-                                                             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-                                                         }, withCredentials: true
-                                                     })
-                                                 console.log("id")
-                                                 console.log(id.data)
-
-                                                 const params = new URLSearchParams({
-                                                     trip_id: trip_id,
-                                                     playlistID: id.data
-                                                 }).toString();
-                                                 const url = "http://trailblazers.gq:8080/add-playlist?" + params
-                                                 await myAxios.post(
-                                                     url,
-                                                     {},
-                                                     {
-                                                         headers: {
-                                                             "Content-Type": "application/json",
-                                                             'Access-Control-Allow-Origin': '*',
-                                                             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-                                                         }, withCredentials: true
-                                                     })
-
-                                                 await myAxios.post(
-                                                     url,
-                                                     null,
-                                                     {
-                                                         params: {},
-                                                         headers: {
-                                                             'Access-Control-Allow-Origin': '*',
-                                                             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-                                                         }, withCredentials: true
-                                                     });
-                                                 window.location.replace("/trip-dashboard");
-                                             }}>Select Playlist</button>}>
-                        </PlaylistCard>
+                                             addButton={<button onClick={async function addTrack() {
+                                                 if (window.sessionStorage.getItem('tracks') === null) {
+                                                     let list = []
+                                                     list.push(trackResult);
+                                                     window.sessionStorage.setItem('tracks', JSON.stringify(list));
+                                                 } else {
+                                                     let list = window.sessionStorage.getItem('tracks');
+                                                     list = JSON.parse(list);
+                                                     list.push(trackResult);
+                                                     window.sessionStorage.setItem('tracks', JSON.stringify(list));
+                                                 }
+                                             }}>Add Track</button>}>
+                        </TrackCard>
                     })
                 ) :
                 (

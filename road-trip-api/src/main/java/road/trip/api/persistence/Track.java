@@ -11,23 +11,21 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = Playlist.TABLE_NAME)
+@Table(name = Track.TABLE_NAME)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Playlist {
-    public static final String TABLE_NAME = "PLAYLIST";
+public class Track {
+
+    public static final String TABLE_NAME = "TRACK";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long playlist_id;
+    private Long track_id;
 
-    @Column(name = "user_id")
-    private Long user_id;
+    private String name;
 
-    @Column(name = "playlistName")
-    private String playlistName;
+    private List<String> artists = new ArrayList<>();
 
-    @OneToMany
-    private List<Track> trackList = new ArrayList<>();
+    private String link;
 }
