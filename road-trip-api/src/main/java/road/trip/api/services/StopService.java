@@ -17,7 +17,7 @@ public class StopService {
     @Autowired
     TripService tripService;
 
-    public List<Stop> getStopsByTripId(long tripId) {
+    public List<Stop> getRecommendedStops(long tripId) {
         List<Stop> finalStops = new ArrayList<>();
         List<Stop> stops = stopRepository.findAll();
 
@@ -34,17 +34,7 @@ public class StopService {
         stopRepository.saveAll(stops);
     }
 
-    /*
-    public Stop findStopByLoc(Double loc) {
-        return stopRepository.findByLoc(loc).get();
+    public Stop findStopById(Long id) {
+        return stopRepository.findById(id).get();
     }
-
-    public void getStopInfo() {
-
-    }
-
-    public void createStop() {
-
-    }
-     */
 }

@@ -1,8 +1,6 @@
 package road.trip.api.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,7 +14,9 @@ public class MyUserDetailsService implements UserDetailsService {
     UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("Password");
+        System.out.println(userRepository.findByEmail(username).getPassword());
+        return userRepository.findByEmail(username);
     }
 }

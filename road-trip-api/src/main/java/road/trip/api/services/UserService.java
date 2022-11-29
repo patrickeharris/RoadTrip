@@ -1,25 +1,32 @@
 package road.trip.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import road.trip.api.persistence.UserRepository;
 import road.trip.api.persistence.User;
+import road.trip.api.security.JwtUtil;
+import road.trip.api.security.MyUserDetailsService;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.math.BigInteger;
 import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+    @Autowired
+    private JwtUtil jwtTokenUtil;
 
     public User findAccountById(Long id) {
         return userRepository.findById(id).get();
@@ -46,13 +53,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User remove(Long id){
-        Optional<User> user = userRepository.findById(id);
-        User u = user.get();
-        userRepository.delete(u);
-        return u;
-    }
-
     public User update(User user) {
         if(userRepository.existsById(user.getUser_id())) {
             findAccountById(user.getUser_id()).setFirstName(user.getFirstName());
@@ -63,15 +63,29 @@ public class UserService {
         return null;
     }
 
-    public User login(String email) {
-        User newUser = findAccountByEmail(email);
-        User oldUser = findCurUser();
-        if (oldUser != null) {
-            oldUser.setEnabled(false);
-            userRepository.save(oldUser);
+    public ResponseEntity<?> login(String username, String password) throws Exception {
+        try {
+            System.out.println("Going in");
+            System.out.println(username);
+            System.out.println(password);
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+            System.out.println("Coming out");
+        } catch (BadCredentialsException e) {
+            System.out.println("Bad");
+            System.out.println(e.getMessage());
+            throw new Exception("Incorrect username or password", e);
+        } catch (AuthenticationException e){
+            System.out.println("Bad2");
+            System.out.println(e.getMessage());
         }
-        newUser.setEnabled(true);
-        return userRepository.save(newUser);
+
+        final User user = myUserDetailsService.loadUserByUsername(username);
+
+        final String jwt = jwtTokenUtil.generateToken(user);
+        System.out.println(jwt);
+        return ResponseEntity.ok(jwt);
     }
 
     public User findCurUser() {
@@ -89,10 +103,4 @@ public class UserService {
         userRepository.delete(user);
         return user;
     }
-
-    public void generateToken() {
-
-    }
-
-
 }

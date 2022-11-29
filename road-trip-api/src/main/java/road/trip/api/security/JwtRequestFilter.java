@@ -1,10 +1,6 @@
 package road.trip.api.security;
 
-import org.hibernate.annotations.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Service
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -29,7 +26,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        final String authorizationHeader = request.getHeader("Authorization");
+        final String authorizationHeader = request.getHeader("authorization");
+
+        System.out.println(request.getHeader("access-control-request-headers"));
+
+        Enumeration<String> list = request.getHeaderNames();
+        while (list.hasMoreElements()) {
+            System.out.println(list.nextElement());
+        }
 
         String username = null;
         String jwt = null;
@@ -37,12 +41,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             username = jwtUtil.extractUsername(jwt);
+            System.out.println(jwt);
+            System.out.println(jwtUtil.extractEmail(jwt));
+            System.out.println(jwtUtil.extractExpiration(jwt));
+            System.out.println("Made it");
+            System.out.println(username);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            System.out.println("Made ittttttttttt");
             UserDetails userDetails = this.myUserDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
+                System.out.println("Yayyyyyyyy");
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
@@ -53,3 +64,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 }
+

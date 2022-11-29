@@ -109,7 +109,6 @@ public class TripService {
         return tripRepository.findAll();
     }
 
-
     public Trip deleteTrip(Long trip_Id) {
         Trip trip = findTripById(trip_Id);
         tripRepository.deleteById(trip_Id);
