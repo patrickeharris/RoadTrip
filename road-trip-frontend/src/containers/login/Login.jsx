@@ -23,39 +23,30 @@ const Login = () => {
 
             try {
                 const response = (await myAxios.get("/register/users")).data;
-                console.log(response[0]);
                 let found = false;
                 let index;
+                let pass;
 
                 for (let i = 0; i < response.length; i++) {
                     if (response[i].email === email) {
                         found = true;
-                        index = i;
+                        pass = response[i].password;
                     }
                 }
 
+                console.log(pass)
+
                 if (found === true) {
-                    if (bcrypt.compareSync(password, response[index].password)) {
+
+                    if (bcrypt.compareSync(password, pass)) {
                         window.sessionStorage.setItem('loggedIn', 'true');
-                        await myAxios.post(
+                        console.log(pass);
+
+                        const response = await myAxios.post(
                             "/login",
                             null,
                             {
-                                params: {email},
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    'Access-Control-Allow-Origin': '*',
-                                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-                                },
-                                withCredentials: true,
-                            }
-                        );
-
-                        const response = await myAxios.post(
-                            "/authenticate",
-                            null,
-                            {
-                                params: {username: email, password: password},
+                                params: {email: email, password: pass},
                                 headers: {
                                     "Content-Type": "application/json",
                                     'Access-Control-Allow-Origin': '*',
@@ -63,7 +54,9 @@ const Login = () => {
                                 },
                                 withCredentials: true,
                             });
-                        window.sessionStorage.setItem('token', response.data);
+                        console.log(response.data);
+                        window.sessionStorage.setItem('token', "Bearer " + response.data);
+                        myAxios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
                         toast.success('Successfully Logged In!', {
                             position: "top-right",
                             autoClose: 5000,

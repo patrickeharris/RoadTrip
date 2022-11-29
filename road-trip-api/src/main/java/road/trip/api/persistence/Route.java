@@ -19,11 +19,9 @@ public class Route {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long routeId;
+    private Long route_id;
 
     private String routeName;
-
-    /*private Enum stopPref;*/
 
     @OneToMany
     private List<Stop> stops = new ArrayList<>();

@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-
 import java.util.Objects;
 
 @Data
@@ -19,10 +18,10 @@ import java.util.Objects;
 public class User implements UserDetails {
     public static final String TABLE_NAME = "User";
 
-    @Column(name = "first_name")
+    @Column(name = "firstName")
     String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "lastName")
     String lastName;
 
     @Column(name = "email")
@@ -33,25 +32,6 @@ public class User implements UserDetails {
 
     @Column(name = "username")
     String username;
-
-    @Column(name = "password_hash")
-    String salt;
-
-    /*
-
-    @Column(name = "regDate")
-    Date regDate;
-
-    @Column(name = "lastLogin")
-    Date lastLogin;
-
-    @Column(name = "isOperator")
-    Boolean isOperator;
-
-    @Column(name = "emailPref")
-    Boolean emailPref;
-
-     */
 
     Boolean enabled = false;
 
@@ -111,11 +91,11 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(user_id, user.user_id) && Objects.equals(salt, user.salt);
+        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(user_id, user.user_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, password, user_id, salt);
+        return Objects.hash(firstName, lastName, email, password, user_id);
     }
 }

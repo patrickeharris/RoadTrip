@@ -31,7 +31,7 @@ public class TripService {
         return tripRepository.findById(id).get();
     }
 
-    public Trip makeTrip (Trip trip) throws GeneralSecurityException, IOException, MessagingException {
+    public Trip createTrip (Trip trip) throws GeneralSecurityException, IOException, MessagingException {
         System.out.println(trip);
         for(int i = 0; i < trip.getRoute().getStops().size(); i++){
             System.out.println(trip.getRoute().getStops().get(i).getStopName());
@@ -107,10 +107,9 @@ public class TripService {
         return tripRepository.save(t);
     }
 
-    public List<Trip> getTrips(){
+    public List<Trip> findAllTrips(){
         return tripRepository.findAll();
     }
-
 
     public Trip deleteTrip(Long trip_Id) {
         Trip trip = findTripById(trip_Id);
