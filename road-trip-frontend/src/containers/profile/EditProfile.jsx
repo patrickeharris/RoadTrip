@@ -73,9 +73,6 @@ const EditProfile = () => {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-                            'Access-Control-Allow-Headers': 'Authorization',
                             'Authorization': window.sessionStorage.getItem('token')
                         },
                         withCredentials: true,
@@ -95,7 +92,7 @@ const EditProfile = () => {
                 if (!err?.response) {
                     console.log("No Server Response");
                 } else {
-                    console.log("EditProfile Update Failed");
+                    console.log("Update Profile Failed");
                     console.log(err?.response);
                 }
             }

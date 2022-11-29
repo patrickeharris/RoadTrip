@@ -14,7 +14,7 @@ import java.security.GeneralSecurityException;
 
 @Log4j2
 @RestController
-@CrossOrigin(allowCredentials = "true", origins = "http://localhost:3000", allowedHeaders = "Authorization", methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
+@CrossOrigin(allowCredentials = "true", origins = "http://localhost:3000", allowedHeaders = "*", methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 public class TripController {
 
     @Autowired

@@ -1054,10 +1054,9 @@ const EditTrip = () => {
                 "/edit-trip",
                 JSON.stringify({trip_id, tripName, start, end, date, user_id: userID, selectedRoute, route: {routeName : selectedRoute, stops: trip}}),
                 {
-                    headers: {"Content-Type": "application/json",
+                    headers: {
+                        "Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
-                        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',
-                        'Access-Control-Allow-Headers': 'Authorization',
                         'Authorization': window.sessionStorage.getItem('token')},
                     withCredentials: true,
                 }
