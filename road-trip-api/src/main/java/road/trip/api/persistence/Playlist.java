@@ -28,6 +28,7 @@ public class Playlist {
     @Column(name = "playlistName")
     private String playlistName;
 
-    @OneToMany
+    @Column
+    @OneToMany(fetch=FetchType.EAGER)
     private List<Track> trackList = new ArrayList<>();
 }
