@@ -36,9 +36,10 @@ export default class TripList extends Component {
         const data = (await myAxios.get(
             "/trips", {
                 headers: {
-                    'Access-Control-Allow-Origin': 'http://localhost:8080',
+                    'Access-Control-Allow-Origin': 'https://localhost:8080',
                     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
                     'Access-Control-Allow-Headers': 'Authorization',
+                    'Authorization': window.sessionStorage.getItem('token')
                 },
                 withCredentials: true,
             }
