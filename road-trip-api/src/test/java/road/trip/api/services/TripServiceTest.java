@@ -26,7 +26,7 @@ public class TripServiceTest {
 
     @Test
     void testGetTrips(){
-        assertTrue(tripService.getTrips().size() > 0);
+        assertTrue(tripService.findAllTrips().size() > 0);
     }
 
 }
