@@ -31,7 +31,7 @@ public class TripController {
 
     @PostMapping("/create-trip")
     public Trip createTrip(@RequestBody Trip trip) throws GeneralSecurityException, IOException, MessagingException {
-        Trip t = tripService.makeTrip(trip);
+        Trip t = tripService.createTrip(trip);
         stopService.addStops(trip.getRoute().getStops(), t.getTrip_id());
         return t;
     }
@@ -43,7 +43,7 @@ public class TripController {
 
     @GetMapping("/trips")
     public @ResponseBody Iterable<Trip> findAllTrips() {
-        return tripService.getTrips();
+        return tripService.findAllTrips();
     }
 
     @GetMapping("/stops")
