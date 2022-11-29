@@ -1,6 +1,6 @@
 import styles from "./styles/index.module.css";
 import {Navbar} from "../components";
-import {Footer} from "../containers";
+import {Footer, ChooseGenre} from "../containers";
 import React from "react";
 
 require('dotenv').config();
