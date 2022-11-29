@@ -6,47 +6,8 @@ import {myAxios} from "../util/helper";
 
 require('dotenv').config();
 
-const [playlistName, setPlaylistName] = useState("");
-
-async function addPlaylistToTrip() {
-
-    const response = await myAxios.post(
-        "/create-playlist",
-        null,
-        {
-            params: {
-                name: playlistName,
-                tracks: window.sessionStorage.getItem('tracks')
-            },
-            headers: {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-            },
-            withCredentials: true,
-        }
-    );
-
-    const r = await myAxios.post(
-        "/add-playlist",
-        null,
-        {
-            params: {
-                trip_id: window.sessionStorage.getItem('curTrip'),
-                playlistID: response.data,
-            },
-            headers: {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-            },
-            withCredentials: true,
-        }
-    )
-    window.location.replace("/trip-dashboard");
-}
-
 function AddPlaylist() {
+    const [playlistName, setPlaylistName] = useState("");
     return (
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
@@ -56,7 +17,42 @@ function AddPlaylist() {
                     <input type="playlistName" placeholder="Playlist Name" onChange={(e) => setPlaylistName(e.target.value)} value={playlistName}/>
                 </div>
                 <div className={styles.buttons}>
-                    <button type="button" onClick={addPlaylistToTrip} >Create Playlist</button>
+                    <button type="button" onClick={async() => {
+                        const response = await myAxios.post(
+                            "/create-playlist",
+                            null,
+                            {
+                                params: {
+                                    name: playlistName,
+                                    tracks: window.sessionStorage.getItem('tracks')
+                                },
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                                },
+                                withCredentials: true,
+                            }
+                        );
+
+                        const r = await myAxios.post(
+                            "/add-playlist",
+                            null,
+                            {
+                                params: {
+                                    trip_id: window.sessionStorage.getItem('curTrip'),
+                                    playlistID: response.data,
+                                },
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    'Access-Control-Allow-Origin': '*',
+                                    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                                },
+                                withCredentials: true,
+                            }
+                        )
+                        window.location.replace("/trip-dashboard");
+                    }} >Create Playlist</button>
                 </div>
                 <Footer />
             </div>
