@@ -80,6 +80,7 @@ const TripList = () => {
         };
     }
     async componentDidMount() {
+
         const data = (await myAxios.get(
             "/trips", {
                 headers: {
@@ -251,7 +252,7 @@ const TripList = () => {
                 </menu>} /*
                                   playlistButton=
                                       {
-                                          <button className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' onClick={function addPlaylist() {
+                                          <button onClick={function addPlaylist() {
                                           window.sessionStorage.setItem('curTrip', item.trip_id);
                                           console.log(window.sessionStorage.getItem('spotifyLogged') )
                                           if (window.sessionStorage.getItem('spotifyLogged') === 'true') {

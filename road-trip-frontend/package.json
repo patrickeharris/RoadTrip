@@ -28,7 +28,6 @@
     "google-polyline": "^1.0.3",
     "jss-rtl": "0.3.0",
     "msal": "^1.4.0",
-    "postcss": "^8.4.19",
     "next": "13.0.3",
     "react": "^18.1.0",
     "react-bootstrap": "^2.5.0",
