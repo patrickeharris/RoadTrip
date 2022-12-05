@@ -1,11 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styles from './register.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
 import bcrypt from 'bcryptjs';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import * as emailjs from "@emailjs/browser";
 
 //Sign up a given user
 const signUp=(user)=>{
@@ -41,8 +40,16 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    useEffect(() => {
+        if (window.sessionStorage.getItem('email') !== null) {
+            setEmail(window.sessionStorage.getItem('email'));
+        }
+    })
+
+
     const handleSubmit = async () => {
         const hashedPassword = bcrypt.hashSync(password, 10);
+        window.sessionStorage.setItem('email', null);
         try {
             //Check validity
             if (firstName==="") {
