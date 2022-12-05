@@ -106,8 +106,8 @@ const EditProfile = () => {
                         <input type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
                         <input type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
                         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
-                        <input type="text" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
-                        <input type="text" placeholder="Confirm Password" onChange={(e) => setConfirm(e.target.value)} value={confirm}/>
+                        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                        <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirm(e.target.value)} value={confirm}/>
                         <button type="button" onClick={handleSubmit}>Update Profile</button>
                     </div>
                 </div>
