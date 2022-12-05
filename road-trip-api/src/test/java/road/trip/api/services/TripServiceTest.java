@@ -53,4 +53,4 @@ public class TripServiceTest {
         assertNotEquals(trip, tripService.findTripById(trip2.getTrip_id()));
     }
 }
-
+*/
