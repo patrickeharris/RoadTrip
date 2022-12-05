@@ -88,14 +88,10 @@ public class UserService {
         return ResponseEntity.ok(jwt);
     }
 
-    public User findCurUser() {
-        return findAccountByEnabled(true);
-    }
-
-    public User logout() {
-        User user = findCurUser();
-        user.setEnabled(false);
-        return userRepository.save(user);
+    public User findCurUser(String auth) {
+        auth = auth.replace("Bearer ", "");
+        String email = jwtTokenUtil.extractEmail(auth);
+        return findAccountByEmail(email);
     }
 
     public User deleteAccount(Long user_id) {

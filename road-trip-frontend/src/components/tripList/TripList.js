@@ -41,7 +41,11 @@ export default class TripList extends Component {
                 withCredentials: true,
             }
         )).data;
-        const curID = (await myAxios.get("/register/curUser")).data.user_id;
+        const curID = (await myAxios.get("/register/curUser", {
+            headers:{
+                'Access-Control-Allow-Origin' : '*',
+                'Authorization': window.sessionStorage.getItem('token')}
+        })).data.user_id;
         this.setState({ data, curID });
     }
     render() {
@@ -59,7 +63,26 @@ export default class TripList extends Component {
                                       {
                                           <button onClick={function addPlaylist() {
                                           window.sessionStorage.setItem('curTrip', item.trip_id);
-                                          window.location.replace('/choose-genre');
+                                          console.log(window.sessionStorage.getItem('spotifyLogged') )
+                                          if (window.sessionStorage.getItem('spotifyLogged') === 'true') {
+                                              window.location.replace("/choose-genre");
+                                          } else {
+                                              window.sessionStorage.setItem('spotifyLogged', 'true');
+                                              fetch("https://localhost:8080/spotify-login", {
+                                                  headers: {
+                                                      "Content-Type": "application/json",
+                                                      'Access-Control-Allow-Origin' : '*',
+                                                      'Authorization': window.sessionStorage.getItem('token')
+                                                  }
+                                              })
+                                                  .then((response) => response.text())
+                                                  .then((response) => {
+                                                      window.location.replace(response);
+                                                  })
+                                                  .catch((error) => {
+                                                      console.log(error);
+                                                  })
+                                          }
                                       }}>Add Playlist</button>
                                   }
                                   editButton={<button onClick={function editTrip() {

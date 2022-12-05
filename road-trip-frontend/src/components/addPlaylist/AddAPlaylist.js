@@ -2,6 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import TrackCard from "../track-card/Track-Card";
+import {myAxios} from "../../util/helper"
 
 const responsive = {
     superLargeDesktop: {
@@ -27,34 +28,42 @@ export default function AddAPlaylist() {
 
     const [tracks, setTracks] = useState();
 
+
+
     useEffect(() => {
-        const params = new URLSearchParams({
-            genre: window.sessionStorage.getItem('genre'),
-        }).toString();
-        fetch("http://trailblazers.gq:8080/generate-recommendations" + params, {
-                headers: {
-                    "Content-Type": "application/json",
-                    'Access-Control-Allow-Origin' : '*',
-                    'Authorization': window.sessionStorage.getItem('token')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                setTracks(data);
-            })
-    }, []);
+        async function genRec() {
+            console.log(window.sessionStorage.getItem('token'))
+            const response = await (myAxios.get("/generate-recommendations",
+                {
+                    params: {genre: window.sessionStorage.getItem('genre')},
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Access-Control-Allow-Origin' : '*',
+                        'Authorization': window.sessionStorage.getItem('token')}
+                }))
+            console.log(response);
+            setTracks(response.data);
+        }
+        genRec();
+
+    }, [myAxios]);
 
     return <Carousel responsive={responsive}>{
         <div>
             {tracks ? (
                     tracks.map((trackResult) => {
                         console.log(trackResult);
-                        const link = "Link: " + trackResult.external_urls.spotify;
-                        let artists = "Artists: ";
-                        trackResult.artists.map((artist) => {
-                            artists = artists + artist.name + ", ";
-                        });
+                        const link = "Link: " + trackResult.externalUrls.externalUrls.spotify;
+                        let artists;
+                        if (trackResult.artists.length === 1) {
+                            artists = "Artist: " + trackResult.artists[0].name;
+                        } else {
+                            artists = "Artists: ";
+                            trackResult.artists.map((artist) => {
+                                artists = artists + artist.name + ", ";
+                            });
+                        }
+                        console.log(trackResult.album)
                         return <TrackCard title={trackResult.name} artists={artists} link={link}
 
                                              addButton={<button onClick={async function addTrack() {

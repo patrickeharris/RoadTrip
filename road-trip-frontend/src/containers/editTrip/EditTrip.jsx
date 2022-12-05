@@ -1048,7 +1048,11 @@ const EditTrip = () => {
                 }
             });
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
-            let id = (await myAxios.get("/register/curUser")).data.user_id;
+            let id = (await myAxios.get("/register/curUser", {
+                headers:{
+                    'Access-Control-Allow-Origin' : '*',
+                    'Authorization': window.sessionStorage.getItem('token')}
+            })).data.user_id;
             console.log(id);
             const response = await myAxios.post(
                 "/edit-trip",
