@@ -108,6 +108,10 @@ const EditProfile = () => {
                         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
                         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
                         <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirm(e.target.value)} value={confirm}/>
+                        <div className="productsContainer">
+                            <img className="h-20 w-20 rounded-full" src="/static/girlProfile.png"/>
+                            <img className="h-20 w-20 rounded-full" src="/static/guyProfile.png"/>
+                        </div>
                         <button type="button" onClick={handleSubmit}>Update Profile</button>
                     </div>
                 </div>
