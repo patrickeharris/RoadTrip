@@ -58,6 +58,8 @@ public class UserService {
             findAccountById(user.getUser_id()).setFirstName(user.getFirstName());
             findAccountById(user.getUser_id()).setLastName(user.getLastName());
             findAccountById(user.getUser_id()).setEmail(user.getEmail());
+            findAccountById(user.getUser_id()).setPassword(user.getPassword());
+            System.out.println(user.getPassword());
             return userRepository.save(findAccountById(user.getUser_id()));
         }
         return null;

@@ -34,7 +34,7 @@ repositories {
     mavenCentral()
     mavenLocal()
     maven {
-        url "http://maven.restlet.org"
+        url "https://maven.restlet.org"
     }
 }
 

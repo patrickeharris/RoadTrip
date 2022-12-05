@@ -42,17 +42,10 @@ function isValidEmail(email) {
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
-    /*useEffect(() => {
-        getFirstName().then((firstName) => setFirstName(firstName));
-    }, [])*/
     const [lastName, setLastName] = useState("");
-    /*useEffect(() => {
-        getLastName().then((lastName) => setLastName(lastName));
-    }, [])*/
     const [email, setEmail] = useState("");
-    /*useEffect(() => {
-        getEmail().then((email) => setEmail(email));
-    }, [])*/
+    const [password, setPassword] = useState("")
+    const [confirm, setConfirm] = useState("")
 
     const handleSubmit = async () => {
         if(firstName===""){
@@ -63,13 +56,16 @@ const EditProfile = () => {
             showError('Error: Email cannot be blank');
         }else if(!isValidEmail(email)){
             showError('Error: Email must be valid');
-        }else {
+        }else if(password!=confirm){
+            showError('Error: Passwords must match')
+        }else{
+            const hashedPassword = bcrypt.hashSync(password, 10);
             let id = (await myAxios.get("/register/curUser")).data.user_id;
-            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id);
+            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id, ", password = " + hashedPassword);
             try {
                 const response = await myAxios.post(
                     "/register/update",
-                    JSON.stringify({firstName, lastName, email, user_id: id}),
+                    JSON.stringify({firstName, lastName, email, password: hashedPassword, user_id: id}),
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -79,7 +75,7 @@ const EditProfile = () => {
                         withCredentials: true,
                     }
                 );
-                toast.success('Successfully Updated EditProfile!', {
+                toast.success('Successfully Updated Profile!', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -110,6 +106,8 @@ const EditProfile = () => {
                         <input type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
                         <input type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
                         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        <input type="text" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                        <input type="text" placeholder="Confirm Password" onChange={(e) => setConfirm(e.target.value)} value={confirm}/>
                         <button type="button" onClick={handleSubmit}>Update Profile</button>
                     </div>
                 </div>
