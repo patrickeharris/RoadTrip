@@ -1,12 +1,11 @@
 package road.trip.api.services;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import road.trip.api.persistence.Playlist;
 import road.trip.api.persistence.PlaylistRepository;
-/*
+
 import road.trip.api.persistence.Trip;
 
 import javax.mail.MessagingException;
@@ -29,7 +28,7 @@ public class PlaylistServiceTest {
     TripService tripService;
 
     Playlist playlist = new Playlist(15L, 12L,
-            "testPlaylist", "link goes here");
+            "testPlaylist", null);
 
     Trip trip = new Trip(12L, "Test Trip", "Houston", "Houston", "Fort Worth",
             "Fort Worth", "11/8/2022", "Y", "Y", 1L, "route",
@@ -62,5 +61,3 @@ public class PlaylistServiceTest {
         assertTrue(playlistService.getAllPlaylistsByUser(playlist.getUser_id()).size() > 0);
     }
 }
-
- */

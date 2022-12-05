@@ -1,5 +1,5 @@
 package road.trip.api.services;
-/*
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,15 +22,6 @@ public class TripServiceTest {
     Trip trip2 = new Trip(10000L, "Test Duplicate", "Houston", "Houston", "Fort Worth",
             "Fort Worth", "11/8/2022", "Y", "Y", 1L, "route",
             3L, null, null);
-
-/*
-    @AfterEach
-    public void cleanup() {
-        System.out.println("Cleaning up");
-        tripService.deleteTrip(100L);
-    }
-
-
 
     @Test
     void testGetTrips(){
@@ -61,4 +52,3 @@ public class TripServiceTest {
     }
 }
 
- */
