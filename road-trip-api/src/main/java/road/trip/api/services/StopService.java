@@ -18,12 +18,7 @@ public class StopService {
     TripService tripService;
 
     public List<Stop> getStopsByTripId(long tripId) {
-        List<Stop> finalStops = new ArrayList<>();
-        List<Stop> stops = stopRepository.findAll();
-
-        finalStops = tripService.findTripById(tripId).getRoute().getStops();
-
-        return finalStops;
+        return tripService.findTripById(tripId).getRoute().getStops();
     }
 
     public void addStops(List<Stop> stops, long trip_id) {
