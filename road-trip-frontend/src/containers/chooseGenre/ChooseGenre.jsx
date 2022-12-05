@@ -38,27 +38,9 @@ const ChooseGenre = () => {
     const handleSubmit = async () => {
 
         try {
-            window.sessionStorage.setItem('genre', genre);
-            console.log(window.sessionStorage.getItem('spotifyLogged'));
-            if (window.sessionStorage.getItem('spotifyLogged') === 'true') {
-                window.location.replace("/add-playlist");
-            } else {
-                window.sessionStorage.setItem('spotifyLogged', 'true');
-                fetch("http://trailblazers.gq:8080/spotify-login", {
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Access-Control-Allow-Origin' : '*',
-                        'Authorization': window.sessionStorage.getItem('token')
-                    }
-                })
-                    .then((response) => response.text())
-                    .then((response) => {
-                        window.location.replace(response);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-            }
+            window.sessionStorage.setItem('genre', genre.value);
+            window.sessionStorage.setItem('spotifyLogged', 'true');
+            window.location.replace("/add-playlist");
         } catch (err) {
             if (!err?.response) {
                 console.log("No Server Response");

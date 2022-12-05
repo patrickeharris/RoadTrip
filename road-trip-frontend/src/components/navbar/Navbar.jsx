@@ -43,7 +43,7 @@ const Navbar = () => {
         setLogged('false');
         window.sessionStorage.setItem('loggedIn', 'false');
         window.sessionStorage.setItem('spotifyLogged', 'false');
-        await myAxios.get("/logout");
+        window.sessionStorage.setItem('token', 'null');
     }
 
   return (

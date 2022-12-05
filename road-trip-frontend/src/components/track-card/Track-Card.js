@@ -20,22 +20,6 @@ import styles from "./track.card.module.css"
 */
 
 // 1. Card Class /////////////////////////////////////////////
-function CardImage(props) {
-    const isImageURL = "https://www.protocol.com/media-library/spotify-app-with-headphones-on.png?id=29171621&width=1245&height=700&quality=85&coordinates=0%2C0%2C0%2C0";
-    // If an image was passed:
-    if (isImageURL) {
-        return (
-            <div className={styles.styleImage}>
-                <img
-                    style={{ width: props.width + "px", marginTop: "-8%" }}
-                    src={"https://www.protocol.com/media-library/spotify-app-with-headphones-on.png?id=29171621&width=1245&height=700&quality=85&coordinates=0%2C0%2C0%2C0"}
-                    alt="Spotify"
-                />
-            </div>
-        );
-    }
-    return null;
-}
 
 function CardContent(props) {
     return (
@@ -53,7 +37,6 @@ export default class TrackCard extends React.Component {
         return (
             <div style={{ width: this.props.width + "px" }}>
                 <div className={styles.styleCard}>
-                    <CardImage image={this.props.image} width={this.props.width} />
                     <CardContent
                         title={this.props.title}
                         artists={this.props.artists}

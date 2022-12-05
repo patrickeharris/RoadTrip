@@ -4,7 +4,6 @@ import org.apache.hc.core5.http.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import road.trip.api.persistence.Playlist;
-import road.trip.api.persistence.Track;
 import road.trip.api.services.PlaylistService;
 import road.trip.api.services.UserService;
 import se.michaelthelin.spotify.SpotifyApi;
@@ -45,7 +44,7 @@ public class PlaylistController {
     @Autowired
     PlaylistService playlistService;
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq:8080/get-spotify-user-code");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://localhost:8080/get-spotify-user-code");
     private String code = "";
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
             .setClientId(Keys.CLIENT_ID.getKey())
@@ -87,7 +86,7 @@ public class PlaylistController {
             System.out.println("Error: " + e.getMessage());
         }
 
-        response.sendRedirect("http://trailblazers.gq/add-playlist");
+        response.sendRedirect("http://localhost:3000/choose-genre");
         return spotifyApi.getAccessToken();
     }
 

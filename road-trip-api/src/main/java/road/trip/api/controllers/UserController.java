@@ -21,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping("/register/curUser")
-    public User findCurUser() {
-        return userService.findCurUser();
+    public User findCurUser(@RequestHeader(value="authorization") String auth) {
+        return userService.findCurUser(auth);
     }
 
     @PostMapping("/register")
@@ -38,12 +38,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) throws Exception {
         return userService.login(email, password);
-    }
-
-
-    @GetMapping("/logout")
-    public User logout() {
-        return userService.logout();
     }
 
     @DeleteMapping("/profile/delete")
