@@ -470,10 +470,6 @@ const CreateTrip = () => {
                     withCredentials: true,
                 }
             );
-            setTripName("");
-            setStart("");
-            setEnd("");
-            setDate("");
             setUserID("");
             setSelectedRoute("");
             console.log(response);
@@ -496,7 +492,7 @@ const CreateTrip = () => {
             }
         }
         //Sending trip confirmation notification
-        /*const response1 = (await myAxios.get("/register/curUser", {
+        const response1 = (await myAxios.get("/register/curUser", {
             headers:{
                 'Access-Control-Allow-Origin' : '*',
                 'Authorization': window.sessionStorage.getItem('token')}
@@ -504,7 +500,8 @@ const CreateTrip = () => {
         try {
             const response = await myAxios.post(
                 "/add/notification",
-                JSON.stringify({user: response1.user_id, notif: "You created a trip!"}),
+                JSON.stringify({notification: 'Your trip: ' + tripName + ' from ' + start + ' to ' + end +
+                        ' on ' + date + ' has been created successfully!', user: response1.user_id}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
@@ -520,7 +517,11 @@ const CreateTrip = () => {
                 console.log("Registration Failed");
                 console.log(err?.response);
             }
-        }*/
+        }
+        setTripName("");
+        setStart("");
+        setEnd("");
+        setDate("");
     }
     const containerStyle = {
         width: '100%',
