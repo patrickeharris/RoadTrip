@@ -16,9 +16,9 @@ public class RatingController {
     private RatingService ratingService;
 
     @GetMapping("/ratings")
-    public @ResponseBody Iterable<Rating> getAllRatings(@RequestParam(value = "tripId", required = false) Long tripId) {
+    public @ResponseBody Iterable<Rating> findAllRatings(@RequestParam(value = "tripId", required = false) Long tripId) {
         if (tripId == null) {
-            return ratingService.getRatings();
+            return ratingService.findAllRatings();
         } else {
             return ratingService.getRatingsByTripId(tripId);
         }

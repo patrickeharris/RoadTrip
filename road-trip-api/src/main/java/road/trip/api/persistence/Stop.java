@@ -17,7 +17,7 @@ public class Stop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long stopId;
+    private Long stop_id;
 
     private String stopName;
 

@@ -5,7 +5,7 @@ export {default as Login} from './login/Login';
 export {default as Register} from './register/Register';
 export {default as EditProfile} from './profile/EditProfile';
 export {default as CreateTrip} from './createTrip/CreateTrip';
-export {default as SpotifyLogin} from './spotify-login/SpotifyLogin';
 export {default as EditTrip} from './editTrip/EditTrip';
 export {default as Profile} from './profile/ViewProfile';
 export {default as Notification} from './notification/Notification';
+export {default as ChooseGenre} from './chooseGenre/ChooseGenre'

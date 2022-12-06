@@ -3,9 +3,11 @@ package road.trip.api.persistence;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Data
@@ -13,13 +15,13 @@ import java.util.Objects;
 @Table(name = User.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements UserDetails {
     public static final String TABLE_NAME = "User";
 
-    @Column(name = "first_name")
+    @Column(name = "firstName")
     String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "lastName")
     String lastName;
 
     @Column(name = "email")
@@ -28,26 +30,8 @@ public class User {
     @Column(name = "password")
     String password;
 
-    @Column(name = "password_hash")
-    String salt;
-
-    /*
-
-    @Column(name = "regDate")
-    Date regDate;
-
-    @Column(name = "lastLogin")
-    Date lastLogin;
-
-    @Column(name = "isOperator")
-    Boolean isOperator;
-
-    @Column(name = "emailPref")
-    Boolean emailPref;
-
-     */
-
-    AuthorizationCodeCredentials spotifyAccountToken;
+    @Column(name = "username")
+    String username;
 
     Boolean enabled = false;
 
@@ -61,6 +45,7 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.username = email;
     }
 
     public void setUser_id(Long user_id) {
@@ -72,15 +57,45 @@ public class User {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(user_id, user.user_id) && Objects.equals(salt, user.salt);
+        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(user_id, user.user_id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, password, user_id, salt);
+        return Objects.hash(firstName, lastName, email, password, user_id);
     }
 }

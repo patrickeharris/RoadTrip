@@ -26,18 +26,24 @@ const RatingsTable = ({tripId}) => {
                 <tr>
                     <th>ID</th>
                     <th>Trip ID</th>
+                    <th>Name</th>
                     <th>Score</th>
                     <th>Message</th>
                     <th>Type</th>
                 </tr>
                 {ratings.map((r) => {
+                    let ratingType = "Trip"
+                    if (r.name != null) {
+                        ratingType = "Stop"
+                    }
                     return (
                         <tr className={styles.ratings__tr}>
                             <td>{r.id}</td>
                             <td>{r.trip_id}</td>
+                            <td>{r.name}</td>
                             <td>{r.score}</td>
                             <td>{r.message}</td>
-                            <td>Todo</td>
+                            <td>{ratingType}</td>
                         </tr>
                     )
                 })}

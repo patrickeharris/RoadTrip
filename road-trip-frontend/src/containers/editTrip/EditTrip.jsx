@@ -1048,15 +1048,20 @@ const EditTrip = () => {
                 }
             });
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
-            let id = (await myAxios.get("/register/curUser")).data.user_id;
+            let id = (await myAxios.get("/register/curUser", {
+                headers:{
+                    'Access-Control-Allow-Origin' : '*',
+                    'Authorization': window.sessionStorage.getItem('token')}
+            })).data.user_id;
             console.log(id);
             const response = await myAxios.post(
                 "/edit-trip",
                 JSON.stringify({trip_id, tripName, start, end, date, user_id: userID, selectedRoute, route: {routeName : selectedRoute, stops: trip}}),
                 {
-                    headers: {"Content-Type": "application/json",
+                    headers: {
+                        "Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
-                        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',},
+                        'Authorization': window.sessionStorage.getItem('token')},
                     withCredentials: true,
                 }
             );

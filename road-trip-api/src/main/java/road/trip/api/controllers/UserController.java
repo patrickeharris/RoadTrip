@@ -2,6 +2,7 @@ package road.trip.api.controllers;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import road.trip.api.persistence.User;
 import road.trip.api.services.UserService;
@@ -20,8 +21,8 @@ public class UserController {
     }
 
     @GetMapping("/register/curUser")
-    public User findCurUser() {
-        return userService.findCurUser();
+    public User findCurUser(@RequestHeader(value="authorization") String auth) {
+        return userService.findCurUser(auth);
     }
 
     @PostMapping("/register")
@@ -35,18 +36,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestParam String email) {
-        return userService.login(email);
-    }
-
-    @PostMapping("/register/remove")
-    public User remove(@RequestBody Long id) {
-        return userService.remove(id);
-    }
-
-    @GetMapping("/logout")
-    public User logout() {
-        return userService.logout();
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) throws Exception {
+        return userService.login(email, password);
     }
 
     @DeleteMapping("/profile/delete")
