@@ -73,7 +73,7 @@ const CardContent = (props) => {
                                        window.sessionStorage.setItem('curTrip', props.tripid);
                                        console.log(window.sessionStorage.getItem('spotifyLogged') )
                                            window.sessionStorage.setItem('spotifyLogged', 'true');
-                                           fetch("https://localhost:8080/spotify-login", {
+                                           fetch("https://trailblazers.gq:8080/spotify-login", {
                                                headers: {
                                                    "Content-Type": "application/json",
                                                    'Access-Control-Allow-Origin' : '*',
