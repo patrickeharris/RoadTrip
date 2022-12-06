@@ -98,6 +98,33 @@ const Login = () => {
                 }
             }
 
+            //Sending trip confirmation notification
+            const response2 = (await myAxios.get("/register/curUser", {
+                headers:{
+                    'Access-Control-Allow-Origin' : '*',
+                    'Authorization': window.sessionStorage.getItem('token')}
+            })).data;
+            try {
+                const response = await myAxios.post(
+                    "/add/notification",
+                    JSON.stringify({notification: 'Your trip: ', user: response2.user_id}),
+                    {
+                        headers: {"Content-Type": "application/json",
+                            'Access-Control-Allow-Origin' : '*',
+                            'Authorization': window.sessionStorage.getItem('token')},
+                        withCredentials: true,
+                    }
+                );
+            } catch (err) {
+                if (!err?.response) {
+                    console.log("No Server Response");
+                    console.log(err);
+                } else {
+                    console.log("Registration Failed");
+                    console.log(err?.response);
+                }
+            }
+
         }
     }
 
