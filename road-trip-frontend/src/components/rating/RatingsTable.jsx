@@ -3,14 +3,10 @@ import styles from "./rating.module.css"
 import {myAxios} from "../../util/helper";
 import React from "react";
 
-const RatingsTable = ({tripId}) => {
+const RatingsTable = () => {
     const [ratings, setRatings] = useState([]);
 
     let url = "/rating/ratings";
-
-    if (tripId != null) {
-        url += "?tripId=" + tripId
-    }
 
     useEffect(() => {
         const fetchRatings = async () => {
@@ -29,9 +25,10 @@ const RatingsTable = ({tripId}) => {
     return (
         ratings ?
             <div className="h-screen overflow-scroll overflow-hidden">
-                <h1 className="font-sans text-transparent flex justify-center text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300 mb-12">Ratings</h1>
-                <div style={{ paddingLeft: "100px", paddingRight: "100px" }}>
+                <h1 className="font-sans text-transparent flex justify-center text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300 pb-12">Ratings</h1>
+                <div className="justify-center px-10">
                     <table className={styles.ratings__tableWrapper}>
+                        <tbody>
                         <tr className="font-sans">
                             <th>ID</th>
                             <th>Trip ID</th>
@@ -57,6 +54,7 @@ const RatingsTable = ({tripId}) => {
                                 </tr>
                             )
                         })}
+                        </tbody>
                     </table>
                 </div>
             </div>
