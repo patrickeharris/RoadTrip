@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,14 +20,15 @@ public class Playlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long playlistID;
+    private Long playlist_id;
 
     @Column(name = "user_id")
     private Long user_id;
 
     @Column(name = "playlistName")
-    String playlistName;
+    private String playlistName;
 
-    @Column(name = "playlistLink")
-    String playlistLink;
+    @Column
+    @OneToMany(fetch=FetchType.EAGER)
+    private List<Track> trackList = new ArrayList<>();
 }

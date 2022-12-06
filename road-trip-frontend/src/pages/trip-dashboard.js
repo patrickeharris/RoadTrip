@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./styles/index.module.css";
-import {Navbar, Card, TripList} from "../components";
+import {Navbar, TripList} from "../components";
 import {Footer} from "../containers";
 import 'react-multi-carousel/lib/styles.css';
 
@@ -27,15 +27,19 @@ const responsive = {
 function TripsPage() {
 
     return (
-
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
-                <div className={styles.buttons}>
-                    <button type="button" onClick={() => window.location.replace("/create-trip")} >Add Trip</button>
+                <div className='height: 100px'>
+                    <br></br>
                 </div>
-
-                    <TripList />
+                <div className='flex justify-center'>
+                    <button className='font-sans font-bold bg-red-500 hover:bg-red-700 text-white text-lg py-3 px-10 rounded' onClick={() => window.location.replace("/create-trip")} >Add Trip</button>
+                </div>
+                <div className='height: 100px'>
+                    <br></br>
+                </div>
+                <TripList />
 
                 <Footer />
             </div>

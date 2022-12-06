@@ -14,7 +14,11 @@ class ViewProfile extends React.Component{
 
     componentDidMount() {
         const fetchUserID = async () => {
-            const response = (await myAxios.get("/register/curUser")).data;
+            const response = (await myAxios.get("/register/curUser", {
+                headers:{
+                    'Access-Control-Allow-Origin' : '*',
+                    'Authorization': window.sessionStorage.getItem('token')}
+            })).data;
             const user  = response;
             this.setState({
                 user
@@ -59,25 +63,5 @@ class ViewProfile extends React.Component{
         );
     }
 }
-export default ViewProfile
 
-/*
-            <div>
-                <table>
-                    <tbody>
-                    <tr>
-                        <th>User ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                    </tr>
-                    <tr>
-                        <th>{this.state.user.user_id}</th>
-                        <th>{this.state.user.firstName}</th>
-                        <th>{this.state.user.lastName}</th>
-                        <th>{this.state.user.email}</th>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
- */
+export default ViewProfile

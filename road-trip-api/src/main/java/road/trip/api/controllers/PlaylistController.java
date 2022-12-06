@@ -4,24 +4,31 @@ import org.apache.hc.core5.http.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import road.trip.api.persistence.Playlist;
+import road.trip.api.persistence.Trip;
+import road.trip.api.persistence.TripRepository;
 import road.trip.api.services.PlaylistService;
+import road.trip.api.services.TripService;
 import road.trip.api.services.UserService;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.SpotifyHttpManager;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
 import se.michaelthelin.spotify.model_objects.credentials.AuthorizationCodeCredentials;
-import se.michaelthelin.spotify.model_objects.specification.Artist;
 import se.michaelthelin.spotify.model_objects.specification.Paging;
 import se.michaelthelin.spotify.model_objects.specification.PlaylistSimplified;
+import se.michaelthelin.spotify.model_objects.specification.Recommendations;
+import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest;
 import se.michaelthelin.spotify.requests.authorization.authorization_code.AuthorizationCodeUriRequest;
-import se.michaelthelin.spotify.requests.data.personalization.simplified.GetUsersTopArtistsRequest;
+import se.michaelthelin.spotify.requests.data.browse.GetRecommendationsRequest;
+import se.michaelthelin.spotify.requests.data.playlists.AddItemsToPlaylistRequest;
+import se.michaelthelin.spotify.requests.data.playlists.CreatePlaylistRequest;
 import se.michaelthelin.spotify.requests.data.playlists.GetListOfCurrentUsersPlaylistsRequest;
+import se.michaelthelin.spotify.requests.data.playlists.GetPlaylistRequest;
+import se.michaelthelin.spotify.requests.data.users_profile.GetCurrentUsersProfileRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Arrays;
 
 enum Keys {
     CLIENT_ID,
@@ -44,7 +51,13 @@ public class PlaylistController {
     @Autowired
     PlaylistService playlistService;
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://trailblazers.gq:8080/get-spotify-user-code");
+    @Autowired
+    TripService tripService;
+
+    @Autowired
+    TripRepository tripRepository;
+
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://localhost:8080/get-spotify-user-code");
     private String code = "";
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
             .setClientId(Keys.CLIENT_ID.getKey())
@@ -58,7 +71,7 @@ public class PlaylistController {
     @ResponseBody
     public String spotifyLogin() {
         AuthorizationCodeUriRequest authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
-                .scope("user-read-private, user-read-email, user-top-read")
+                .scope("user-read-private, user-read-email, user-top-read, playlist-modify-public")
                 .show_dialog(true)
                 .build();
 
@@ -86,7 +99,7 @@ public class PlaylistController {
             System.out.println("Error: " + e.getMessage());
         }
 
-        response.sendRedirect("http://trailblazers.gq/add-playlist");
+        response.sendRedirect("http://localhost:3000/generate-playlist");
         return spotifyApi.getAccessToken();
     }
 
@@ -94,11 +107,6 @@ public class PlaylistController {
     public @ResponseBody Iterable<Playlist> getAllPlaylistsByUser(@RequestParam Long user_id) {
         System.out.println("here");
         return playlistService.getAllPlaylistsByUser(user_id);
-    }
-
-    @PostMapping(value="/add-playlist")
-    public Playlist addPlaylist(@RequestParam Long trip_id, @RequestParam Long playlistID) {
-        return playlistService.addPlaylist(trip_id, playlistID);
     }
 
     @PostMapping(value="/save-playlist")
@@ -110,6 +118,70 @@ public class PlaylistController {
     @GetMapping(value="/find-playlist")
     public @ResponseBody Playlist findPlaylist(@RequestParam Long id) {
         return playlistService.findPlaylistById(id);
+    }
+
+    @DeleteMapping(value="/delete-playlist")
+    public void deletePlaylist(@RequestParam Long trip_id) {
+        Trip trip = tripService.findTripById(trip_id);
+        trip.setPlaylist_link(null);
+        trip.setPlaylist_id(null);
+        tripRepository.save(trip);
+    }
+
+    @GetMapping(value="/generate-recommendations")
+    public String generateRecommendations(@RequestParam Long trip_id, @RequestParam String genre, @RequestParam String playlistName) {
+        final GetRecommendationsRequest getRecommendationsRequest = spotifyApi.getRecommendations()
+                .limit(15)
+                .seed_genres(genre)
+                .build();
+
+        final GetCurrentUsersProfileRequest getCurrentUsersProfileRequest = spotifyApi.getCurrentUsersProfile().build();
+
+        final CreatePlaylistRequest createPlaylistRequest;
+
+        final AddItemsToPlaylistRequest addItemsToPlaylistRequest;
+
+        final GetPlaylistRequest getPlaylistRequest;
+
+        try {
+            Recommendations recommendations = getRecommendationsRequest.execute();
+            String id = getCurrentUsersProfileRequest.execute().getId();
+
+            System.out.println(id);
+
+            createPlaylistRequest = spotifyApi.createPlaylist(id,playlistName).build();
+            se.michaelthelin.spotify.model_objects.specification.Playlist playlist = createPlaylistRequest.execute();
+
+            String[] uris = new String[15];
+            for (int i = 0; i < 15; i++) {
+                uris[i] = recommendations.getTracks()[i].getUri();
+                System.out.println(recommendations.getTracks()[i].getUri());
+            }
+            addItemsToPlaylistRequest = spotifyApi.addItemsToPlaylist(playlist.getId(),uris).build();
+            addItemsToPlaylistRequest.execute();
+
+            getPlaylistRequest = spotifyApi.getPlaylist(playlist.getId()).build();
+            playlist = getPlaylistRequest.execute();
+
+            playlistService.addPlaylistToTrip(trip_id, playlist);
+
+            return playlist.getExternalUrls().get("spotify");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    @GetMapping("/get-playlist-link")
+    public String getPlaylistLink(@RequestParam Long trip_id) {
+        Trip trip = tripService.findTripById(trip_id);
+        return trip.getPlaylist_link();
+    }
+
+    @PostMapping(value="/create-playlist")
+    public Long createPlaylist(@RequestParam String name, @RequestParam TrackSimplified[] tracks) {
+        return playlistService.createPlaylist(name, tracks);
     }
 
     @GetMapping(value="/user-playlists")

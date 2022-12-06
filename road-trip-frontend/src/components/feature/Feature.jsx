@@ -7,11 +7,11 @@ const Feature = ({title, text, subfeature}) => {
             <div className={styles.subfeature}>
                 <div className={styles.featureTitle}>
                     <div/>
-                    <h1>{title}</h1>
+                    <h1 className="font-sans">{title}</h1>
                 </div>
                 <div className={styles.featureText}>
                     <div className={styles.subFeatureText}>
-                        <p>{text}</p>
+                        <p className="font-sans">{text}</p>
                     </div>
                 </div>
             </div>
@@ -22,10 +22,10 @@ const Feature = ({title, text, subfeature}) => {
             <div className={styles.feature}>
                 <div className={styles.featureTitle}>
                     <div/>
-                    <h1>{title}</h1>
+                    <h1 className="font-sans">{title}</h1>
                 </div>
                 <div className={styles.featureText}>
-                    <p>{text}</p>
+                    <p className="font-sans">{text}</p>
                 </div>
             </div>
         )

@@ -23,25 +23,30 @@ const Login = () => {
 
             try {
                 const response = (await myAxios.get("/register/users")).data;
-                console.log(response[0]);
                 let found = false;
                 let index;
+                let pass;
 
                 for (let i = 0; i < response.length; i++) {
                     if (response[i].email === email) {
                         found = true;
-                        index = i;
+                        pass = response[i].password;
                     }
                 }
 
+                console.log(pass)
+
                 if (found === true) {
-                    if (bcrypt.compareSync(password, response[index].password)) {
+
+                    if (bcrypt.compareSync(password, pass)) {
                         window.sessionStorage.setItem('loggedIn', 'true');
+                        console.log(pass);
+
                         const response = await myAxios.post(
                             "/login",
                             null,
                             {
-                                params: {email},
+                                params: {email: email, password: pass},
                                 headers: {
                                     "Content-Type": "application/json",
                                     'Access-Control-Allow-Origin': '*',
@@ -49,6 +54,10 @@ const Login = () => {
                                 },
                                 withCredentials: true,
                             });
+                        console.log(response.data);
+                        window.sessionStorage.setItem('token', "Bearer " + response.data);
+                        console.log(window.sessionStorage.getItem('token'));
+                        myAxios.defaults.headers.common['Authorization'] = `Bearer ${response.data}`;
                         toast.success('Successfully Logged In!', {
                             position: "top-right",
                             autoClose: 5000,

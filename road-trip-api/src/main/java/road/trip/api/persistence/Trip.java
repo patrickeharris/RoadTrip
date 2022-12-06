@@ -53,21 +53,16 @@ public class Trip {
     private String selectedRoute;
 
     @Column(name = "playlist_id")
-    private Long playlist_id;
+    private String playlist_id;
+
+    @Column(name = "playlist_link")
+    private String playlist_link;
 
     @Transient
     private List<Stop> selectedStops = new ArrayList<>();
 
     @OneToOne
     private Route route;
-
-    /*
-    @Column(name = "routePref")
-    private Enum routePref;
-
-    @Column(name = "playlistPref")
-    private Enum playlistPref;
-     */
 
     public void setUser_id(Long user_id) {
         this.user_id = user_id;

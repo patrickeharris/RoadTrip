@@ -6,22 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import bcrypt from "bcryptjs";
 
-const getFirstName = async () => {
-    return (await myAxios.get("/register/curUser")).data.firstName;
-}
-
-const getLastName = async () => {
-    return (await myAxios.get("/register/curUser")).data.lastName;
-}
-
-const getEmail = async () =>{
-    return (await myAxios.get("/register/curUser")).data.email;
-}
-
-const getPassword = async () => {
-    return (await myAxios.get("/register/curUser")).data.password;
-}
-
 //Function to show error message to the user
 function showError(errorMsg){
     toast.error(errorMsg, {
@@ -60,8 +44,12 @@ const EditProfile = () => {
             showError('Error: Passwords must match')
         }else{
             const hashedPassword = bcrypt.hashSync(password, 10);
-            let id = (await myAxios.get("/register/curUser")).data.user_id;
-            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id, ", password = " + hashedPassword);
+            let id = (await myAxios.get("/register/curUser", {
+                headers:{
+                    'Access-Control-Allow-Origin' : '*',
+                    'Authorization': window.sessionStorage.getItem('token')}
+            })).data.user_id;
+            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id);
             try {
                 const response = await myAxios.post(
                     "/register/update",
@@ -69,8 +57,7 @@ const EditProfile = () => {
                     {
                         headers: {
                             "Content-Type": "application/json",
-                            'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                            'Authorization': window.sessionStorage.getItem('token')
                         },
                         withCredentials: true,
                     }
@@ -89,7 +76,7 @@ const EditProfile = () => {
                 if (!err?.response) {
                     console.log("No Server Response");
                 } else {
-                    console.log("EditProfile Update Failed");
+                    console.log("Update Profile Failed");
                     console.log(err?.response);
                 }
             }

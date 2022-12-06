@@ -1,5 +1,6 @@
 package road.trip.api.services;
 
+/*
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,10 +14,23 @@ public class RatingServiceTest {
     @Autowired
     RatingService ratingService;
 
-    /*
+    
+
     @Test
     public void testGetRatings() throws Exception {
-        assertNotNull(ratingService.getRatings());
+        assertNotNull(ratingService.getAllRatings());
     }
-*/
+
+    @Test
+    public void testGetRatingsByTripId() {
+
+    }
+
+    @Test
+    public void testSaveRating() {
+
+    }
+
 }
+
+ */
