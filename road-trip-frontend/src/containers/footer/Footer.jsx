@@ -12,9 +12,9 @@ const Footer = () => {
     })
 
     return (
-        <div className="flex justify-center items-center flex-col w-screen" id="footer">
+        <div className="flex justify-center items-center flex-col w-full" id="footer">
 
-            <hr className="border-slate-700 h-px w-screen mt-6"/>
+            <hr className="border-slate-700 h-px w-full mt-6"/>
                     <h4 className="font-sans text-white mb-2 text-lg mt-2">Links</h4>
                     <p className="font-sans text-white hover:text-slate-300 mb-1"><a href="./">Home</a></p>
                     <p className="font-sans text-white hover:text-slate-300 mb-1"><a href="./#about">About Us</a></p>
