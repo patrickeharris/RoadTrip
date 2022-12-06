@@ -11,7 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import {Checkbox} from "@material-ui/core";
-import * as emailjs from "@emailjs/browser";
 import ReactStars from 'react-stars';
 
 const Trip = ({trip, setTest, setTrip, stopsResponse, setStopsResponse}) => {

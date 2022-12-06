@@ -75,11 +75,10 @@ public class PlaylistService {
         return newList;
     }
 
-    public Playlist addPlaylistToTrip(Long trip_id, Long playlistID) {
+    public void addPlaylistToTrip(Long trip_id, se.michaelthelin.spotify.model_objects.specification.Playlist playlist) {
         Trip trip = tripService.findTripById(trip_id);
-        Playlist playlist = findPlaylistById(playlistID);
-        trip.setPlaylist_id(playlistID);
+        trip.setPlaylist_id(playlist.getId());
+        trip.setPlaylist_link(playlist.getExternalUrls().get("spotify"));
         tripRepository.save(trip);
-        return playlist;
     }
 }

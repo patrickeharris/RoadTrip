@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from "react";
 import styles from "./card.module.css"
 import {GoogleMap, useLoadScript, Marker, DirectionsRenderer} from "@react-google-maps/api";
+import {myAxios} from "../../util/helper";
 
 /**
  * NOTES:
@@ -58,12 +59,12 @@ const CardContent = (props) => {
                 {toggle  ? <div id="dropdown" className="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
                         <ul className="font-sans py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
                             <li>
-                                <a className="font-sans font-bold block py-2 pl-3 pr-4 text-white bg-green-500 hover:bg-green-700 text-white p-0 dark:text-white"
+                                { props.playlistid === null ? <a className="font-sans font-bold block py-2 pl-3 pr-4 text-white bg-green-500 hover:bg-green-700 text-white p-0 dark:text-white"
                                    onClick={function addPlaylist() {
                                        window.sessionStorage.setItem('curTrip', props.tripid);
                                        console.log(window.sessionStorage.getItem('spotifyLogged') )
                                        if (window.sessionStorage.getItem('spotifyLogged') === 'true') {
-                                           window.location.replace("/choose-genre");
+                                           window.location.replace("/generate-playlist");
                                        } else {
                                            window.sessionStorage.setItem('spotifyLogged', 'true');
                                            fetch("https://localhost:8080/spotify-login", {
@@ -80,7 +81,12 @@ const CardContent = (props) => {
                                                .catch((error) => {
                                                    console.log(error);
                                                })
-                                       }}}>Add Playlist</a>
+                                       }}}>Add Playlist</a> :
+                                        <a className="font-sans font-bold block py-2 pl-3 pr-4 text-white bg-green-500 hover:bg-green-700 text-white p-0 dark:text-white"
+                                           onClick={() => {
+                                               window.sessionStorage.setItem('curTrip', props.tripid);
+                                               window.location.replace("/view-playlist");
+                                           }}>View Playlist</a>}
                             </li>
                             <li>
                                 <a className="font-sans font-bold bg-blue-500 block py-2 pl-3 pr-4 text-white hover:bg-blue-700 border-0 p-0 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent"
@@ -184,7 +190,7 @@ const Map = (props) => {
         </GoogleMap> : <></>}</>);
 }
 
-const Card = ({title, start, end, date, menu, startLoc, endLoc, selectedRoute, stops, tripid}) => {
+const Card = ({title, start, end, date, menu, startLoc, endLoc, selectedRoute, stops, tripid, playlistid}) => {
     console.log("test")
         return (
             <div style={{ width: 350 + "px" }}>
@@ -196,6 +202,7 @@ const Card = ({title, start, end, date, menu, startLoc, endLoc, selectedRoute, s
                     end={end}
                     date={date}
                     tripid={tripid}
+                    playlistid={playlistid}
                 />
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./styles/index.module.css";
-import {Navbar, Card, TripList} from "../components";
+import {Navbar, TripList} from "../components";
 import {Footer} from "../containers";
 import 'react-multi-carousel/lib/styles.css';
 

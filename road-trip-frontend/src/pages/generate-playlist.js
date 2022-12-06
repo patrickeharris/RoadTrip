@@ -1,20 +1,20 @@
 import styles from "./styles/index.module.css";
 import {Navbar} from "../components";
-import {Footer, ChooseGenre} from "../containers";
+import {Footer, Playlist} from "../containers";
 import React from "react";
 
 require('dotenv').config();
 
-function ChooseGenrePage() {
+function PlaylistPage() {
     return (
         <div className={styles.wrapper}>
             <div className={styles.gradient__bg}>
                 <Navbar />
-                <ChooseGenre />
+                <Playlist />
                 <Footer />
             </div>
         </div>
     )
 }
 
-export default ChooseGenrePage
+export default PlaylistPage
