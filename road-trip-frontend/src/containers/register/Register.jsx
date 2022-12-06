@@ -79,6 +79,19 @@ const Register = () => {
                         withCredentials: true,
                     }
                 );
+                window.sessionStorage.setItem('spotifyLogged', 'false');
+                await myAxios.post(
+                    "/login",
+                    null,
+                    {
+                        params: {email},
+                        headers: {
+                            "Content-Type": "application/json",
+                            'Access-Control-Allow-Origin': '*',
+                            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                        },
+                        withCredentials: true,
+                    });
                 toast.success('Successfully Registered!', {
                     position: "top-right",
                     autoClose: 5000,

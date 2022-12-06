@@ -51,6 +51,15 @@ const CardContent = (props) => {
             <p className="font-sans text-md mb-1">{props.start}</p>
             <p className="font-sans text-md mb-1">{props.end}</p>
             <p className="font-sans text-md mb-1">{props.date}</p>
+            <hr className="mb-1" />
+            <p className="font-sans font-bold text-md mb-1">Stops</p>
+            {props.stops.map((stop) => {
+                let index = props.stops.findIndex(element => element.vicinity === stop.vicinity);
+                if(index > 0 && index < props.stops.length - 1) {
+                    console.log(stop)
+                    return <p className="font-sans text-md mb-1">{index}: {stop.stopName}</p>
+                }
+            })}
             <div>
                 <button onClick={() => {
                     setToggle(!toggle)
@@ -121,11 +130,12 @@ const CardContent = (props) => {
 
 const Markers = (props) => {
 
+
     return (<div>{props.stops && props.stops.map((stop) => {
         if(stop.stopLocLat === undefined || stop.stopLocLong === undefined){
             return <Marker position={{lat: -25.363, lng: 131.044}}/>
         }
-        return <Marker position={{lat: stop.stopLocLat, lng: stop.stopLocLong}}/>
+        return <Marker label={{text: (''+ props.stops.findIndex((elem) => elem.stopLocLong === stop.stopLocLong)), color: 'white'}} position={{lat: stop.stopLocLat, lng: stop.stopLocLong}}/>
     })}</div>)
 
 }
@@ -136,7 +146,9 @@ const Map = (props) => {
     useEffect(() => {
         async function getResults() {
             const directionsService = new google.maps.DirectionsService();
+            console.log("loc")
             console.log(props.startLoc)
+            console.log(props.endLoc)
             return await directionsService.route({
                 origin: props.startLoc,
                 destination: props.endLoc,
@@ -147,15 +159,20 @@ const Map = (props) => {
             });
         }
         console.log("isLoaded")
-        console.log(isLoaded)
+        console.log(props.isLoaded)
 
-        if (isLoaded) {
+        if (props.isLoaded) {
             getResults().then((response) => {
+                console.log("response")
+                console.log(response)
                 if (results === null) {
                     const resultList = response.routes.filter(function (item) {
                         //console.log(item);
                         const t = [];
                         t.push(item);
+                        console.log("summ")
+                        console.log(item.summary)
+                        console.log(props.selectedRoute)
                         if (item.summary === props.selectedRoute) {
                             return t;
                         }
@@ -165,10 +182,12 @@ const Map = (props) => {
                     t.routes = resultList;
                     t.request = response.request;
                     setResults(t);
+                    console.log("results")
+                    console.log(t)
                 }
             })
         }
-    }, [isLoaded])
+    }, [props.isLoaded])
 
     const containerStyle = {
         width: props.width + "px",
@@ -178,24 +197,24 @@ const Map = (props) => {
     let test = true;
 
     const [selected, setSelected] = useState({lat: 43.45, lng: -80.49});
-    const {isLoaded} = useLoadScript({
-        googleMapsApiKey: "AIzaSyDJGTHHgwc5HXLi7qDeMAvecrT0ts-7jLU",
-        libraries: ["places"],
-    });
 
-    return (<>{isLoaded ?
+    return (<>{props.isLoaded ?
         <GoogleMap zoom={10} center={selected} mapContainerStyle={containerStyle} mapContainerClassName="map-container">
-            <DirectionsRenderer directions={results}/>
+            {results !== null && <DirectionsRenderer directions={results}/>}
             <Markers stops={props.stops}/>
         </GoogleMap> : <></>}</>);
 }
 
 const Card = ({title, start, end, date, menu, startLoc, endLoc, selectedRoute, stops, tripid, playlistid}) => {
+    const {isLoaded} = useLoadScript({
+        googleMapsApiKey: "AIzaSyDJGTHHgwc5HXLi7qDeMAvecrT0ts-7jLU",
+        libraries: ["places"],
+    });
     console.log("test")
         return (
             <div style={{ width: 350 + "px" }}>
                 <div className={styles.styleCard}>
-                    <Map startLoc={startLoc} endLoc={endLoc} selectedRoute={selectedRoute} stops={stops}/>
+                    {isLoaded ? <Map startLoc={startLoc} endLoc={endLoc} selectedRoute={selectedRoute} isLoaded={isLoaded} stops={stops}/> : <></>}
                     <CardContent
                     title={title}
                     start={start}
@@ -203,6 +222,7 @@ const Card = ({title, start, end, date, menu, startLoc, endLoc, selectedRoute, s
                     date={date}
                     tripid={tripid}
                     playlistid={playlistid}
+                    stops={stops}
                 />
 
 

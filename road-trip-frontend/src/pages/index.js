@@ -19,13 +19,13 @@ function HomePage() {
 
 
     return (
-        <div className={styles.wrapper}>
+        <div className="bg-blue-900">
             <div className={styles.gradient__bg}>
                 <Navbar />
                 <Header />
+                <About />
+                <Footer />
             </div>
-            <About />
-            <Footer />
         </div>
     )
 }

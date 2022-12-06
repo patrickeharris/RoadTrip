@@ -20,4 +20,5 @@ public class NotificationService {
         System.out.println("Notification: " + n.getNotification());
         return notificationRepository.save(n);
     }
+    public void removeNotification(Long id){notificationRepository.deleteById(id);}
 }

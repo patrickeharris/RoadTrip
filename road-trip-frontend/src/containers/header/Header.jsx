@@ -5,7 +5,7 @@ import globalStyles from "../container.module.css";
 const Header = () => {
     return (
         <div className={globalStyles.sectionPadding}>
-            <div className={styles.header} id="home">
+            <div className="flex" id="home">
                 <div className={styles.headerContent}>
                     <h1 className="font-sans text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">Blaze Your Trail!</h1>
 

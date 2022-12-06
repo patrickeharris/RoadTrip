@@ -57,6 +57,8 @@ const TripList = () => {
             const end = "End: " + item.end;
             const date = "Date: " + item.date;
             const id = item.trip_id;
+            console.log("selected")
+            console.log(item)
 
             return <div key={id}>
                 <Card title={item.tripName} start={start} end={end} date={date} menu={null} startLoc={item.startLoc}
