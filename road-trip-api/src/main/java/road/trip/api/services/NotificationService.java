@@ -19,4 +19,5 @@ public class NotificationService {
     public Notification addNotification(Notification n){
         return notificationRepository.save(n);
     }
+    public void removeNotification(Long id){notificationRepository.deleteById(id);}
 }

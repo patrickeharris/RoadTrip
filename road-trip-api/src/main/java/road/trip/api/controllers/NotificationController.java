@@ -28,4 +28,10 @@ public class NotificationController {
         return notificationService.addNotification(n);
     }
 
+    @PostMapping("/remove/notification")
+    public void removeNotification(@RequestParam Long id){
+        System.out.println("id" + id);
+        notificationService.removeNotification(id);
+    }
+
 }
