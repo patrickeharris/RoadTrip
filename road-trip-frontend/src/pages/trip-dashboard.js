@@ -30,17 +30,12 @@ function TripsPage() {
         <div className="h-screen">
             <div className={styles.gradient__bg}>
                 <Navbar />
-                <div className='height: 100px'>
-                    <br></br>
-                </div>
-                <div className='flex justify-center'>
+                <div className='flex justify-center py-10'>
                     <button className='font-sans font-bold bg-red-500 hover:bg-red-700 text-white text-lg py-3 px-10 rounded' onClick={() => window.location.replace("/create-trip")} >Add Trip</button>
                 </div>
-                <div className='height: 100px'>
-                    <br></br>
+                <div className="h-screen">
+                    <TripList />
                 </div>
-                <TripList />
-
                 <Footer />
             </div>
         </div>
