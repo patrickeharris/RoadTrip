@@ -31,60 +31,44 @@ import {myAxios} from "../../util/helper";
 }
 */
 const Notifs = () => {
+
     const [notifs, setNotifs] = useState([])
     const [test, setTest] = useState(false)
+
     async function getNotifs(){
-        if(notifs.length === 0) {
-            const response = (await myAxios.get("/get/notifications", {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': window.sessionStorage.getItem('token')
-                }
-            })).data;
-            const response1 = (await myAxios.get("/register/curUser", {
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': window.sessionStorage.getItem('token')
-                }
-            })).data;
-            for (let i = 0; i < response.length; i++) {
-                if (response1.user_id === response[i].user) {
-                    if (notifs.findIndex(element => '' + element.notif_id === '' + response[i].notif_id) === -1) {
-                        notifs.push(response[i])
-                        console.log("push")
-                        console.log(response[i])
-                    } else {
-                        console.log("skip")
-                        console.log(response[i])
-                    }
-                }
-            }
-            setNotifs(notifs)
-            setTest(true)
-        }
-        else{
-            console.log(notifs)
-            setNotifs(notifs)
-            setTest(true)
-        }
-    }
-    async function remNotif(e){
-        setTest(false)
-        setNotifs([])
-        console.log(notifs.findIndex(element => '' + element.notif_id === '' + e.target.value))
-        notifs.splice(notifs.findIndex(element => '' + element.notif_id === '' + e.target.value), 1)
-        setNotifs(notifs)
-        await myAxios.post("/remove/notification", null,{
-            params: {id: e.target.value},
+        const response = (await myAxios.get("/get/notifications", {
             headers:{
                 'Access-Control-Allow-Origin' : '*',
                 'Authorization': window.sessionStorage.getItem('token')}
-        }).then(setTest(true), getNotifs());
+        })).data;
+        const response1 = (await myAxios.get("/register/curUser", {
+            headers:{
+                'Access-Control-Allow-Origin' : '*',
+                'Authorization': window.sessionStorage.getItem('token')}
+        })).data;
+        for (let i = 0; i < response.length; i++) {
+            if(response1.user_id === response[i].user){
+                if(notifs.findIndex(element => '' + element.notif_id === '' + response[i].notif_id) === -1) {
+                    notifs.push(response[i])
+                    console.log("push")
+                } else {
+                    console.log("skip")
+                }
+            }
+        }
+        setNotifs(notifs)
+        setTest(true)
     }
+
     useEffect(() => {
         getNotifs();
-    }, [notifs])
-    return <div className="flex flex-col justify-center items-center">{notifs.length > 0 && test ? notifs.map((notif) => {return <p className="w-full text-center py-4 bg-white hover:bg-slate-300">{notif.notification} <button onClick={remNotif} value={notif.notif_id} className="ml-16 bg-red-500 px-2 py-1 text-white hover:bg-red-700">X</button></p>}):<p>No New Notifications</p>}</div>
+    })
+
+    return <div className="flex flex-col items-center overflow-scroll overflow-hidden">{test && notifs.length > 0 ? notifs.map((notif) => {
+        return <div>
+            <p className="w-full bg-white font-bold font-sans">{notif.timestamp}</p>
+            <p className="w-full bg-white font-sans">{notif.notification}</p>
+            </div>}) : <p className="w-full font-sans text-center bg-white">No Notifications Found</p>}</div>
 }
 
 const Navbar = () => {
@@ -196,10 +180,13 @@ const Navbar = () => {
                               }
                               {
                                   logged === 'true' ?
+                                      router.pathname === "/ratings" ?
+                                          <a href="/ratings"
+                                             className="font-sans font-bold bg-white text-purple-700 px-3 py-2 font-bold rounded-md text-sm font-medium">Ratings</a>:
                                       <a href="/ratings"
-                                        className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
+                                        className="font-sans font-bold text-gray-300 hover:bg-white hover:text-purple-700 font-bold px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
                                       : <a href="/login"
-                                           className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
+                                           className="font-sans font-bold text-gray-300 hover:bg-white hover:text-purple-700 font-bold px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
                               }
                           </div>
                       </div>
@@ -232,15 +219,37 @@ const Navbar = () => {
                       <div class="relative ml-3">
                           <div>
                               {dropdownOpen ?
-                              <button type="button" onClick={() => setdropdownOpen(!dropdownOpen)} class="flex rounded-full bg-gray-800 text-sm outline-none ring-2 ring-white ring-offset-1 ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                              <button type="button" onClick={() => setdropdownOpen(!dropdownOpen)} class="flex rounded-full bg-transparent text-sm text-white outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                   <span class="sr-only">Open user menu</span>
-                                  <img class="h-8 w-8 rounded-full" src="/static/profile.webp" alt=""></img>
+                                  <div className="rounded-full bg-inherit hover:fill-purple-700 hover:bg-white mt-1 w-6 h-6 bg-transparent fill-white text-white">
+                                      <svg version="1.1" id="Capa_1" x="0px" y="0px"
+                                           viewBox="0 0 56 56">
+                                          <g>
+                                              <path d="M28,0C12.561,0,0,12.561,0,28s12.561,28,28,28s28-12.561,28-28S43.439,0,28,0z M28,54C13.663,54,2,42.336,2,28
+                                                        S13.663,2,28,2s26,11.664,26,26S42.337,54,28,54z"/>
+                                              <path d="M40,16H16c-0.553,0-1,0.448-1,1s0.447,1,1,1h24c0.553,0,1-0.448,1-1S40.553,16,40,16z"/>
+                                              <path d="M40,27H16c-0.553,0-1,0.448-1,1s0.447,1,1,1h24c0.553,0,1-0.448,1-1S40.553,27,40,27z"/>
+                                              <path d="M40,38H16c-0.553,0-1,0.448-1,1s0.447,1,1,1h24c0.553,0,1-0.448,1-1S40.553,38,40,38z"/>
+                                          </g>
+                                      </svg>
+                                  </div>
                               </button> :
                                   <button type="button" onClick={() => setdropdownOpen(!dropdownOpen)}
-                                          className="flex rounded-full bg-gray-800 text-sm"
+                                          className="flex rounded-full bg-transparent text-white text-sm"
                                           id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                       <span className="sr-only">Open user menu</span>
-                                      <img className="h-8 w-8 rounded-full" src="/static/profile.webp" alt=""></img>
+                                      <div className="rounded-full hover:fill-purple-700 bg-inherit hover:bg-white mt-1 w-6 h-6 bg-transparent fill-white text-white">
+                                          <svg version="1.1" id="Capa_1" x="0px" y="0px"
+                                               viewBox="0 0 56 56">
+                                              <g>
+                                                  <path d="M28,0C12.561,0,0,12.561,0,28s12.561,28,28,28s28-12.561,28-28S43.439,0,28,0z M28,54C13.663,54,2,42.336,2,28
+                                                        S13.663,2,28,2s26,11.664,26,26S42.337,54,28,54z"/>
+                                                  <path d="M40,16H16c-0.553,0-1,0.448-1,1s0.447,1,1,1h24c0.553,0,1-0.448,1-1S40.553,16,40,16z"/>
+                                                  <path d="M40,27H16c-0.553,0-1,0.448-1,1s0.447,1,1,1h24c0.553,0,1-0.448,1-1S40.553,27,40,27z"/>
+                                                  <path d="M40,38H16c-0.553,0-1,0.448-1,1s0.447,1,1,1h24c0.553,0,1-0.448,1-1S40.553,38,40,38z"/>
+                                              </g>
+                                          </svg>
+                                      </div>
                                   </button>}
                           </div>
                           {dropdownOpen ?

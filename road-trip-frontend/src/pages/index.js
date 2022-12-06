@@ -19,12 +19,14 @@ function HomePage() {
 
 
     return (
-        <div className="bg-blue-900">
+        <div className="bg-blue-900 min-h-screen">
             <div className={styles.gradient__bg}>
-                <Navbar />
-                <Header />
-                <About />
-                <Footer />
+                <div className="min-h-screen">
+                    <Navbar />
+                    <Header />
+                    <About />
+                    <Footer />
+                </div>
             </div>
         </div>
     )

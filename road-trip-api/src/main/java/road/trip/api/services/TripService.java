@@ -12,6 +12,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Properties;
 
@@ -26,6 +28,9 @@ public class TripService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     public Trip findTripById(Long id) {
         return tripRepository.findById(id).get();
@@ -113,6 +118,13 @@ public class TripService {
     public Trip deleteTrip(Long trip_Id) {
         Trip trip = findTripById(trip_Id);
         tripRepository.deleteById(trip_Id);
+
+        Notification n = new Notification();
+        n.setUser(trip.getUser_id());
+        n.setNotification(trip.getTripName() + " has been deleted.");
+        n.setTimestamp(LocalDate.now());
+        notificationService.addNotification(n);
+
         return trip;
     }
 }

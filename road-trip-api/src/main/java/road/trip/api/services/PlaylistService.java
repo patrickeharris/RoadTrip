@@ -6,6 +6,8 @@ import road.trip.api.persistence.*;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.TrackSimplified;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +29,9 @@ public class PlaylistService {
 
     @Autowired
     TrackRepository trackRepository;
+
+    @Autowired
+    NotificationService notificationService;
 
     public Playlist findPlaylistById(Long id) {
         return playlistRepository.findById(id).get();
@@ -79,6 +84,13 @@ public class PlaylistService {
         Trip trip = tripService.findTripById(trip_id);
         trip.setPlaylist_id(playlist.getId());
         trip.setPlaylist_link(playlist.getExternalUrls().get("spotify"));
+
+        Notification n = new Notification();
+        n.setUser(trip.getUser_id());
+        n.setNotification("Your new playlist has been added to " + trip.getTripName() + "!");
+        n.setTimestamp(LocalDate.now());
+        notificationService.addNotification(n);
+
         tripRepository.save(trip);
     }
 }

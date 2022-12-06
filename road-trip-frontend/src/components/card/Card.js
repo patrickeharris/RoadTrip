@@ -68,13 +68,10 @@ const CardContent = (props) => {
                 {toggle  ? <div id="dropdown" className="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
                         <ul className="font-sans py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
                             <li>
-                                { props.playlistid === null ? <a className="font-sans font-bold block py-2 pl-3 pr-4 text-white bg-green-500 hover:bg-green-700 text-white p-0 dark:text-white"
+                                { props.playlistid === null ? <button className="font-sans w-44 font-bold block py-2 pl-3 pr-4 text-white bg-green-500 hover:bg-green-700 text-white p-0 dark:text-white"
                                    onClick={function addPlaylist() {
                                        window.sessionStorage.setItem('curTrip', props.tripid);
                                        console.log(window.sessionStorage.getItem('spotifyLogged') )
-                                       if (window.sessionStorage.getItem('spotifyLogged') === 'true') {
-                                           window.location.replace("/generate-playlist");
-                                       } else {
                                            window.sessionStorage.setItem('spotifyLogged', 'true');
                                            fetch("https://localhost:8080/spotify-login", {
                                                headers: {
@@ -90,27 +87,27 @@ const CardContent = (props) => {
                                                .catch((error) => {
                                                    console.log(error);
                                                })
-                                       }}}>Add Playlist</a> :
-                                        <a className="font-sans font-bold block py-2 pl-3 pr-4 text-white bg-green-500 hover:bg-green-700 text-white p-0 dark:text-white"
+                                       }}>Add Playlist</button> :
+                                        <button className="font-sans w-44 font-bold block py-2 pl-3 pr-4 text-white bg-green-500 hover:bg-green-700 text-white p-0 dark:text-white"
                                            onClick={() => {
                                                window.sessionStorage.setItem('curTrip', props.tripid);
                                                window.location.replace("/view-playlist");
-                                           }}>View Playlist</a>}
+                                           }}>View Playlist</button>}
                             </li>
                             <li>
-                                <a className="font-sans font-bold bg-blue-500 block py-2 pl-3 pr-4 text-white hover:bg-blue-700 border-0 p-0 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent"
+                                <button className="font-sans font-bold bg-blue-500 block py-2 w-44 pl-3 pr-4 text-white hover:bg-blue-700 border-0 p-0 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent"
                                    onClick={function editTrip() {
                                        window.sessionStorage.setItem('curTrip', props.tripid);
-                                       window.location.replace('/edit-trip');}}>Edit Trip</a>
+                                       window.location.replace('/edit-trip');}}>Edit Trip</button>
                             </li>
                             <li>
-                                <a className="font-sans font-bold bg-violet-500 block py-2 pl-3 pr-4 text-white hover:bg-violet-700 border-0 p-0 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent"
+                                <button className="font-sans font-bold w-44 bg-violet-500 block py-2 pl-3 pr-4 text-white hover:bg-violet-700 border-0 p-0 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent"
                                    onClick={function rateTrip() {
                                        window.sessionStorage.setItem('curTrip', props.tripid);
-                                       window.location.replace('/rate-trip?tripId=' + props.tripid);}}>Rate Trip</a>
+                                       window.location.replace('/rate-trip?tripId=' + props.tripid);}}>Rate Trip</button>
                             </li>
                             <li>
-                                <a className="font-sans font-bold bg-red-500 block py-2 pl-3 pr-4 text-white hover:bg-red-700 border-0 p-0 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent"
+                                <button className="font-sans font-bold w-44 bg-red-500 block py-2 pl-3 pr-4 text-white hover:bg-red-700 border-0 p-0 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white dark:hover:bg-transparent"
                                    onClick={async function cancelTrip(){
 
                                        await myAxios.delete("/cancel-trip",{
@@ -119,7 +116,7 @@ const CardContent = (props) => {
                                                "Content-Type": "application/json",
                                                'Authorization': window.sessionStorage.getItem('token')
                                            }});
-                                       window.location.replace("/trip-dashboard");}}>Cancel Trip</a>
+                                       window.location.replace("/trip-dashboard");}}>Cancel Trip</button>
                             </li>
                         </ul>
                     </div> : <></>}

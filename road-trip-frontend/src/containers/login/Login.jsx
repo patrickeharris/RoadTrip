@@ -17,7 +17,7 @@ const Login = () => {
         if (window.sessionStorage.getItem('loggedIn') === 'true') {
             if (confirm("You are already logged in. Do you want to log out?")) {
                 window.sessionStorage.setItem('loggedIn', 'false');
-                await myAxios.get("/logout");
+                window.sessionStorage.setItem('token', null);
             }
         } else {
 
