@@ -12,38 +12,95 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import {Checkbox} from "@material-ui/core";
 import ReactStars from 'react-stars';
+import {setIn} from "final-form";
 
-const Trip = ({trip, setTest, setTrip, stopsResponse, setStopsResponse}) => {
+const Trip = ({trip, setTest, setTrip, map, stopsResponse, setStopsResponse, markers, setMarkers, setInfo}) => {
     setTest(false);
     let i = 0;
     function removeListItem(e){
         let container = e.currentTarget;
-        console.log(container)
-        console.log(container.value)
-        console.log(e.currentTarget.value)
-        trip.map(function (item) {
-            console.log(item.vicinity)
-        })
-        /*container.classList.add("transition", "duration-200", "opacity-0");
-        container.ontransitionend = function () {
-            const index = trip.findIndex(element => element.vicinity === container.value);
-            console.log(index)
-            if(index !== -1) {
-                trip.splice(trip.findIndex(element => element.vicinity === container.value), 1);
-                console.log(trip)
-                container.parentElement.remove()
-                setTrip(trip);
-                setTest(true);
-            }
-        }*/
         const index = trip.findIndex(element => element.vicinity === container.value);
         console.log(index)
         if(index !== -1) {
             stopsResponse.push(trip.find(element => element.vicinity === container.value))
-            stopsResponse.sort(function(a, b){return b.rating - a.rating});
+            stopsResponse.sort(function(a, b){return (b.rating + Math.log(b.user_ratings_total) / Math.log(3)) - (a.rating + Math.log(a.user_ratings_total) / Math.log(3))});
             setStopsResponse(stopsResponse)
             trip.splice(trip.findIndex(element => element.vicinity === container.value), 1);
             console.log(trip)
+            const markerIndex = markers.findIndex(element => element.title === container.value);
+            console.log("con")
+            markers[markerIndex].setMap(null)
+            markers.splice(markers.findIndex(element => element.title === container.value), 1);
+            let size = markers.length;
+            console.log("size")
+            console.log(size)
+            for(let i = markerIndex; i < size; i++){
+                console.log("comp")
+                console.log(markers[i].label.text)
+                console.log('' + (i + 2))
+                const markerIndex2 = markers.findIndex(element => element.label.text === ('' + (i + 2)));
+                console.log("index2")
+                console.log(markerIndex2)
+                console.log("index")
+                console.log(markerIndex)
+                console.log(i)
+                let label = markers[markerIndex2].getLabel();
+                label.text = '' + (i + 1);
+                markers[markerIndex2].setLabel(label);
+            }
+            console.log(markerIndex)
+            setMarkers(markers)
+            setTrip(trip);
+            setTest(true);
+        }
+    }
+    function moveItemUp(e){
+        let container = e.currentTarget;
+        const index = trip.findIndex(element => element.vicinity === container.value);
+        console.log(index)
+        if(index !== -1) {
+            let arrIndex = trip.findIndex(element => element.vicinity === container.value)
+            let temp = trip[arrIndex]
+            trip[arrIndex] = trip[arrIndex - 1]
+            trip[arrIndex - 1] = temp
+            console.log(trip)
+            const markerIndex = markers.findIndex(element => element.title === container.value);
+            let label = markers[markerIndex].getLabel();
+            label.text = '' + (parseInt(label.text) - 1);
+            markers[markerIndex].setLabel(label);
+            let label2 = markers[markerIndex - 1].getLabel();
+            label2.text = '' + (parseInt(label2.text) + 1);
+            markers[markerIndex - 1].setLabel(label2);
+            let tempMarker = markers[markerIndex];
+            markers[markerIndex] = markers[markerIndex - 1];
+            markers[markerIndex - 1] = tempMarker;
+            setMarkers(markers);
+            setTrip(trip);
+            setTest(true);
+        }
+    }
+
+    function moveItemDown(e){
+        let container = e.currentTarget;
+        const index = trip.findIndex(element => element.vicinity === container.value);
+        console.log(index)
+        if(index !== -1) {
+            let arrIndex = trip.findIndex(element => element.vicinity === container.value)
+            let temp = trip[arrIndex]
+            trip[arrIndex] = trip[arrIndex + 1]
+            trip[arrIndex + 1] = temp
+            console.log(trip);
+            const markerIndex = markers.findIndex(element => element.title === container.value);
+            let label = markers[markerIndex].getLabel();
+            label.text = '' + (parseInt(label.text) + 1);
+            markers[markerIndex].setLabel(label);
+            let label2 = markers[markerIndex + 1].getLabel();
+            label2.text = '' + (parseInt(label2.text) - 1);
+            markers[markerIndex + 1].setLabel(label2);
+            let tempMarker = markers[markerIndex];
+            markers[markerIndex] = markers[markerIndex + 1];
+            markers[markerIndex + 1] = tempMarker;
+            setMarkers(markers);
             setTrip(trip);
             setTest(true);
         }
@@ -51,8 +108,9 @@ const Trip = ({trip, setTest, setTrip, stopsResponse, setStopsResponse}) => {
     return trip.slice(1,-1).map(function (item) {
         i++;
         //return <div><h2>Name: {item.stopName}</h2></div>
-        return <li className="border-b-2 border-gray-100">
-            <button onClick={removeListItem} value={item.vicinity} className="py-5 px-4 flex justify-between border-l-4 border-transparent bg-transparent hover:border-green-400 hover:bg-gray-200 w-full">{item.stopName}<div className="font-bold text-white rounded-full bg-blue-400 flex items-center justify-center font-mono ml-4 w-6 h-6">{i}</div></button>
+        return <li className="border-b-2 border-gray-100 ">
+            <div className="border-l-4 border-transparent pb-4 hover:border-green-400 hover:bg-gray-200"> <button className="py-5 px-4 flex justify-between bg-transparent w-full">{item.stopName}<div className="font-bold text-white rounded-full bg-blue-400 flex items-center justify-center font-mono ml-4 w-6 h-6">{i}</div></button>
+                <button onClick={()=>{setInfo(item)}} className="text-white hover:bg-purple-700 bg-purple-500 px-2 py-1 font-bold border-px border-white">Info</button><button value={item.vicinity} onClick={moveItemUp} className="text-white hover:bg-green-700 bg-green-600 px-2 py-1 font-bold border-px border-white">Up</button><button value={item.vicinity} onClick={moveItemDown} className="text-white hover:bg-blue-600 bg-blue-400 px-2 py-1 font-bold border-px border-white">Down</button><button value={item.vicinity} onClick={removeListItem} className="text-white font-bold bg-red-500 hover:bg-red-700 px-2 py-1 border-px border-white">X</button></div>
         </li>
 
     });
@@ -65,6 +123,7 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
     };
     let routes = [];
     function selectOnlyThis(id){
+        console.log("hi")
         var myCheckbox = document.getElementsByName("myCheckbox");
         Array.prototype.forEach.call(myCheckbox,function(el){
             el.checked = false;
@@ -73,6 +132,7 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
 
         selectedRoute = id.target.value;
         setSelectedRoute(id.target.value);
+        setSelected(true)
     }
 
     function getChecked(id){
@@ -80,23 +140,25 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
     }
 
     const [selectedStart, setSelectedStart] = useState({lat: 43.45, lng: -80.49});
-    return results.routes.map(function (item) {
+    const [selected, setSelected] = useState(false);
+    const [details, setDetails] = useState(null);
+    return <div className="flex justify-center items-center flex-col m-2">{selectedRoute !== "" ? <div><h3 className="text-lg font-bold text-purple-700">Selected Route:</h3><GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> </GoogleMap><hr /></div> : <></>} {results.routes.map(function (item) {
         const t = [];
         t.routes = [item];
         t.request = results.request;
+        console.log(item)
         routes.push(t);
         var directionsRenderer = new window.google.maps.DirectionsRenderer();
         directionsRenderer.setDirections(t);
         directionsRenderer.setMap(map);
-        return <div className={styles.routes}><h2>Distance: {item.legs[0].distance.text}</h2><h2>Duration: {item.legs[0].duration.text}</h2>
-            <GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> <DirectionsRenderer
-                directions={t}/> </GoogleMap><input
-                type="checkbox" name="myCheckbox" value={item.summary} onClick={selectOnlyThis}
-                checked={getChecked}/></div>
-    });
+        return <button className="bg-white flex flex-col justify-center items-center mb-4 mt-4 font-sans text-xl font-bold text-purple-700 w-full"><hr className=" mt-4 mb-4 w-full border-slate-300 bg-slate-300"/> {item.summary}
+            <h2 className="font-sans text-lg font-bold text-purple-700">{item.legs[0].distance.text}, {item.legs[0].duration.text}</h2>
+            <button onClick={() => setDetails(item.summary)} className="text-sm bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded m-2">See Details...</button>{details === item.summary && <GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> <DirectionsRenderer
+                directions={t}/> </GoogleMap>}<button onClick={selectOnlyThis} value={item.summary} className="bg-red-500 text-sm hover:bg-red-700 text-white px-4 py-2 rounded">Select Route</button></button>
+    })}</div>
 }
 
-const StopResultsNew = ({results, markers, trip, setTrip, updateTrip, city, setTest, setResults}) => {
+const StopResultsNew = ({results, markers, trip, setTrip, updateTrip, city, setTest, setResults, setMarkers, map}) => {
     let numRestaurants = 0;
     let numGas = 0;
     let numLodging = 0;
@@ -119,6 +181,15 @@ const StopResultsNew = ({results, markers, trip, setTrip, updateTrip, city, setT
         results.splice(results.findIndex(element => element.vicinity === e.currentTarget.value), 1);
         setResults(results)
         trip.splice(trip.length - 1, 0, test);
+        var marker = new google.maps.Marker({
+            position: test.location,
+            map,
+            title: test.vicinity,
+            label: {text: '' + (trip.length - 2), color: 'white'},
+            animation:  google.maps.Animation.DROP
+        });
+        markers.push(marker);
+        setMarkers(markers)
         setTest(true)
         setTrip(trip);
     }
@@ -143,9 +214,9 @@ const StopResultsNew = ({results, markers, trip, setTrip, updateTrip, city, setT
                 numLodging++;
             }
             return <button onClick={clicked} className="bg-white flex items-center w-full flex-col justify-center hover:bg-gray-200 p-2" value={item.vicinity}><img src={item.image} width="50" height="50"/>
-                <h4>{item.stopName}</h4><h6>{item.vicinity}</h6><ReactStars count={5} value={item.rating} edit={false}
-                                                                            size={24}
-                                                                            color2={'#ffd700'}/>
+                <h4>{item.stopName}</h4><h6>{item.vicinity}</h6><div className="flex flex-row items-center"><ReactStars count={5} value={item.rating} edit={false}
+                                                                                 size={24}
+                                                                                 color2={'#ffd700'}/><h6 className="ml-4">{item.user_ratings_total} reviews</h6></div>
             </button>
         }
     });
@@ -269,11 +340,13 @@ const CreateTrip = () => {
     const MAX = 50;
     const maxRating = 5;
     const [rating, setRating] = useState(maxRating);
-    const markers = [];
+    const [markers, setMarkers] = useState([]);
     const [tripInfo, setTripInfo] = useState(true);
     const [routes, setRoutes] = useState(false);
     const [stops, setStops] = useState(false);
     const [search, setSearch] = useState("");
+    const [alert, setAlert] = useState(false);
+    const [info, setInfo] = useState(null);
 
     const onLoad = useCallback((map) => setMap(map), []);
     const getBackgroundSize = () => {
@@ -294,6 +367,7 @@ const CreateTrip = () => {
             map.fitBounds(bounds);
         }
         if (map && selectedStart && selectedEnd) {
+            setAlert(true)
             while(trip.length > 0){
                 trip.pop();
             }
@@ -417,18 +491,25 @@ const CreateTrip = () => {
                 for (var i = 0; i < results.length; i++) {
                     if(stopsResponse.findIndex(e => e.vicinity === results[i].vicinity) === -1 && trip.findIndex(e => e.vicinity === results[i].vicinity) === -1)
                     {
-                        var marker = new google.maps.Marker({
+                        console.log(results[i])
+                        /*var marker = new google.maps.Marker({
                             position: results[i].geometry.location,
                             map,
                             title: results[i].name
                         });
                         markers.push(marker);
-                        bindInfoWindow(marker, map, infowindow, "<p>" + marker.title + "</p> <button>Add Stop</button>");
-                        stopsResponse.push({stopName: results[i].name, vicinity: results[i].vicinity, stopLocLat: results[i].geometry.location.lat(), stopLocLong: results[i].geometry.location.lng(), stopType: results[i].types[0], image: results[i].icon, rating: results[i].rating});
+                        bindInfoWindow(marker, map, infowindow, "<p>" + marker.title + "</p> <button>Add Stop</button>");*/
+                        console.log(results[i].geometry.location)
+                        let pic = null;
+                        if(results[i].photos !== undefined){
+                            pic = results[i].photos[0].getUrl();
+                        }
+
+                        stopsResponse.push({stopName: results[i].name, location: results[i].geometry.location, pic: pic, vicinity: results[i].vicinity, stopLocLat: results[i].geometry.location.lat(), stopLocLong: results[i].geometry.location.lng(), stopType: results[i].types[0], image: results[i].icon, rating: results[i].rating, user_ratings_total: results[i].user_ratings_total});
                         setStopsResponse(stopsResponse);
                     }
                 }
-                stopsResponse.sort(function(a, b){return b.rating - a.rating});
+                stopsResponse.sort(function(a, b){return (b.rating + Math.log(b.user_ratings_total) / Math.log(3)) - (a.rating + Math.log(a.user_ratings_total) / Math.log(3))});
                 setStopsResponse(stopsResponse)
             }
         }
@@ -579,8 +660,14 @@ const CreateTrip = () => {
                                             </svg>
                                             Routes
                                         </a> :
-                                            <a href="#" onClick={() => {setTripInfo(false); setStops(false); setRoutes(true);}}
+                                            <a href="#" onClick={() => {setTripInfo(false); setStops(false); setRoutes(true); setAlert(false);}}
                                                className="inline-flex p-4 rounded-t-lg border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group">
+                                                {alert ?
+                                                <svg className="fill-current h-4 w-4 text-red-500 mr-1"
+                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                                                </svg> : <></>}
                                                 <svg aria-hidden="true"
                                                      className="mr-2 w-5 h-5 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
                                                      fill="currentColor" viewBox="0 0 20 20"
@@ -623,13 +710,22 @@ const CreateTrip = () => {
                                     </li>
                                 </ul>
                             </div>
+                            {info !== null && <div className="sticky top-0 w-full flex flex-col justify-center items-center z-30"><div className="relative flex flex-col justify-center items-center bg-white py-8 w-72 px-8 z-30">{info.pic !== null && <img src={info.pic} height={500} width={500}/>}<h4>{info.stopName}</h4><h6>{info.vicinity}</h6><div className="flex flex-row items-center"><ReactStars count={5} value={info.rating} edit={false}
+                                                                                                                                                                                                                                             size={24}
+                                                                                                                                                                                                                                                                                                                                                                                                     color2={'#ffd700'}/><h6 className="ml-4">{info.user_ratings_total} reviews</h6></div><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-1 px-4 rounded-full" onClick={()=>{setInfo(null)}}>Close</button></div></div>}
                             { tripInfo &&
                         <div className="absolute grid top-14 left-2 items-center z-10 w-80 bg-white rounded border-8 text-center border-white">
                             <input type="text" placeholder="Trip Name" onChange={(e) => setTripName(e.target.value)} value={tripName}/>
                             <Places placeholderText="Start" start={start} setStart={setStart} selected={selectedStart} setSelected={setSelectedStart}/>
                             <Places placeholderText="End" start={end} setStart={setEnd} selected={selectedEnd} setSelected={setSelectedEnd}/>
+                            <div className="datepicker relative form-floating mb-3">
+                                <input type="date"
+                                       className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                       placeholder="Select a date"/>
+                                <label htmlFor="floatingInput" className="text-gray-700">Select a date</label>
+                            </div>
                             <input type="date" placeholder="Date" onChange={(e) => setDate(e.target.value)} value={date}/>
-                            <div className="flex items-center justify-center w-full mb-12">
+                            <div className="flex w-full mb-12 ml-2">
 
                                 <label
                                     htmlFor="toogleA"
@@ -648,7 +744,7 @@ const CreateTrip = () => {
                                 </label>
 
                             </div>
-                            <div className="flex items-center justify-center w-full mb-12">
+                            <div className="flex w-full mb-12 ml-2">
 
                                 <label
                                     htmlFor="toogleB"
@@ -671,12 +767,12 @@ const CreateTrip = () => {
                         </div>}
 
                             <div className="absolute grid top-32 right-2 items-center z-10 w-auto bg-white rounded border-8 text-center border-white">
-                                <div className="ml-3 font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">
+                                <div className="font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">
                                     Your Trip
                                 </div>
                             { (trip.length > 0 || test) && <ul className={styles.list} id="tripList"><li className={`border-b-2 border-gray-100`}>
                                 <div className="py-5 px-4 flex justify-between border-l-4 border-transparent bg-transparent hover:border-green-400 hover:bg-gray-200">{start}<img className="ml-4 w-6 h-6" src="/static/start.png" /></div>
-                            </li><Trip trip={trip} setTrip={setTrip} setTest={setTest} stopsResponse={stopsResponse} setStopsResponse={setStopsResponse}/><li className="border-b-2 border-gray-100">
+                            </li><Trip trip={trip} setInfo={setInfo} setTrip={setTrip} map={map} setTest={setTest} stopsResponse={stopsResponse} setStopsResponse={setStopsResponse} markers={markers} setMarkers={setMarkers}/><li className="border-b-2 border-gray-100">
                                 <div className="py-5 px-4 flex justify-between border-l-4 border-transparent bg-transparent hover:border-green-400 hover:bg-gray-200">{end} <img className="ml-4 w-6 h-6" src="/static/flag.png" /></div>
                             </li></ul>}
                         </div>
@@ -761,7 +857,7 @@ const CreateTrip = () => {
                                 </div>: <div><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-1 px-4 rounded-full" onClick={()=>{setShowStopPref(!showStopPref)}}>Preferences</button>
                                     <input type="text" placeholder="Search" onChange={(e) => setSearch(e.target.value)} value={search}/>
                                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-1 px-4 rounded-full" onClick={placeSearch}>Search</button>
-                            {selectedRoute != "" && <div className={styles.scrollable}><input type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} value={city}/><StopResultsNew results={stopsResponse} markers={markers} trip={trip} setTrip={setTrip} city={city} setTest={setTest} setResults={setStopsResponse}/></div>}</div>}</div>}
+                            {selectedRoute != "" && <div className={styles.scrollable}><input type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} value={city}/><StopResultsNew results={stopsResponse} markers={markers} trip={trip} setTrip={setTrip} map={map} city={city} setTest={setTest} setResults={setStopsResponse} setMarkers={setMarkers}/></div>}</div>}</div>}
 
                         </GoogleMap>}
                         <button type="button" className="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-10 rounded" onClick={handleSubmit}>Create Trip</button>

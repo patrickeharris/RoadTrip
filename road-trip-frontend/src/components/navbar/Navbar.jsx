@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import {useRouter} from 'next/router'
 import {RiMenu3Line, RiCloseLine} from 'react-icons/ri'
 import styles from './navbar.module.css'
 import {myAxios} from "../../util/helper";
@@ -32,10 +33,17 @@ import {myAxios} from "../../util/helper";
 const Navbar = () => {
     const [logged, setLogged] = useState('false');
     const [dropdownOpen, setdropdownOpen] = useState(false);
+    const router = useRouter();
+    const [test, setTest] = useState(null);
+    const [about, setAbout] = useState(false);
 
     useEffect(() => {
         setLogged(window.sessionStorage.getItem('loggedIn'));
         console.log(window.sessionStorage.getItem('loggedIn'))
+        if(router.pathname === "/") {
+            setTest(document.getElementById('about'));
+            window.addEventListener('scroll', handleScroll);
+        }
     })
 
     async function logOut() {
@@ -45,11 +53,32 @@ const Navbar = () => {
         window.sessionStorage.setItem('token', 'null');
     }
 
+    function checkVisible( elm) {
+        var rect = elm.getBoundingClientRect();
+        var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+        return rect.bottom < 900;
+    }
+
+    function handleScroll(event) {
+        if(test !== null){
+            if(checkVisible(test)){
+                if(!about){
+                    setAbout(true)
+                }
+            }
+            else{
+                if(about){
+                    setAbout(false)
+                }
+            }
+        }
+    }
+
   return (
-      <nav className="bg-gray-800">
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-              <div className="relative flex h-16 items-center justify-between">
-                  <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+      <nav className="sticky top-0 w-full z-20 bg-purple-600 bg-opacity-60 shadow-lg border-b border-opacity-10 border-gray-400">
+          <div className="w-full px-2 sm:px-6 lg:px-8">
+              <div className="relative flex flex-row h-16 items-center justify-between w-full">
+                  <div className="flex items-center sm:hidden">
                       <button type="button"
                               className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
                               aria-controls="mobile-menu" aria-expanded="false">
@@ -76,18 +105,27 @@ const Navbar = () => {
                       </div>
                       <div className="hidden sm:ml-6 sm:block">
                           <div className="flex space-x-4">
-                              <a href="./" className="font-sans font-bold bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                              {router.pathname === "/" && !about ?
+                              <a href="./" className="font-sans font-bold bg-white text-purple-700 px-3 py-2 font-bold rounded-md text-sm font-medium"
                                  aria-current="page">Home</a>
+                                  :
+                                  <a href="./" className="font-sans font-bold text-gray-300 hover:bg-white hover:text-purple-700 font-bold px-3 py-2 rounded-md text-sm font-medium"
+                                     aria-current="page">Home</a>}
 
-                              <a href="./#about"
-                                 className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About Us</a>
+                              {test && about ? <a href="./#about"
+                                                               className="bg-white text-purple-700 px-3 py-2 font-bold rounded-md text-sm font-medium">About Us</a>:
+                                  <a href="./#about"
+                                     className="font-sans text-gray-300 hover:bg-white hover:text-purple-700 font-bold px-3 py-2 rounded-md text-sm font-medium">About Us</a>}
 
                               {
                                   logged === 'true' ?
+                                      router.pathname === "/trip-dashboard" ?
                                       <a href="/trip-dashboard"
-                                         className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a> :
+                                         className="font-sans font-bold bg-white text-purple-700 px-3 py-2 font-bold rounded-md text-sm font-medium">Trip Dashboard</a>:
+                                          <a href="/trip-dashboard"
+                                             className="font-sans font-bold text-gray-300 hover:bg-white hover:text-purple-700 font-bold px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a>:
                                       <a href="/login"
-                                         className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a>
+                                         className="font-sans font-bold text-gray-300 hover:bg-white hover:text-purple-700 font-bold px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a>
                               }
                               {
                                   logged === 'true' ?
@@ -102,15 +140,15 @@ const Navbar = () => {
                   {
                       logged !== 'true' ?
                   <><button
-                      className="font-sans font-bold px-4 py-2 rounded-l-xl text-white m-0 bg-red-500 hover:bg-red-600 transition"><a href="./login">Login</a>
+                      className="font-sans font-bold px-4 py-2 rounded-l-xl text-white m-0 bg-red-500 font-bold hover:bg-red-600 transition"><a href="./login">Login</a>
                   </button>
                   <button
-                      className="font-sans font-bold px-4 py-2 rounded-r-xl bg-neutral-50 hover:bg-neutral-100 transition"><a href="./register">Register</a>
+                      className="font-sans font-bold px-4 py-2 rounded-r-xl bg-neutral-50 font-bold hover:bg-neutral-100 text-purple-700 transition"><a href="./register">Register</a>
                   </button></> :
                   <div
-                      className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                      className="flex flex-end">
                       <button type="button"
-                              className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                              className="rounded-full bg-inherit hover:bg-white p-1 text-white hover:text-purple-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="sr-only">View notifications</span>
                           <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                stroke-width="1.5" stroke="currentColor" aria-hidden="true">
