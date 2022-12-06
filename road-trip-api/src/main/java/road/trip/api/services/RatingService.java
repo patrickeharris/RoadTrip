@@ -2,9 +2,13 @@ package road.trip.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import road.trip.api.persistence.Notification;
 import road.trip.api.persistence.Rating;
 import road.trip.api.persistence.RatingRepository;
+import road.trip.api.persistence.Trip;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +16,12 @@ import java.util.List;
 public class RatingService {
     @Autowired
     private RatingRepository ratingRepository;
+
+    @Autowired
+    TripService tripService;
+
+    @Autowired
+    NotificationService notificationService;
 
     public Rating findRatingById(Long id) {
         return ratingRepository.findById(id).get();
@@ -41,7 +51,17 @@ public class RatingService {
             ratingRepository.save(r);
         });
 
+        Trip trip  = tripService.findTripById(rating.getTrip_id());
+        rating.setName(trip.getTripName());
+
         rating.setType("trip");
+
+        Notification n = new Notification();
+        n.setUser(trip.getUser_id());
+        n.setNotification("Thank you for rating " + trip.getTripName() + "!");
+        n.setTimestamp(LocalDate.now());
+        notificationService.addNotification(n);
+
         return ratingRepository.save(rating);
     }
 }

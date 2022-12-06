@@ -27,7 +27,7 @@ const responsive = {
 function TripsPage() {
 
     return (
-        <div className={styles.wrapper}>
+        <div className="h-screen">
             <div className={styles.gradient__bg}>
                 <Navbar />
                 <div className='height: 100px'>

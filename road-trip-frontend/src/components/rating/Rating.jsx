@@ -25,7 +25,7 @@ const Rating = ({ tripId }) => {
 
     useEffect(() => {
         const fetchStops = async () => {
-            const response = await myAxios.get("https://trailblazers.gq:8080/stops?tripId=" + tripId,
+            const response = await myAxios.get("/stops?tripId=" + tripId,
                 {
                     headers: {
                         'Access-Control-Allow-Origin' : '*',
@@ -64,7 +64,7 @@ const Rating = ({ tripId }) => {
 
         setTrip_Id(window.sessionStorage.getItem('curTrip'));
 
-        const response = await myAxios.post("https://trailblazers.gq:8080/rating/add-rating", JSON.stringify({
+        const response = await myAxios.post("/rating/add-rating", JSON.stringify({
             trip_id: parseInt(tripId),
             score: rating,
             stopRatings: stopRatings,
@@ -72,6 +72,7 @@ const Rating = ({ tripId }) => {
         }), {
             headers: {
                 "Content-Type": "application/json",
+                'Access-Control-Allow-Origin': '*',
                 'Authorization': window.sessionStorage.getItem('token')
             }, withCredentials: true,
         });
@@ -93,7 +94,7 @@ const Rating = ({ tripId }) => {
             <ToastContainer/>
             <div className="flex justify-center items-center flex-col">
 
-                <h1 className="font-sans text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300 font-bold mb-3">Rate Your Trip</h1>
+                <h1 className="font-sans text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300 mb-3 mt-4">Rate Your Trip</h1>
                 <h1 className="font-sans text-white font-bold text-4xl mt-3">
                     How would you rate your trip?
                 </h1>
@@ -116,7 +117,7 @@ const Rating = ({ tripId }) => {
 
                     <textarea placeholder="Tell us a little bit more about how we did" className={styles.rateTrip__textArea} onChange={handleMessageChange}/>
                 </div>
-                <div className="bg-red-500 hover:bg-red-700 text-white text-lg rounded py-2 px-5 font-bold" onClick={handleFormSubmit}>Submit</div>
+                <button className="bg-red-500 hover:bg-red-700 text-white text-lg rounded py-2 px-5 font-bold" onClick={handleFormSubmit}>Submit</button>
             </div>
         </div>)
 }

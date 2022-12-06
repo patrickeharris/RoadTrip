@@ -41,15 +41,15 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     useEffect(() => {
-        if (window.sessionStorage.getItem('email') !== null) {
+        if (window.sessionStorage.getItem('email') !== "") {
             setEmail(window.sessionStorage.getItem('email'));
+            window.sessionStorage.setItem('email',"");
         }
     })
 
 
     const handleSubmit = async () => {
         const hashedPassword = bcrypt.hashSync(password, 10);
-        window.sessionStorage.setItem('email', null);
         try {
             //Check validity
             if (firstName==="") {

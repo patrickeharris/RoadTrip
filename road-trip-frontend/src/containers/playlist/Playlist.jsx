@@ -85,7 +85,7 @@ const Playlist = () => {
                             return (<option value={option.value}>{option.label}</option>)
                         })}</select>
                     </div>
-                    <button className='font-sans font-bold bg-green-500 hover:bg-green-700 text-white text-md py-3 px-4 rounded mb-4' type="button" onClick={handleSubmit}>Generate Playlist</button>
+                    <button className='font-sans font-bold bg-green-500 hover:bg-green-700 text-white text-md py-3 px-4 rounded mb-4 mt-2' type="button" onClick={handleSubmit}>Generate Playlist</button>
                     {hidden &&
                         <div>
                             <iframe title="Spotify Web Player"
