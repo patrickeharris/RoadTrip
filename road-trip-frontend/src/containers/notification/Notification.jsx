@@ -45,7 +45,7 @@ class Notification extends React.Component{
                 <table>
                     <tbody>
                     <tr>
-                        <h1 className={globalStyles.gradientText}>Notifications</h1>
+                        <th className={globalStyles.gradientText}>Notifications</th>
                     </tr>
                     {this.state.notifications.map(notification =>{
                         return [
