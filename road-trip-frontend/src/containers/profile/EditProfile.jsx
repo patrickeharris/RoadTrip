@@ -5,6 +5,7 @@ import {myAxios} from "../../util/helper";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import bcrypt from "bcryptjs";
+import {Checkbox} from "@material-ui/core";
 
 //Function to show error message to the user
 function showError(errorMsg){
@@ -49,7 +50,8 @@ const EditProfile = () => {
                     'Access-Control-Allow-Origin' : '*',
                     'Authorization': window.sessionStorage.getItem('token')}
             })).data.user_id;
-            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id);
+            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id, ", password = " + hashedPassword);
+
             try {
                 const response = await myAxios.post(
                     "/register/update",
@@ -93,8 +95,17 @@ const EditProfile = () => {
                         <input type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
                         <input type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
                         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
-                        <input type="text" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
-                        <input type="text" placeholder="Confirm Password" onChange={(e) => setConfirm(e.target.value)} value={confirm}/>
+                        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                        <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirm(e.target.value)} value={confirm}/>
+
+                        <img className="h-20 w-20 rounded-full" src="/static/girlProfile.png"/>
+                        <div className="app">
+                            <Checkbox label="my value" />
+                        </div>
+                        <img className="h-20 w-20 rounded-full" src="/static/guyProfile.png"/>
+                        <div className="app">
+                            <Checkbox label="my value" />
+                        </div>
                         <button type="button" onClick={handleSubmit}>Update Profile</button>
                     </div>
                 </div>
