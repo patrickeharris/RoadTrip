@@ -41,7 +41,6 @@ public class TripService {
         Route r = routeRepository.save(trip.getRoute());
         Trip t = tripRepository.save(trip);
         System.out.println(t);
-        sendEmail(t);
 
         return t;
     }

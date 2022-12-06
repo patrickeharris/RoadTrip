@@ -28,10 +28,12 @@ public class StopService {
 
     public void addStops(List<Stop> stops, long trip_id) {
         List<Stop> curStops = tripService.findTripById(trip_id).getRoute().getStops();
-        for(int i = 0; i < curStops.size(); i++){
-            stops.add(curStops.get(i));
+        int size = stops.size();
+        for(int i = 0; i < size; i++){
+            System.out.println(size);
+            curStops.add(stops.get(i));
         }
-        stopRepository.saveAll(stops);
+        stopRepository.saveAll(curStops);
     }
 
     public Stop findStopById(Long id) {

@@ -116,7 +116,7 @@ const Trip = ({trip, setTest, setTrip, map, stopsResponse, setStopsResponse, mar
     });
 }
 
-const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
+const Results = ({results, setSelectedRoute, selectedRoute, map, set, setSet, calculateStops}) => {
     const containerStyle = {
         width: '400px',
         height: '400px'
@@ -133,6 +133,11 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
         selectedRoute = id.target.value;
         setSelectedRoute(id.target.value);
         setSelected(true)
+        const t = [];
+        t.routes = [results.routes.find(element => id.target.value === element.summary)];
+        t.request = results.request;
+        setSet(t)
+        calculateStops();
     }
 
     function getChecked(id){
@@ -142,12 +147,16 @@ const Results = ({results, setSelectedRoute, selectedRoute, map}) => {
     const [selectedStart, setSelectedStart] = useState({lat: 43.45, lng: -80.49});
     const [selected, setSelected] = useState(false);
     const [details, setDetails] = useState(null);
-    return <div className="flex justify-center items-center flex-col m-2">{selectedRoute !== "" ? <div><h3 className="text-lg font-bold text-purple-700">Selected Route:</h3><GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}> </GoogleMap><hr /></div> : <></>} {results.routes.map(function (item) {
+
+    return <div className="flex justify-center items-center flex-col m-2">{selectedRoute !== "" ? <div><h3 className="text-lg font-bold text-purple-700">Selected Route:</h3><GoogleMap center={selectedStart} mapContainerStyle={containerStyle} zoom={15}>{set !== -1 && <DirectionsRenderer
+        directions={set}/>} </GoogleMap><hr /></div> : <></>} {results.routes.map(function (item) {
         const t = [];
         t.routes = [item];
         t.request = results.request;
         console.log(item)
         routes.push(t);
+        console.log("tttt")
+        console.log(results.routes.findIndex(element => item.summary === element.summary))
         var directionsRenderer = new window.google.maps.DirectionsRenderer();
         directionsRenderer.setDirections(t);
         directionsRenderer.setMap(map);
@@ -329,7 +338,7 @@ const CreateTrip = () => {
     const [selectedEnd, setSelectedEnd] = useState(null);
     const [directionsResponse, setDirectionsResponse] = useState(null);
     const [stopsResponse, setStopsResponse] = useState([]);
-    const [distance, setDistance] = useState(1);
+    const [distance, setDistance] = useState(10);
     const [test, setTest] = useState(false);
     const [showStopPref, setShowStopPref] = useState(false);
     const [showStops, setShowStops] = useState(false);
@@ -339,7 +348,7 @@ const CreateTrip = () => {
     const [calcFinsihed, setCalcFinished] = useState(false);
     const MAX = 50;
     const maxRating = 5;
-    const [rating, setRating] = useState(maxRating);
+    const [rating, setRating] = useState(3);
     const [markers, setMarkers] = useState([]);
     const [tripInfo, setTripInfo] = useState(true);
     const [routes, setRoutes] = useState(false);
@@ -347,6 +356,7 @@ const CreateTrip = () => {
     const [search, setSearch] = useState("");
     const [alert, setAlert] = useState(false);
     const [info, setInfo] = useState(null);
+    const [t, setT] = useState(null);
 
     const onLoad = useCallback((map) => setMap(map), []);
     const getBackgroundSize = () => {
@@ -567,6 +577,7 @@ const CreateTrip = () => {
                 draggable: true,
                 progress: undefined,
             });
+            window.location.href = "/trip-dashboard";
         } catch (err) {
             if (!err?.response) {
                 console.log("No Server Response");
@@ -719,12 +730,10 @@ const CreateTrip = () => {
                             <Places placeholderText="Start" start={start} setStart={setStart} selected={selectedStart} setSelected={setSelectedStart}/>
                             <Places placeholderText="End" start={end} setStart={setEnd} selected={selectedEnd} setSelected={setSelectedEnd}/>
                             <div className="datepicker relative form-floating mb-3">
-                                <input type="date"
+                                <input type="date"  onChange={(e) => setDate(e.target.value)} value={date}
                                        className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                        placeholder="Select a date"/>
-                                <label htmlFor="floatingInput" className="text-gray-700">Select a date</label>
                             </div>
-                            <input type="date" placeholder="Date" onChange={(e) => setDate(e.target.value)} value={date}/>
                             <div className="flex w-full mb-12 ml-2">
 
                                 <label
@@ -777,7 +786,7 @@ const CreateTrip = () => {
                             </li></ul>}
                         </div>
 
-                            {routes && <div className="absolute grid top-14 left-2 items-center z-10 w-90 max-h-full overflow-auto bg-white rounded border-8 text-center border-white">{directionsResponse !== null ? <Results results={directionsResponse} setSelectedRoute={setSelectedRoute} selectedRoute={selectedRoute} map={map}/>: <h2>No start or end</h2>}</div>}
+                            {routes && <div className="absolute grid top-14 left-2 items-center z-10 w-90 max-h-full overflow-auto pb-16 bg-white rounded border-8 text-center border-white">{directionsResponse !== null ? <Results calculateStops={calculateStops} results={directionsResponse} set={t} setSet={setT} setSelectedRoute={setSelectedRoute} selectedRoute={selectedRoute} map={map}/>: <h2>No start or end</h2>}</div>}
                             {stops && <div className="absolute grid top-14 left-2 items-center z-10 w-90 max-h-full w-96 overflow-auto bg-white rounded border-8 text-center border-white">{showStopPref ?
                                 <div>
                                     <h2 className="font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">Distance to Route:</h2> <h6 className="font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-red-400 to-orange-300">{distance} mi</h6> <input type={"range"} min={"1"} style={getBackgroundSize()} max={MAX} onChange={(e) => setDistance(e.target.value)} value={distance}/>
@@ -855,9 +864,7 @@ const CreateTrip = () => {
                                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-1 px-4 rounded-full" onClick={()=>{calculateStops()}}>Submit</button>
                                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-1 px-4 rounded-full" onClick={()=>{setShowStopPref(!showStopPref)}}>Close</button>
                                 </div>: <div><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-1 px-4 rounded-full" onClick={()=>{setShowStopPref(!showStopPref)}}>Preferences</button>
-                                    <input type="text" placeholder="Search" onChange={(e) => setSearch(e.target.value)} value={search}/>
-                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 my-1 px-4 rounded-full" onClick={placeSearch}>Search</button>
-                            {selectedRoute != "" && <div className={styles.scrollable}><input type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} value={city}/><StopResultsNew results={stopsResponse} markers={markers} trip={trip} setTrip={setTrip} map={map} city={city} setTest={setTest} setResults={setStopsResponse} setMarkers={setMarkers}/></div>}</div>}</div>}
+                            {selectedRoute != "" && <div className="overflow-scroll pb-16"><input type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} value={city}/><StopResultsNew results={stopsResponse} markers={markers} trip={trip} setTrip={setTrip} map={map} city={city} setTest={setTest} setResults={setStopsResponse} setMarkers={setMarkers}/></div>}</div>}</div>}
 
                         </GoogleMap>}
                         <button type="button" className="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-10 rounded" onClick={handleSubmit}>Create Trip</button>

@@ -34,29 +34,39 @@ const Notifs = () => {
     const [notifs, setNotifs] = useState([])
     const [test, setTest] = useState(false)
     async function getNotifs(){
-        const response = (await myAxios.get("/get/notifications", {
-            headers:{
-                'Access-Control-Allow-Origin' : '*',
-                'Authorization': window.sessionStorage.getItem('token')}
-        })).data;
-        const response1 = (await myAxios.get("/register/curUser", {
-            headers:{
-                'Access-Control-Allow-Origin' : '*',
-                'Authorization': window.sessionStorage.getItem('token')}
-        })).data;
-        for (let i = 0; i < response.length; i++) {
-            if(response1.user_id === response[i].user){
-                if(notifs.findIndex(element => '' + element.notif_id === '' + response[i].notif_id) === -1) {
-                    notifs.push(response[i])
-                    console.log("push")
+        if(notifs.length === 0) {
+            const response = (await myAxios.get("/get/notifications", {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': window.sessionStorage.getItem('token')
                 }
-                else{
-                    console.log("skip")
+            })).data;
+            const response1 = (await myAxios.get("/register/curUser", {
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': window.sessionStorage.getItem('token')
+                }
+            })).data;
+            for (let i = 0; i < response.length; i++) {
+                if (response1.user_id === response[i].user) {
+                    if (notifs.findIndex(element => '' + element.notif_id === '' + response[i].notif_id) === -1) {
+                        notifs.push(response[i])
+                        console.log("push")
+                        console.log(response[i])
+                    } else {
+                        console.log("skip")
+                        console.log(response[i])
+                    }
                 }
             }
+            setNotifs(notifs)
+            setTest(true)
         }
-        setNotifs(notifs)
-        setTest(true)
+        else{
+            console.log(notifs)
+            setNotifs(notifs)
+            setTest(true)
+        }
     }
     async function remNotif(e){
         setTest(false)
@@ -69,14 +79,12 @@ const Notifs = () => {
             headers:{
                 'Access-Control-Allow-Origin' : '*',
                 'Authorization': window.sessionStorage.getItem('token')}
-        }).then(
-            getNotifs()
-        );
+        }).then(setTest(true), getNotifs());
     }
     useEffect(() => {
         getNotifs();
-    })
-    return <div className="flex flex-col justify-center items-center">{test && notifs.length > 0 && notifs.map((notif) => {return <p className="w-full text-center py-4 bg-white hover:bg-slate-300">{notif.notification} <button onClick={remNotif} value={notif.notif_id} className="ml-16 bg-red-500 px-2 py-1 text-white hover:bg-red-700">X</button></p>})}</div>
+    }, [notifs])
+    return <div className="flex flex-col justify-center items-center">{notifs.length > 0 && test ? notifs.map((notif) => {return <p className="w-full text-center py-4 bg-white hover:bg-slate-300">{notif.notification} <button onClick={remNotif} value={notif.notif_id} className="ml-16 bg-red-500 px-2 py-1 text-white hover:bg-red-700">X</button></p>}):<p>No New Notifications</p>}</div>
 }
 
 const Navbar = () => {
