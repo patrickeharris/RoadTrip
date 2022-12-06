@@ -9,6 +9,7 @@ const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [notifications, setNotifications] = useState("");
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
 
@@ -98,32 +99,32 @@ const Login = () => {
                 }
             }
 
-            //Sending trip confirmation notification
             const response2 = (await myAxios.get("/register/curUser", {
                 headers:{
                     'Access-Control-Allow-Origin' : '*',
                     'Authorization': window.sessionStorage.getItem('token')}
             })).data;
-            try {
-                const response = await myAxios.post(
-                    "/add/notification",
-                    JSON.stringify({notification: 'Your trip: ', user: response2.user_id}),
-                    {
-                        headers: {"Content-Type": "application/json",
-                            'Access-Control-Allow-Origin' : '*',
-                            'Authorization': window.sessionStorage.getItem('token')},
-                        withCredentials: true,
+
+            const response = (await myAxios.get("/get/notifications", {
+                headers:{
+                    'Access-Control-Allow-Origin' : '*',
+                    'Authorization': window.sessionStorage.getItem('token')}
+            })).data;
+            let closest = '';
+            for (let i = 0; i < response.length; i++) {
+                if(response2.user_id === response[i].user){
+                    if(closest === ''){
+                        closest = response[i].date
+                    }else{
+                        let d = new Date(response[i].date)
+                        let d2 = new Date(closest)
+                        if(d < d2){
+                            closest = response[i].data
+                        }
                     }
-                );
-            } catch (err) {
-                if (!err?.response) {
-                    console.log("No Server Response");
-                    console.log(err);
-                } else {
-                    console.log("Registration Failed");
-                    console.log(err?.response);
                 }
             }
+            console.log('Closest date: ' + closest)
 
         }
     }

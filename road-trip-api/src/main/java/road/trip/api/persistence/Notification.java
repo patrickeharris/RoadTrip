@@ -24,4 +24,7 @@ public class Notification {
 
     @Column(name = "notif")
     String notification;
+
+    @Column(name = "date")
+    String date;
 }
