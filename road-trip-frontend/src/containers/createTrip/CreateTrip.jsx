@@ -496,22 +496,32 @@ const CreateTrip = () => {
                 console.log(err?.response);
             }
         }
-        //Sending trip confirmation email
-        /*const response = (await myAxios.get("/register/curUser")).data;
-        let email = response.email;
-        const emailParams = {
-            send_to: email,
-            trip_name: tripName,
-            trip_start: start,
-            trip_end: end,
-            trip_date: date
-        };
-        emailjs.send('service_9hfbdhb', 'template_m697stp', emailParams, 'BhNdV_jnMUg4W-obV')
-            .then(function(response) {
-                console.log('SUCCESS!', response.status, response.text);
-            }, function(error) {
-                console.log('FAILED...', error);
-            });*/
+        //Sending trip confirmation notification
+        /*const response1 = (await myAxios.get("/register/curUser", {
+            headers:{
+                'Access-Control-Allow-Origin' : '*',
+                'Authorization': window.sessionStorage.getItem('token')}
+        })).data;
+        try {
+            const response = await myAxios.post(
+                "/add/notification",
+                JSON.stringify({user: response1.user_id, notif: "You created a trip!"}),
+                {
+                    headers: {"Content-Type": "application/json",
+                        'Access-Control-Allow-Origin' : '*',
+                        'Authorization': window.sessionStorage.getItem('token')},
+                    withCredentials: true,
+                }
+            );
+        } catch (err) {
+            if (!err?.response) {
+                console.log("No Server Response");
+                console.log(err);
+            } else {
+                console.log("Registration Failed");
+                console.log(err?.response);
+            }
+        }*/
     }
     const containerStyle = {
         width: '100%',
