@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import globalStyles from "../container.module.css";
 import styles from "../profile/editprofile.module.css";
-import Select from "react-select"
+import {Select} from "@material-ui/core";
 
 const ChooseGenre = () => {
 

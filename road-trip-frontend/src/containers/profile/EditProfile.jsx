@@ -5,6 +5,7 @@ import {myAxios} from "../../util/helper";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import bcrypt from "bcryptjs";
+import {Checkbox} from "@material-ui/core";
 
 //Function to show error message to the user
 function showError(errorMsg){
@@ -98,8 +99,13 @@ const EditProfile = () => {
                         <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirm(e.target.value)} value={confirm}/>
 
                         <img className="h-20 w-20 rounded-full" src="/static/girlProfile.png"/>
+                        <div className="app">
+                            <Checkbox label="my value" />
+                        </div>
                         <img className="h-20 w-20 rounded-full" src="/static/guyProfile.png"/>
-
+                        <div className="app">
+                            <Checkbox label="my value" />
+                        </div>
                         <button type="button" onClick={handleSubmit}>Update Profile</button>
                     </div>
                 </div>
