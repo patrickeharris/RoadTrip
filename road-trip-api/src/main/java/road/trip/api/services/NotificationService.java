@@ -17,6 +17,7 @@ public class NotificationService {
     }
 
     public Notification addNotification(Notification n){
+        System.out.println("Notification: " + n.getNotification());
         return notificationRepository.save(n);
     }
     public void removeNotification(Long id){notificationRepository.deleteById(id);}

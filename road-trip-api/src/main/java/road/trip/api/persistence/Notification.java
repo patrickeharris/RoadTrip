@@ -28,6 +28,10 @@ public class Notification {
     @Column(name = "notif")
     String notification;
 
+    @Column(name = "date")
+    String date;
+
     @Column(name = "timestamp")
     LocalDate timestamp;
+
 }
