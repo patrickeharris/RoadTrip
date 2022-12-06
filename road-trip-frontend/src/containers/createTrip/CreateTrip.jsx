@@ -582,7 +582,7 @@ const CreateTrip = () => {
             const response = await myAxios.post(
                 "/add/notification",
                 JSON.stringify({notification: 'Your trip: ' + tripName + ' from ' + start + ' to ' + end +
-                        ' on ' + date + ' has been created successfully!', user: response1.user_id, date: date}),
+                        ' on ' + date + ' has been created successfully!\n', user: response1.user_id, date: date}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',

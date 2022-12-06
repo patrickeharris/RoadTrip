@@ -60,7 +60,7 @@ const TripList = () => {
             console.log("selected")
             console.log(item)
 
-            return <div key={id}>
+            return <div className="h-screen" key={id}>
                 <Card title={item.tripName} start={start} end={end} date={date} menu={null} startLoc={item.startLoc}
                       endLoc={item.endLoc} selectedRoute={item.selectedRoute} stops={item.route.stops} tripid={item.trip_id} playlistid={item.playlist_id}>
                 </Card>

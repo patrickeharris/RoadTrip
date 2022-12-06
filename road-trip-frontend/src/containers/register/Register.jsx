@@ -41,15 +41,15 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     useEffect(() => {
-        if (window.sessionStorage.getItem('email') !== null) {
+        if (window.sessionStorage.getItem('email') !== "") {
             setEmail(window.sessionStorage.getItem('email'));
+            window.sessionStorage.setItem('email',"");
         }
     })
 
 
     const handleSubmit = async () => {
         const hashedPassword = bcrypt.hashSync(password, 10);
-        window.sessionStorage.setItem('email', null);
         try {
             //Check validity
             if (firstName==="") {
@@ -80,18 +80,6 @@ const Register = () => {
                     }
                 );
                 window.sessionStorage.setItem('spotifyLogged', 'false');
-                await myAxios.post(
-                    "/login",
-                    null,
-                    {
-                        params: {email},
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-                        },
-                        withCredentials: true,
-                    });
                 toast.success('Successfully Registered!', {
                     position: "top-right",
                     autoClose: 5000,
