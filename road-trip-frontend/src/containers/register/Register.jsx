@@ -112,18 +112,18 @@ const Register = () => {
     }
 
     return (
-        <div className={globalStyles.sectionPadding}>
+        <div className="w-screen">
             <ToastContainer />
             <div className={styles.register}>
                 <div className={styles.registerContent}>
-                    <h1 className={globalStyles.gradientText}>Sign Up</h1>
+                    <h1 className="font-sans text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300 mt-5">Sign Up</h1>
                     <div className={styles.registerInput}>
-                        <input type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
-                        <input type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
-                        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
-                        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
-                        <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}/>
-                        <button type="button" onClick={handleSubmit}>Sign Up</button>
+                        <input className="font-sans" type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
+                        <input className="font-sans" type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
+                        <input className="font-sans" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        <input className="font-sans" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                        <input className="font-sans" type="password" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} value={confirmPassword}/>
+                        <button className="text-lg font-sans bg-red-500 hover:bg-red-700 text-white rounded py-2 px-10 font-bold" type="button" onClick={handleSubmit}>Sign Up</button>
                     </div>
                 </div>
             </div>

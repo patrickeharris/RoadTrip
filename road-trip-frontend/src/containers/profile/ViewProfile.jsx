@@ -28,7 +28,7 @@ class ViewProfile extends React.Component{
     }
 
     handleSubmit = () => {
-        window.location.replace("editprofile");
+        window.location.replace("/edit-profile");
     }
 
     render(){
@@ -37,26 +37,12 @@ class ViewProfile extends React.Component{
                 <ToastContainer />
                 <div className={styles.profile}>
                     <div className={styles.profileContent}>
-                        <h1 className={globalStyles.gradientText}>Profile</h1>
-                        <div className={styles.profileInput}>
-                            <table className={styles.table}>
-                                <tbody>
-                                <tr className={styles.tr}>
-                                    <th className={styles.th}>User ID</th>
-                                    <th className={styles.th}>First Name</th>
-                                    <th className={styles.th}>Last Name</th>
-                                    <th className={styles.th}>Email</th>
-                                </tr>
-                                <tr className={styles.tr}>
-                                    <td className={styles.td}>{this.state.user.user_id}</td>
-                                    <td className={styles.td}>{this.state.user.firstName}</td>
-                                    <td className={styles.td}>{this.state.user.lastName}</td>
-                                    <td className={styles.td}>{this.state.user.email}</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <button type="button" onClick={this.handleSubmit}>Update Profile</button>
-                        </div>
+                        <h1 className="font-sans text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">Profile</h1>
+                        <h2 className="font-sans text-white text-lg">User ID: {this.state.user.user_id}</h2>
+                        <h2 className="font-sans text-white text-lg">First Name: {this.state.user.firstName}</h2>
+                        <h2 className="font-sans text-white text-lg">Last Name: {this.state.user.lastName}</h2>
+                        <h2 className="font-sans text-white text-lg mb-2">Email: {this.state.user.email}</h2>
+                        <button type="button" className="bg-red-500 hover:bg-red-700 text-white text-lg rounded py-2 px-5 font-bold" onClick={this.handleSubmit}>Update Profile</button>
                     </div>
                 </div>
             </div>

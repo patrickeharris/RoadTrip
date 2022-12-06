@@ -89,8 +89,13 @@ const Navbar = () => {
                                       <a href="/login"
                                          className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a>
                               }
-                              <a href="/ratings"
-                                 className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
+                              {
+                                  logged === 'true' ?
+                                      <a href="/ratings"
+                                        className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
+                                      : <a href="/login"
+                                           className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
+                              }
                           </div>
                       </div>
                   </div>
@@ -128,9 +133,13 @@ const Navbar = () => {
                                   </button>}
                           </div>
                           {dropdownOpen ?
-                          <div class={"absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"} role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                              <a href="/profile" class="font-sans block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                              <a href="/logout" class="font-sans block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                          <div class={"absolute right-0 z-10 mt-2 w-44 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"} role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                              <a href="/profile" class="w-44 font-sans block py-2 text-sm text-gray-700 hover:bg-gray-200 justify-center flex" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                              <button onClick={ () => {
+                                  window.sessionStorage.setItem('loggedIn', 'false');
+                                  window.sessionStorage.setItem('token', null);
+                                  window.location.replace("/");
+                              }} class="font-sans block w-44 py-2 text-sm text-gray-700 hover:bg-gray-200" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</button>
                           </div> : <></>}
                       </div>
                   </div>}

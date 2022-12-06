@@ -92,12 +92,12 @@ const EditProfile = () => {
             <ToastContainer />
             <div className={styles.profile}>
                 <div className={styles.profileContent}>
-                    <h1 className={globalStyles.gradientText}>Update Profile</h1>
+                    <h1 className="font-sans text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">Update Profile</h1>
                     <div className={styles.profileInput}>
-                        <input type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
-                        <input type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
-                        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
-                        <button type="button" onClick={handleSubmit}>Update Profile</button>
+                        <input className="font-sans" type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
+                        <input className="font-sans" type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
+                        <input className="font-sans" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        <button className="font-sans bg-red-500 hover:bg-red-700 text-white rounded py-2 px-10 font-bold" type="button" onClick={handleSubmit}>Update</button>
                     </div>
                 </div>
             </div>

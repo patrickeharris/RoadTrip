@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import styles from "./rating.module.css"
-import axios from "axios";
+import {myAxios} from "../../util/helper";
 
 const RatingsTable = ({tripId}) => {
     const [ratings, setRatings] = useState([]);
 
-    let url = "https://trailblazers.gq:8080/rating/ratings";
+    let url = "https://localhost:8080/rating/ratings";
 
     if (tripId != null) {
         url += "?tripId=" + tripId
@@ -13,7 +13,12 @@ const RatingsTable = ({tripId}) => {
 
     useEffect(() => {
         const fetchRatings = async () => {
-            const response = await axios.get(url);
+            const response = await myAxios.get(url,{
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': window.sessionStorage.getItem('token')
+                }
+            });
             return response.data
         }
 
@@ -21,6 +26,7 @@ const RatingsTable = ({tripId}) => {
     }, [])
 
     return (
+        ratings ?
         <div style={{ paddingLeft: "100px", paddingRight: "100px" }}>
             <table className={styles.ratings__tableWrapper}>
                 <tr>
@@ -48,7 +54,8 @@ const RatingsTable = ({tripId}) => {
                     )
                 })}
             </table>
-        </div>
+        </div> :
+        <h2>No Ratings Found</h2>
     )
 }
 

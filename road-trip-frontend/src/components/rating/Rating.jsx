@@ -25,7 +25,13 @@ const Rating = ({ tripId }) => {
 
     useEffect(() => {
         const fetchStops = async () => {
-            const response = await axios.get("https://trailblazers.gq:8080/stops?tripId=" + tripId);
+            const response = await myAxios.get("https://trailblazers.gq:8080/stops?tripId=" + tripId,
+                {
+                    headers: {
+                        'Access-Control-Allow-Origin' : '*',
+                        'Authorization': window.sessionStorage.getItem('token')
+                    }
+                });
             return response.data
         }
 
@@ -85,11 +91,12 @@ const Rating = ({ tripId }) => {
 
     return (<div>
             <ToastContainer/>
-            <div className={styles.rateTrip__wrapper}>
+            <div className="flex justify-center items-center flex-col">
 
-                <div className={styles.rateTrip__header}>
+                <h1 className="font-sans text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300 font-bold mb-3">Rate Your Trip</h1>
+                <h1 className="font-sans text-white font-bold text-4xl mt-3">
                     How would you rate your trip?
-                </div>
+                </h1>
                 <div className={styles.rateTrip__formWrapper}>
                     <div className={styles.rateTrip__starSelectWrapper}>
                         {ratingStars.map((star, index) => {
@@ -98,18 +105,18 @@ const Rating = ({ tripId }) => {
                         })}
                     </div>
 
-                    <div style={{ color: "white", fontWeight: "bold", marginTop: "30px", marginBottom: "20px" }}>Stop Ratings</div>
+                    <div className="text-white font-bold font-sans text-2xl mt-7 mb-2">Stop Ratings</div>
                     {
                         stops.map((stop, index) => {
                             return (
-                                <RatingCard name={stop.stopName} stopRatings={stopRatings} setStopRatings={setStopRatings} />
+                                <RatingCard className="font-sans" name={stop.stopName} stopRatings={stopRatings} setStopRatings={setStopRatings} />
                             )
                         })
                     }
 
                     <textarea placeholder="Tell us a little bit more about how we did" className={styles.rateTrip__textArea} onChange={handleMessageChange}/>
                 </div>
-                <div className={styles.rateTrip__formSubmitButton} onClick={handleFormSubmit}>Submit</div>
+                <div className="bg-red-500 hover:bg-red-700 text-white text-lg rounded py-2 px-5 font-bold" onClick={handleFormSubmit}>Submit</div>
             </div>
         </div>)
 }

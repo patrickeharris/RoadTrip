@@ -45,24 +45,6 @@
     margin-bottom: 1rem;
 }
 
-.profileInput button {
-    flex: 0.6;
-    width: 100%;
-    min-height: 50px;
-    cursor: pointer;
-    outline: none;
-    padding: 0 1rem;
-    border: none;
-    background: #FF4820;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    font-family: var(--font-family);
-    font-size: 20px;
-    line-height: 27px;
-    font-weight: bold;
-    color: #fff;
-}
-
 @media screen and (max-width: 1050px) {
     .profile {
         flex-direction: column;

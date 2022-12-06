@@ -36,16 +36,13 @@
 .footerLinks {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
     flex-wrap: wrap;
     flex-direction: row;
-    width: 34%;
     text-align: center;
     margin-bottom: 2rem;
 }
 
 .footerLinks div {
-    width: 250px;
     margin: 1rem;
     align-items: center;
 }

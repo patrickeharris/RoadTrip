@@ -106,11 +106,11 @@ const Login = () => {
             <ToastContainer />
             <div className={styles.login}>
                 <div className={styles.loginContent}>
-                    <h1 className={globalStyles.gradientText}>Sign In</h1>
+                    <h1 className="font-sans text-transparent text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">Sign In</h1>
                     <div className={styles.loginInput}>
-                        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
-                        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
-                        <button type="button" onClick={handleSubmit}>Sign In</button>
+                        <input className="font-sans" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        <input className="font-sans" type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                        <button className="text-lg font-sans bg-red-500 hover:bg-red-700 text-white rounded py-2 px-10 font-bold" type="button" onClick={handleSubmit}>Sign In</button>
                     </div>
                 </div>
             </div>
