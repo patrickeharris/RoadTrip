@@ -31,7 +31,15 @@ public class StopService {
         int size = stops.size();
         for(int i = 0; i < size; i++){
             System.out.println(size);
-            curStops.add(stops.get(i));
+            boolean test = false;
+            for(int j = 0; j < size; j++){
+                if(curStops.get(j).getStop_id() == stops.get(i).getStop_id()){
+                    test = true;
+                }
+            }
+            if(!test) {
+                curStops.add(stops.get(i));
+            }
         }
         stopRepository.saveAll(curStops);
     }
