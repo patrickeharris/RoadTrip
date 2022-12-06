@@ -99,16 +99,6 @@ const Register = () => {
                 console.log(err?.response);
             }
         }
-        /*const emailParams = {
-            send_to: email,
-            to_name: firstName + ' ' + lastName
-        };
-        emailjs.send('service_9hfbdhb', 'template_iwzl8bb', emailParams, 'BhNdV_jnMUg4W-obV')
-            .then(function(response) {
-                console.log('SUCCESS!', response.status, response.text);
-            }, function(error) {
-                console.log('FAILED...', error);
-            });*/
     }
 
     return (

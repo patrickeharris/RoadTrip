@@ -5,6 +5,7 @@ import {myAxios} from "../../util/helper";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import bcrypt from "bcryptjs";
+import {Checkbox} from "@material-ui/core";
 
 //Function to show error message to the user
 function showError(errorMsg){
@@ -26,17 +27,10 @@ function isValidEmail(email) {
 
 const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
-    /*useEffect(() => {
-        getFirstName().then((firstName) => setFirstName(firstName));
-    }, [])*/
     const [lastName, setLastName] = useState("");
-    /*useEffect(() => {
-        getLastName().then((lastName) => setLastName(lastName));
-    }, [])*/
     const [email, setEmail] = useState("");
-    /*useEffect(() => {
-        getEmail().then((email) => setEmail(email));
-    }, [])*/
+    const [password, setPassword] = useState("")
+    const [confirm, setConfirm] = useState("")
 
     const handleSubmit = async () => {
         if(firstName===""){
@@ -47,17 +41,21 @@ const EditProfile = () => {
             showError('Error: Email cannot be blank');
         }else if(!isValidEmail(email)){
             showError('Error: Email must be valid');
-        }else {
+        }else if(password!=confirm){
+            showError('Error: Passwords must match')
+        }else{
+            const hashedPassword = bcrypt.hashSync(password, 10);
             let id = (await myAxios.get("/register/curUser", {
                 headers:{
                     'Access-Control-Allow-Origin' : '*',
                     'Authorization': window.sessionStorage.getItem('token')}
             })).data.user_id;
-            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id);
+            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id, ", password = " + hashedPassword);
+
             try {
                 const response = await myAxios.post(
                     "/register/update",
-                    JSON.stringify({firstName, lastName, email, user_id: id}),
+                    JSON.stringify({firstName, lastName, email, password: hashedPassword, user_id: id}),
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -98,6 +96,21 @@ const EditProfile = () => {
                         <input className="font-sans" type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
                         <input className="font-sans" type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
                         <button className="font-sans bg-red-500 hover:bg-red-700 text-white rounded py-2 px-10 font-bold" type="button" onClick={handleSubmit}>Update</button>
+                        <input type="text" placeholder="First name" onChange={(e) => setFirstName(e.target.value)} value={firstName}/>
+                        <input type="text" placeholder="Last name" onChange={(e) => setLastName(e.target.value)} value={lastName}/>
+                        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} value={email}/>
+                        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
+                        <input type="password" placeholder="Confirm Password" onChange={(e) => setConfirm(e.target.value)} value={confirm}/>
+
+                        <img className="h-20 w-20 rounded-full" src="/static/girlProfile.png"/>
+                        <div className="app">
+                            <Checkbox label="my value" />
+                        </div>
+                        <img className="h-20 w-20 rounded-full" src="/static/guyProfile.png"/>
+                        <div className="app">
+                            <Checkbox label="my value" />
+                        </div>
+                        <button type="button" onClick={handleSubmit}>Update Profile</button>
                     </div>
                 </div>
             </div>
