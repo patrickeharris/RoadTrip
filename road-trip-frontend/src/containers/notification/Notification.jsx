@@ -5,22 +5,53 @@ import {myAxios} from "../../util/helper";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Notification = () => {
+class Notification extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            notifications: []
+        }
+    }
 
+    componentDidMount() {
+        const fetchUserData = async () => {
+            const response1 = (await myAxios.get("/register/curUser")).data;
 
-    return (
-        <div className={globalStyles.sectionPadding}>
-            <ToastContainer />
-            <div className={styles.profile}>
-                <div className={styles.profileContent}>
-                    <h1 className={globalStyles.gradientText}>Notifications</h1>
-                    <div className={styles.profileInput}>
-                        <input type="text" placeholder="First name"/>
-                    </div>
-                </div>
+            const response = (await myAxios.get("/get/notifications"))
+            console.log(response[0]);
+            console.log(response.data.length)
+            for (let i = 0; i < response.data.length; i++) {
+                if(response1.user_id === response[i].user){
+
+                }
+            }
+            this.setState({
+                notifications
+            });
+        };
+        fetchUserData();
+    }
+
+    render(){
+        return (
+            <div className={styles.profileContent}>
+                <table>
+                    <tbody>
+                    <tr>
+                        <th>Notification</th>
+                    </tr>
+                    {this.state.notifications.map(notification =>{
+                        return [
+                            <tr>
+                                <td>{notification.notification}</td>
+                            </tr>
+                        ];
+                    })}
+                    </tbody>
+                </table>
             </div>
-        </div>
-    )
+        );
+    }
 }
 
 export default Notification

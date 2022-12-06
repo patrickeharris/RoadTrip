@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface NotificationRepository extends JpaRepository<Long, Long> {
-    Optional<List<String>> findByUser(Long user);
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
+    Optional<List<Notification>> findByUser(Long user);
 }
