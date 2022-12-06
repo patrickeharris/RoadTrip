@@ -57,7 +57,7 @@ public class PlaylistController {
     @Autowired
     TripRepository tripRepository;
 
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://localhost:8080/get-spotify-user-code");
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("https://trailblazers.gq:8080/get-spotify-user-code");
     private String code = "";
     private static final SpotifyApi spotifyApi = new SpotifyApi.Builder()
             .setClientId(Keys.CLIENT_ID.getKey())
@@ -99,7 +99,7 @@ public class PlaylistController {
             System.out.println("Error: " + e.getMessage());
         }
 
-        response.sendRedirect("http://localhost:3000/generate-playlist");
+        response.sendRedirect("http://trailblazers.gq/generate-playlist");
         return spotifyApi.getAccessToken();
     }
 
