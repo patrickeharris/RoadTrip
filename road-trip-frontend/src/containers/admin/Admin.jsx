@@ -37,8 +37,8 @@ class Admin extends React.Component{
                     params: {user_id},
                     headers: {
                         "Content-Type": "application/json",
-                        'Access-Control-Allow-Origin': '*',
-                        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                        'Access-Control-Allow-Origin' : '*',
+                        'Authorization': window.sessionStorage.getItem('token')
                     },
                     withCredentials: true,
                 });

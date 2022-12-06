@@ -12,21 +12,10 @@
 }
 
 .headerContent h1 {
-    font-family: var(--font-family);
     font-weight: 800;
     font-size: 62px;
     line-height: 75px;
     letter-spacing: -0.04em;
-}
-
-.headerContent p {
-    font-family: var(--font-family);
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    line-height: 27px;
-    color: var(--color-text);
-    margin-top: 1.5rem;
 }
 
 .headerInput {
@@ -40,8 +29,6 @@
     width: 100%;
     min-height: 50px;
     background: var(--color-footer);
-    font-family: var(--font-family);
-    font-size: 20px;
     line-height: 27px;
     border: 2px solid var(--color-footer);
     padding: 0 1rem;
@@ -60,14 +47,9 @@
     outline: none;
     padding: 0 1rem;
     border: none;
-    background: #FF4820;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    font-family: var(--font-family);
-    font-size: 20px;
     line-height: 27px;
-    font-weight: bold;
-    color: #fff;
 }
 
 .headerImage {

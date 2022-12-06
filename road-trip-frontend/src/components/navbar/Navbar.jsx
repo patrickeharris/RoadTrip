@@ -30,7 +30,6 @@ import {myAxios} from "../../util/helper";
 }
 */
 const Navbar = () => {
-    const [toggleMenu, setToggleMenu] = useState(false);
     const [logged, setLogged] = useState('false');
     const [dropdownOpen, setdropdownOpen] = useState(false);
 
@@ -43,7 +42,7 @@ const Navbar = () => {
         setLogged('false');
         window.sessionStorage.setItem('loggedIn', 'false');
         window.sessionStorage.setItem('spotifyLogged', 'false');
-        await myAxios.get("/logout");
+        window.sessionStorage.setItem('token', 'null');
     }
 
   return (
@@ -77,31 +76,31 @@ const Navbar = () => {
                       </div>
                       <div className="hidden sm:ml-6 sm:block">
                           <div className="flex space-x-4">
-                              <a href="./" className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+                              <a href="./" className="font-sans font-bold bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
                                  aria-current="page">Home</a>
 
                               <a href="./#about"
-                                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About Us</a>
+                                 className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">About Us</a>
 
                               {
                                   logged === 'true' ?
                                       <a href="/trip-dashboard"
-                                         className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a> :
+                                         className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a> :
                                       <a href="/login"
-                                         className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a>
+                                         className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Trip Dashboard</a>
                               }
-                              <a href="./#footer"
-                                 className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact Us</a>
+                              <a href="/ratings"
+                                 className="font-sans font-bold text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
                           </div>
                       </div>
                   </div>
                   {
                       logged !== 'true' ?
                   <><button
-                      className="px-4 py-2 rounded-l-xl text-white m-0 bg-red-500 hover:bg-red-600 transition"><a href="./login">Login</a>
+                      className="font-sans font-bold px-4 py-2 rounded-l-xl text-white m-0 bg-red-500 hover:bg-red-600 transition"><a href="./login">Login</a>
                   </button>
                   <button
-                      className="px-4 py-2 rounded-r-xl bg-neutral-50 hover:bg-neutral-100 transition"><a href="./register">Register</a>
+                      className="font-sans font-bold px-4 py-2 rounded-r-xl bg-neutral-50 hover:bg-neutral-100 transition"><a href="./register">Register</a>
                   </button></> :
                   <div
                       className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -130,9 +129,8 @@ const Navbar = () => {
                           </div>
                           {dropdownOpen ?
                           <div class={"absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"} role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                              <a href="/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                              <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                              <a href="/logout" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                              <a href="/profile" class="font-sans block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                              <a href="/logout" class="font-sans block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
                           </div> : <></>}
                       </div>
                   </div>}
@@ -153,8 +151,8 @@ const Navbar = () => {
                              className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Trip
                               Dashboard</a>
                   }
-
-                  <a href="./#footer" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Contact Us</a>
+                  <a href="/ratings"
+                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Ratings</a>
               </div>
           </div>
       </nav>

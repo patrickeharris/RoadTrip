@@ -455,14 +455,19 @@ const CreateTrip = () => {
                 }
             });
             const endLoc = selectedEnd.lat + " " + selectedEnd.lng;
-            let id = (await myAxios.get("/register/curUser")).data.user_id;
+            let id = (await myAxios.get("/register/curUser", {
+                headers:{
+                    'Access-Control-Allow-Origin' : '*',
+                    'Authorization': window.sessionStorage.getItem('token')}
+            })).data.user_id;
+            console.log(id);
             const response = await myAxios.post(
                 "/create-trip",
                 JSON.stringify({tripName, start, startLoc, end, endLoc, date, tolls, highways, userid: id, user_id: id, selectedRoute, route: {routeName : selectedRoute, stops: trip}}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
-                        'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE',},
+                        'Authorization': window.sessionStorage.getItem('token')},
                     withCredentials: true,
                 }
             );
@@ -750,7 +755,7 @@ const CreateTrip = () => {
                             {selectedRoute != "" && <div className={styles.scrollable}><input type="text" placeholder="City" onChange={(e) => setCity(e.target.value)} value={city}/><StopResultsNew results={stopsResponse} markers={markers} trip={trip} setTrip={setTrip} city={city} setTest={setTest} setResults={setStopsResponse}/></div>}</div>}</div>}
 
                         </GoogleMap>}
-                        <button type="button" onClick={handleSubmit}>Create Trip</button>
+                        <button type="button" className="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-10 rounded" onClick={handleSubmit}>Create Trip</button>
                     </div>
                 </div>
             </div>

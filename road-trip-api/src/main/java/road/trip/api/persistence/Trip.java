@@ -61,14 +61,6 @@ public class Trip {
     @OneToOne
     private Route route;
 
-    /*
-    @Column(name = "routePref")
-    private Enum routePref;
-
-    @Column(name = "playlistPref")
-    private Enum playlistPref;
-     */
-
     public void setUser_id(Long user_id) {
         this.user_id = user_id;
     }

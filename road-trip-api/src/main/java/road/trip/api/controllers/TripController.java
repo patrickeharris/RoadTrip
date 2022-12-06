@@ -3,17 +3,14 @@ package road.trip.api.controllers;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import road.trip.api.persistence.Route;
 import road.trip.api.persistence.Stop;
 import road.trip.api.persistence.Trip;
-import road.trip.api.services.RouteService;
 import road.trip.api.services.StopService;
 import road.trip.api.services.TripService;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.List;
 
 @Log4j2
 @RestController
@@ -22,9 +19,6 @@ public class TripController {
 
     @Autowired
     private TripService tripService;
-
-    @Autowired
-    private RouteService routeService;
 
     @Autowired
     private StopService stopService;
@@ -47,21 +41,12 @@ public class TripController {
     }
 
     @GetMapping("/stops")
-    public @ResponseBody Iterable<Stop> findStopsByTripId(@RequestParam(value = "tripId", required = false) Long tripId) {
-        return stopService.getStopsByTripId(tripId);
+    public @ResponseBody Iterable<Stop> getRecommendedStops(@RequestParam(value = "tripId", required = false) Long tripId) {
+        return stopService.getRecommendedStops(tripId);
     }
-
 
     @DeleteMapping("/cancel-trip")
     public Trip deleteTrip(@RequestParam Long tripId) {
         return tripService.deleteTrip(tripId);
     }
-
-/*
-    @GetMapping("/recommended-stops")
-    public Iterable<Stop> getRecommendedStops(Long routeId) {
-
-        return routeService.getRecommendedStops(routeId);
-    }
-     */
 }

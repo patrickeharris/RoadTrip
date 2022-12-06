@@ -31,7 +31,6 @@
     font-size: 18px;
     line-height: 24px;
     font-width: 800;
-    font-family: var(--font-family);
     letter-spacing: -0.04em;
     color: #fff;
 }
@@ -51,10 +50,7 @@
 }
 
 .featureText p {
-    font-size: 14px;
     line-height: 24px;
-    font-width: 500;
-    font-family: var(--font-family);
     color: var(--color-text);
 }
 
