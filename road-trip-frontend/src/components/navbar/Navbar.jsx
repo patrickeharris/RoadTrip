@@ -165,9 +165,9 @@ const Navbar = () => {
                                      aria-current="page">Home</a>}
 
                               {test && about ? <a href="./#about"
-                                                               className="bg-white text-purple-700 px-3 py-2 font-bold rounded-md text-sm font-medium">About Us</a>:
+                                                               className="bg-white font-bold text-purple-700 px-3 py-2 font-bold rounded-md text-sm font-medium">About Us</a>:
                                   <a href="./#about"
-                                     className="font-sans text-gray-300 hover:bg-white hover:text-purple-700 font-bold px-3 py-2 rounded-md text-sm font-medium">About Us</a>}
+                                     className="font-sans text-gray-300 font-bold hover:bg-white hover:text-purple-700 font-bold px-3 py-2 rounded-md text-sm font-medium">About Us</a>}
 
                               {
                                   logged === 'true' ?

@@ -29,27 +29,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("authorization");
 
-        System.out.println(request.getHeader("access-control-request-headers"));
-
         String username = null;
         String jwt = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             username = jwtUtil.extractUsername(jwt);
-            System.out.println(jwt);
-            System.out.println(jwtUtil.extractEmail(jwt));
-            System.out.println(jwtUtil.extractExpiration(jwt));
-            System.out.println("Made it");
             System.out.println(username);
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            System.out.println("Made ittttttttttt");
             User user = this.myUserDetailsService.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, user)) {
-                System.out.println("Yayyyyyyyy");
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         user, null, user.getAuthorities());
                 usernamePasswordAuthenticationToken

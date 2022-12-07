@@ -5,7 +5,6 @@ import {myAxios} from "../../util/helper";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import bcrypt from "bcryptjs";
-import {Checkbox} from "@material-ui/core";
 
 //Function to show error message to the user
 function showError(errorMsg){

@@ -106,11 +106,12 @@ const Login = () => {
                                 }else{
                                     if(response[i].notification.includes('departs')){
                                         console.log('ID: ' + response[i].notif_id)
+                                        let notif_id = response[i].notif_id
                                         try {
-                                            const resp = await myAxios.post(
+                                            const resp = await myAxios.delete(
                                                 "/remove/notification",
-                                                JSON.stringify({notif_id: response[i].notif_id}),
                                                 {
+                                                    params: {notif_id},
                                                     headers: {
                                                         "Content-Type": "application/json",
                                                         'Access-Control-Allow-Origin': '*',
@@ -120,7 +121,12 @@ const Login = () => {
                                                 }
                                             );
                                         } catch (err){
-
+                                            if (!err?.response) {
+                                                console.log("No Server Response");
+                                            } else {
+                                                console.log("Notification Delete Failed");
+                                                console.log(err?.response);
+                                            }
                                         }
                                         console.log('DELETE')
                                     }else {
@@ -137,25 +143,32 @@ const Login = () => {
                             }
                         }
                         console.log('RESP' + response2.user_id)
-                        try {
-                            await myAxios.post(
-                                "/add/notification",
-                                JSON.stringify({notification: 'Your closest trip departs on ' + closest, user: response2.user_id}),
-                                {
-                                    headers: {"Content-Type": "application/json",
-                                        'Access-Control-Allow-Origin' : '*',
-                                        'Authorization': window.sessionStorage.getItem('token')},
-                                    withCredentials: true,
+                        if(closest != null && closest != '') {
+                            try {
+                                await myAxios.post(
+                                    "/add/notification",
+                                    JSON.stringify({
+                                        notification: 'Your closest trip departs on ' + closest,
+                                        user: response2.user_id, timestamp: new Date()
+                                    }),
+                                    {
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            'Access-Control-Allow-Origin': '*',
+                                            'Authorization': window.sessionStorage.getItem('token')
+                                        },
+                                        withCredentials: true,
+                                    }
+                                );
+                                console.log('POST')
+                            } catch (err) {
+                                if (!err?.response) {
+                                    console.log("No Server Response");
+                                    console.log(err);
+                                } else {
+                                    console.log("Registration Failed");
+                                    console.log(err?.response);
                                 }
-                            );
-                            console.log('POST')
-                        } catch (err) {
-                            if (!err?.response) {
-                                console.log("No Server Response");
-                                console.log(err);
-                            } else {
-                                console.log("Registration Failed");
-                                console.log(err?.response);
                             }
                         }
                         window.sessionStorage.setItem('spotifyLogged', 'false');

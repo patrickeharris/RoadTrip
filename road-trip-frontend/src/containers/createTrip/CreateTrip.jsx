@@ -598,7 +598,7 @@ const CreateTrip = () => {
             const response = await myAxios.post(
                 "/add/notification",
                 JSON.stringify({notification: 'Your trip: ' + tripName + ' from ' + start + ' to ' + end +
-                        ' on ' + date + ' has been created successfully!\n', user: response1.user_id, date: date}),
+                        ' on ' + date + ' has been created successfully!\n', user: response1.user_id, date: date, timestamp: new Date()}),
                 {
                     headers: {"Content-Type": "application/json",
                         'Access-Control-Allow-Origin' : '*',
@@ -863,7 +863,7 @@ const CreateTrip = () => {
                                                     className="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 peer transition peer-checked:translate-x-6 peer-checked:bg-blue-500"></div>
                                             </div>
                                             <div className="ml-3 font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">
-                                                Restaurants
+                                                Attractions
                                             </div>
                                         </label>
                                     </div>

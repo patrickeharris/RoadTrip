@@ -104,7 +104,7 @@ const Register = () => {
                         progress: undefined,
                     });
 
-                    window.location.replace("login");
+                    window.location.replace("/login");
 
                 }
             }
