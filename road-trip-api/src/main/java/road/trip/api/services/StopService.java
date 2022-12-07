@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import road.trip.api.persistence.Stop;
 import road.trip.api.persistence.StopRepository;
+import road.trip.api.persistence.Trip;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class StopService {
@@ -21,22 +23,10 @@ public class StopService {
         return tripService.findTripById(tripId).getRoute().getStops();
     }
 
-    public void addStops(List<Stop> stops, long trip_id) {
-        List<Stop> curStops = tripService.findTripById(trip_id).getRoute().getStops();
-        int size = stops.size();
-        for(int i = 0; i < size; i++){
-            System.out.println(size);
-            boolean test = false;
-            for(int j = 0; j < size; j++){
-                if(curStops.get(j).getStop_id() == stops.get(i).getStop_id()){
-                    test = true;
-                }
-            }
-            if(!test) {
-                curStops.add(stops.get(i));
-            }
+    public void addStops(List<Stop> stops) {
+        for (Stop value : stops) {
+            stopRepository.save(value);
         }
-        stopRepository.saveAll(curStops);
     }
 
     public Stop findStopById(Long id) {

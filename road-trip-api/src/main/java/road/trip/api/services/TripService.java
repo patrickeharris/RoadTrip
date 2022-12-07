@@ -4,18 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import road.trip.api.persistence.*;
 
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Properties;
 
 @Service
 public class TripService {
@@ -30,6 +23,9 @@ public class TripService {
     private UserService userService;
 
     @Autowired
+    private StopService stopService;
+
+    @Autowired
     private NotificationService notificationService;
 
     public Trip findTripById(Long id) {
@@ -37,17 +33,13 @@ public class TripService {
     }
 
     public Trip createTrip (Trip trip) throws GeneralSecurityException, IOException, MessagingException {
-        System.out.println(trip);
-        for(int i = 0; i < trip.getRoute().getStops().size(); i++){
-            System.out.println(trip.getRoute().getStops().get(i).getStopName());
-            Stop s = stopRepository.save(trip.getRoute().getStops().get(i));
-            System.out.println(s.getStopName());
-        }
-        Route r = routeRepository.save(trip.getRoute());
-        Trip t = tripRepository.save(trip);
-        System.out.println(t);
 
-        return t;
+        if (trip.getRoute() != null) {
+            stopService.addStops(trip.getRoute().getStops());
+            Route r = routeRepository.save(trip.getRoute());
+        }
+
+        return tripRepository.save(trip);
     }
 
     public Trip editTrip(Trip trip) {

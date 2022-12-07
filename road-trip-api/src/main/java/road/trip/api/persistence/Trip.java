@@ -2,6 +2,7 @@ package road.trip.api.persistence;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @ToString
 public class Trip {
@@ -22,21 +24,25 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long trip_id;
 
+    @NonNull
     @Column(name = "tripName")
     String tripName;
 
+    @NonNull
     @Column(name = "start")
     String start;
 
     @Column(name = "startLoc")
     String startLoc;
 
+    @NonNull
     @Column(name = "end")
     String end;
 
     @Column(name = "endLoc")
     String endLoc;
 
+    @NonNull
     @Column(name = "date")
     String date;
 
@@ -46,6 +52,7 @@ public class Trip {
     @Column(name = "highways")
     String highways;
 
+    @NonNull
     @Column(name = "user_id")
     private Long user_id;
 
