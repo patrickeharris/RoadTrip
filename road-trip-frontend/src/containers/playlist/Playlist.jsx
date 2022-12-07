@@ -71,6 +71,7 @@ const Playlist = () => {
             console.log(response.data);
 
             setPlaylistUrl(response.data)
+            console.log(playlistUrl);
             setHidden(true);
         }
     }

@@ -3,7 +3,6 @@ package road.trip.api.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import road.trip.api.persistence.Notification;
 
 import java.time.LocalDate;

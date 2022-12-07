@@ -3,9 +3,7 @@ package road.trip.api.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import road.trip.api.persistence.Route;
 import road.trip.api.persistence.Stop;
-import road.trip.api.persistence.Trip;
 
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
@@ -14,7 +12,6 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SpringBootTest

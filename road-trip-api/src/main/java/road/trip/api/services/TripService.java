@@ -16,11 +16,6 @@ public class TripService {
     private TripRepository tripRepository;
     @Autowired
     private RouteRepository routeRepository;
-    @Autowired
-    private StopRepository stopRepository;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private StopService stopService;

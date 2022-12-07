@@ -1,8 +1,6 @@
 package road.trip.api.persistence;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 
 import javax.persistence.*;
 import java.util.ArrayList;

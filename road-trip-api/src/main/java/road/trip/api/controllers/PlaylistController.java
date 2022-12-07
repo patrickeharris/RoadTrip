@@ -125,8 +125,6 @@ public class PlaylistController {
             Recommendations recommendations = getRecommendationsRequest.execute();
             String id = getCurrentUsersProfileRequest.execute().getId();
 
-            System.out.println(id);
-
             createPlaylistRequest = spotifyApi.createPlaylist(id,playlistName).build();
             se.michaelthelin.spotify.model_objects.specification.Playlist playlist = createPlaylistRequest.execute();
 

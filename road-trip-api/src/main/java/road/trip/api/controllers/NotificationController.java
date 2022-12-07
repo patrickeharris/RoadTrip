@@ -5,10 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import road.trip.api.persistence.Notification;
 import road.trip.api.services.NotificationService;
-import road.trip.api.services.UserService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Log4j2
 @RestController
