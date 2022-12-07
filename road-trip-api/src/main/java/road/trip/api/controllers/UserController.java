@@ -20,6 +20,11 @@ public class UserController {
         return userService.findAllUsers();
     }
 
+    @PostMapping("/findUser")
+    public User findAllUsers(@RequestParam String email) {
+        return userService.findAccountByEmail(email);
+    }
+
     @GetMapping("/register/curUser")
     public User findCurUser(@RequestHeader(value="authorization") String auth) {
         return userService.findCurUser(auth);

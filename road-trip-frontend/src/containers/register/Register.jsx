@@ -67,10 +67,11 @@ const Register = () => {
             }else if(password.length < 6) {
                 showError('Error: Password must be 6 or more characters');
             } else{
-                const response = await myAxios.post(
-                    "/register",
-                    JSON.stringify({firstName, lastName, email, password: hashedPassword}),
+                const isValid = await myAxios.post(
+                    "/findUser",
+                    null,
                     {
+                        params: {email: email},
                         headers: {
                             "Content-Type": "application/json",
                             'Access-Control-Allow-Origin': '*',
@@ -79,18 +80,36 @@ const Register = () => {
                         withCredentials: true,
                     }
                 );
-                window.sessionStorage.setItem('spotifyLogged', 'false');
-                toast.success('Successfully Registered!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                console.log(isValid.data)
+                if(isValid.data !== ''){
+                    showError('Error: Account with this email already exists');
+                }
+                else {
+                    const response = await myAxios.post(
+                        "/register",
+                        JSON.stringify({firstName, lastName, email, password: hashedPassword}),
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                            },
+                            withCredentials: true,
+                        }
+                    );
+                    window.sessionStorage.setItem('spotifyLogged', 'false');
+                    toast.success('Successfully Registered!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
 
-                window.location.replace("login");
+                    window.location.replace("login");
+                }
             }
         } catch (err) {
             if (!err?.response) {
