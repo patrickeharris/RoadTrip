@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import globalStyles from "../container.module.css";
 import styles from "../profile/editprofile.module.css";
@@ -34,6 +34,12 @@ const Playlist = () => {
         { value: 'show-tunes', label: 'Show Tunes' },
         { value: 'techno', label: 'Techno' },
     ];
+
+    useEffect(() => {
+        if (window.sessionStorage.getItem('token') === null) {
+            window.location.replace("/login");
+        }
+    })
 
     const handleChange = selectedOption => {
         setGenre(selectedOption.target.value);

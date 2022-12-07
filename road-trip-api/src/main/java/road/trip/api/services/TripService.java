@@ -50,54 +50,6 @@ public class TripService {
         return t;
     }
 
-
-    public void sendEmail(Trip trip) {
-
-        // email ID of Recipient.
-        String recipient = userService.findAccountById(trip.getUser_id()).getEmail();
-
-        // email ID of Sender.
-        String sender = "travelz.trailblazers@gmail.com";
-
-        String host = "https://trailblazers.gq/";
-
-        // Getting system properties
-        Properties properties = System.getProperties();
-
-        // Setting up mail server
-        properties.setProperty("mail.smtp.host", host);
-
-        // creating session object to get properties
-        Session session = Session.getDefaultInstance(properties);
-
-        try {
-            // MimeMessage object.
-            MimeMessage message = new MimeMessage(session);
-
-            // Set From Field: adding senders email to from field.
-            message.setFrom(new InternetAddress(sender));
-
-            // Set To Field: adding recipient's email to from field.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-
-            // Set Subject: subject of the email
-            message.setSubject("Trip Confirmation: " + trip.getTripName());
-
-            // set body of the email.
-            message.setText("Hey Trailblazer!\nYour trip on " + trip.getDate() + " from " + trip.getStart()
-            + " to " + trip.getEnd() + " has been confirmed.\nSee you then!");
-
-            // Send email.
-            Transport.send(message);
-            System.out.println("Mail successfully sent");
-
-        } catch (MessagingException mex) {
-            mex.printStackTrace();
-        }
-    }
-
-
-
     public Trip editTrip(Trip trip) {
 
         Trip t = findTripById(trip.getTrip_id());

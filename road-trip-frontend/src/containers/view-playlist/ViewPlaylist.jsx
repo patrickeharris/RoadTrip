@@ -7,6 +7,11 @@ const ViewPlaylist = () => {
     const [url, setUrl] = useState("");
 
     useEffect(() => {
+
+        if (window.sessionStorage.getItem('token') === null) {
+            window.location.replace("/login");
+        }
+
         async function getPlaylist() {
             const response = await myAxios.get("/get-playlist-link",
                 {

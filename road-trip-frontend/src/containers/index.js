@@ -6,7 +6,6 @@ export {default as Register} from './register/Register';
 export {default as EditProfile} from './profile/EditProfile';
 export {default as CreateTrip} from './createTrip/CreateTrip';
 export {default as EditTrip} from './editTrip/EditTrip';
-export {default as Profile} from './profile/ViewProfile';
 export {default as Playlist} from './playlist/Playlist'
 export {default as ViewPlaylist} from './view-playlist/ViewPlaylist'
 export {default as Notification} from './notification/Notification';

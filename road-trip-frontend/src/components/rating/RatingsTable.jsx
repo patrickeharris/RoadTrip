@@ -9,6 +9,11 @@ const RatingsTable = () => {
     let url = "/rating/ratings";
 
     useEffect(() => {
+
+        if (window.sessionStorage.getItem('token') === null) {
+            window.location.replace("/login");
+        }
+
         const fetchRatings = async () => {
             const response = await myAxios.get(url,{
                 headers: {

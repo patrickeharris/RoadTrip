@@ -398,6 +398,11 @@ const EditTrip = () => {
     };
 
     useEffect(() => {
+
+        if (window.sessionStorage.getItem('token') === null) {
+            window.location.replace("/login");
+        }
+
         function removeListItem(e){
             let container = e.target;
             container.classList.remove(styles.show);

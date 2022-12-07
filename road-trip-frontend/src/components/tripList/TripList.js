@@ -29,6 +29,11 @@ const TripList = () => {
     const [curID, setCurID] = useState("");
 
     useEffect(() => {
+
+        if (window.sessionStorage.getItem('token') === null) {
+            window.location.replace("/login");
+        }
+
         async function getData() {
             const response = (await myAxios.get(
                 "/trips", {
@@ -60,7 +65,7 @@ const TripList = () => {
             console.log("selected")
             console.log(item)
 
-            return <div className="h-screen" key={id}>
+            return <div key={id}>
                 <Card title={item.tripName} start={start} end={end} date={date} menu={null} startLoc={item.startLoc}
                       endLoc={item.endLoc} selectedRoute={item.selectedRoute} stops={item.route.stops} tripid={item.trip_id} playlistid={item.playlist_id}>
                 </Card>

@@ -64,11 +64,12 @@ const Notifs = () => {
         getNotifs();
     })
 
-    return <div className="flex flex-col items-center overflow-scroll overflow-hidden">{test && notifs.length > 0 ? notifs.map((notif) => {
-        return <div>
-            <p className="w-full bg-white font-bold font-sans">{notif.timestamp}</p>
-            <p className="w-full bg-white font-sans">{notif.notification}</p>
-            </div>}) : <p className="w-full font-sans text-center bg-white">No Notifications Found</p>}</div>
+    return <div className="flex flex-col items-center max-h-64 overflow-scroll overflow-hidden min-w-64 max-w-64 bg-opacity-40">{test && notifs.length > 0 ? notifs.map((notif) => {
+        return <div className="bg-purple-500 w-full bg-opacity-40 mb-4 w-[80%]">
+            <button className="float-right pr-4 pt-2">X</button>
+            <p className="w-full font-bold font-sans text-xs text-left pl-4 pt-2">{notif.timestamp}</p>
+            <p className="w-full font-sans text-md text-center pb-2">{notif.notification}</p>
+            </div>}) : <p className="w-full font-sans text-center">No Notifications Found</p>}</div>
 }
 
 const Navbar = () => {
@@ -213,7 +214,7 @@ const Navbar = () => {
                       </button>
                       </div>
                       {notif ?
-                          <div class={"absolute right-4 z-10 mt-12 w-44 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"} role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                          <div class={"absolute right-4 z-10 mt-12 w-64 origin-top-right bg-opacity-80 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"} role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                               <Notifs />
                           </div> : <></>}
                       <div class="relative ml-3">

@@ -24,6 +24,11 @@ const Rating = ({ tripId }) => {
     const [stops, setStops] = useState([]);
 
     useEffect(() => {
+
+        if (window.sessionStorage.getItem('token') === null) {
+            window.location.replace("/login");
+        }
+
         const fetchStops = async () => {
             const response = await myAxios.get("/stops?tripId=" + tripId,
                 {

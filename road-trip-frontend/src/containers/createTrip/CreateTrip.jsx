@@ -366,6 +366,11 @@ const CreateTrip = () => {
     };
 
     useEffect(() => {
+
+        if (window.sessionStorage.getItem('token') === null) {
+            window.location.replace("/login");
+        }
+
         if (map && selectedStart){
             var bounds = new google.maps.LatLngBounds();
             bounds.extend(selectedStart);

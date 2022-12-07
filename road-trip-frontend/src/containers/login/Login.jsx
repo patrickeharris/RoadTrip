@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styles from './login.module.css'
 import globalStyles from "../container.module.css";
 import {myAxios} from "../../util/helper";
@@ -12,6 +12,23 @@ const Login = () => {
     const [notifications, setNotifications] = useState("");
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(password, salt);
+
+    useEffect(() => {
+
+        if (window.sessionStorage.getItem('updatedEmail') === 'true') {
+            toast.warn('Sign in with your new email!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            window.sessionStorage.setItem('updatedEmail', null);
+            window.sessionStorage.setItem('token', null);
+        }
+    })
 
     const handleSubmit = async () => {
 
@@ -40,7 +57,6 @@ const Login = () => {
                 if (found === true) {
 
                     if (bcrypt.compareSync(password, pass)) {
-                        window.sessionStorage.setItem('loggedIn', 'true');
                         console.log(pass);
 
                         const response3 = await myAxios.post(
@@ -55,6 +71,7 @@ const Login = () => {
                                 },
                                 withCredentials: true,
                             });
+                        window.sessionStorage.setItem('loggedIn', 'true');
                         console.log(response3.data);
                         window.sessionStorage.setItem('token', "Bearer " + response3.data);
                         console.log(window.sessionStorage.getItem('token'));

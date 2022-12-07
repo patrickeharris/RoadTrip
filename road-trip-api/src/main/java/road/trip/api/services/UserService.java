@@ -13,6 +13,7 @@ import road.trip.api.security.JwtUtil;
 import road.trip.api.security.MyUserDetailsService;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -36,50 +37,46 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public User findAccountByEnabled(Boolean enabled) {
-        if (userRepository.findByEnabled(enabled).isEmpty()) {
-            return null;
-        } else {
-            return userRepository.findByEnabled(enabled).get();
-        }
-    }
-
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
     public User register(User user) {
-        user.setEnabled(false);
         return userRepository.save(user);
     }
 
-    public User update(User user) {
-        if(userRepository.existsById(user.getUser_id())) {
-            findAccountById(user.getUser_id()).setFirstName(user.getFirstName());
-            findAccountById(user.getUser_id()).setLastName(user.getLastName());
-            findAccountById(user.getUser_id()).setEmail(user.getEmail());
-            findAccountById(user.getUser_id()).setPassword(user.getPassword());
-            System.out.println(user.getPassword());
-            return userRepository.save(findAccountById(user.getUser_id()));
+    public User update(String firstName, String lastName, String email, Long userID) {
+
+        if (userRepository.existsById(userID)) {
+
+            User user = findAccountById(userID);
+
+            if (!Objects.equals(firstName, "")) {
+                user.setFirstName(firstName);
+            }
+
+            if (!Objects.equals(lastName, "")) {
+                user.setLastName(lastName);
+            }
+
+            if (!Objects.equals(email, "")) {
+                user.setEmail(email);
+            }
+
+            return userRepository.save(user);
         }
         return null;
     }
 
     public ResponseEntity<?> login(String username, String password) throws Exception {
         try {
-            System.out.println("Going in");
-            System.out.println(username);
-            System.out.println(password);
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password)
             );
-            System.out.println("Coming out");
         } catch (BadCredentialsException e) {
-            System.out.println("Bad");
             System.out.println(e.getMessage());
             throw new Exception("Incorrect username or password", e);
         } catch (AuthenticationException e){
-            System.out.println("Bad2");
             System.out.println(e.getMessage());
         }
 

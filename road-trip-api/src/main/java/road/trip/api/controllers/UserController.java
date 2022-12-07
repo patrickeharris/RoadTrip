@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @PostMapping("/register/update")
-    public User update(@RequestBody User u) {
-        return userService.update(u);
+    public User update(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String email, @RequestParam Long userID) {
+        return userService.update(firstName, lastName, email, userID);
     }
 
     @PostMapping("/login")

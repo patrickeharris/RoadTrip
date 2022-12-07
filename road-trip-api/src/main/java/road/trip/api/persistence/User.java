@@ -33,8 +33,6 @@ public class User implements UserDetails {
     @Column(name = "username")
     String username;
 
-    Boolean enabled = false;
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "user_id")

@@ -39,6 +39,7 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [badEmail, setBadEmail] = useState(false);
 
     useEffect(() => {
         if (window.sessionStorage.getItem('email') !== "") {
@@ -67,30 +68,45 @@ const Register = () => {
             }else if(password.length < 6) {
                 showError('Error: Password must be 6 or more characters');
             } else{
-                const response = await myAxios.post(
-                    "/register",
-                    JSON.stringify({firstName, lastName, email, password: hashedPassword}),
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            'Access-Control-Allow-Origin': '*',
-                            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
-                        },
-                        withCredentials: true,
-                    }
-                );
-                window.sessionStorage.setItem('spotifyLogged', 'false');
-                toast.success('Successfully Registered!', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
 
-                window.location.replace("login");
+                const r = (await myAxios.get("/register/users")).data;
+                if (r) {
+                    r.map((item) => {
+                        if (item.email === email) {
+                            showError('Email is already in use');
+                            setBadEmail(true);
+                        }
+                    });
+                }
+
+                if (!badEmail) {
+                    const response = await myAxios.post(
+                        "/register",
+                        JSON.stringify({firstName, lastName, email, password: hashedPassword}),
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+                            },
+                            withCredentials: true,
+                        }
+                    );
+                    window.sessionStorage.setItem('spotifyLogged', 'false');
+                    setBadEmail(false);
+                    toast.success('Successfully Registered!', {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+
+                    window.location.replace("login");
+
+                }
             }
         } catch (err) {
             if (!err?.response) {
