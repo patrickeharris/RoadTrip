@@ -48,15 +48,16 @@ public class UserServiceTest {
 //        assertThat(result2.getFirstName()).isEqualTo("Bob");
 //    }
 
-    @Test
-    void testLogin() throws Exception {
-        User testUser = new User("John", "Smith", "jsmith@gmail.com", "test123");
-        userService.register(testUser);
-
-        assertDoesNotThrow(() -> {
-            userService.login("jsmith@gmail.com", "test123");
-        });
-    }
+//    @Test
+//    @Transactional
+//    void testLogin() throws Exception {
+//        User testUser = new User("John", "Smith", "jsmith@gmail.com", "test123");
+//        userService.register(testUser);
+//
+//        assertDoesNotThrow(() -> {
+//            userService.login("jsmith@gmail.com", "test123");
+//        });
+//    }
 
     @Test
     void testDeleteAccount() {
