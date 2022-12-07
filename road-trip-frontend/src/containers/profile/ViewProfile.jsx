@@ -38,11 +38,11 @@ class ViewProfile extends React.Component{
                 <div className={styles.profile}>
                     <div className={styles.profileContent}>
                         <h1 className="font-sans text-transparent flex justify-center text-8xl bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300 mb-12">Profile</h1>
-                        <h2 className="font-sans mt-20 text-white text-2xl">User ID: {this.state.user.user_id}</h2>
+                        <h2 className="font-sans mt-10 text-white text-2xl">User ID: {this.state.user.user_id}</h2>
                         <h2 className="font-sans mt-10 text-white text-2xl">First Name: {this.state.user.firstName}</h2>
                         <h2 className="font-sans mt-10 text-white text-2xl">Last Name: {this.state.user.lastName}</h2>
                         <h2 className="font-sans mt-10 text-white text-2xl mb-2">Email: {this.state.user.email}</h2>
-                        <button type="button" className="bg-red-500 hover:bg-red-700 text-white text-lg rounded py-2 px-5 font-bold mt-40" onClick={this.handleSubmit}>Update Profile</button>
+                        <button type="button" className="bg-red-500 hover:bg-red-700 text-white text-lg rounded py-2 px-5 font-bold mt-35" onClick={this.handleSubmit}>Update Profile</button>
                     </div>
                 </div>
             </div>

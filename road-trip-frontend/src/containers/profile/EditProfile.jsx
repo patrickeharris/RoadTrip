@@ -5,7 +5,6 @@ import {myAxios} from "../../util/helper";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import bcrypt from "bcryptjs";
-import {Checkbox} from "@material-ui/core";
 
 //Function to show error message to the user
 function showError(errorMsg){
@@ -29,33 +28,53 @@ const EditProfile = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("")
-    const [confirm, setConfirm] = useState("")
+    const [password, setPassword] = useState("");
+    const [confirm, setConfirm] = useState("");
 
     const handleSubmit = async () => {
-        if(firstName===""){
-            showError('Error: First name cannot be blank');
-        }else if(lastName==="") {
-            showError('Error: Last name cannot be blank');
-        }else if(email==="") {
-            showError('Error: Email cannot be blank');
-        }else if(!isValidEmail(email)){
-            showError('Error: Email must be valid');
-        }else if(password!=confirm){
-            showError('Error: Passwords must match')
+        let user = (await myAxios.get("/register/curUser", {
+            headers:{
+                'Access-Control-Allow-Origin' : '*',
+                'Authorization': window.sessionStorage.getItem('token')}
+        })).data
+        console.log('firstName: ' + user.firstName + '. lastName: ' + user.lastName + '. email: ' + user.email)
+        let sendFirstName, sendLastName, sendEmail;
+        if(firstName === ""){
+            sendFirstName = user.firstName
         }else{
-            const hashedPassword = bcrypt.hashSync(password, 10);
+            sendFirstName = firstName
+        }
+        if(lastName === ""){
+            sendLastName = user.lastName
+        }else{
+            sendLastName = lastName
+        }
+        if(email === ""){
+            sendEmail = user.email
+        }else{
+            sendEmail = email
+        }
+        if(password!=confirm){
+            showError('Error: Passwords must match')
+        }else if(!isValidEmail(sendEmail)){
+            showError('Error: Email must be valid');
+        }else{
+            let hashedPassword;
+            if(password === "" && confirm === "") {
+                hashedPassword = user.password;
+            }else{
+                hashedPassword = bcrypt.hashSync(password, 10);
+            }
             let id = (await myAxios.get("/register/curUser", {
                 headers:{
                     'Access-Control-Allow-Origin' : '*',
                     'Authorization': window.sessionStorage.getItem('token')}
             })).data.user_id;
-            console.log("sending: first = " + firstName + ", last = " + lastName + ", email = " + email + ", ID = " + id, ", password = " + hashedPassword);
-
+            console.log("sending: first = " + sendFirstName + ", last = " + sendLastName + ", email = " + sendEmail + ", ID = " + id, ", password = " + hashedPassword);
             try {
                 const response = await myAxios.post(
                     "/register/update",
-                    JSON.stringify({firstName, lastName, email, password: hashedPassword, user_id: id}),
+                    JSON.stringify({firstName: sendFirstName, lastName: sendLastName, email: sendEmail, password: hashedPassword, user_id: id}),
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -73,7 +92,7 @@ const EditProfile = () => {
                     draggable: true,
                     progress: undefined,
                 });
-                //window.location.replace("");
+                window.location.replace("/profile");
             } catch (err) {
                 if (!err?.response) {
                     console.log("No Server Response");
