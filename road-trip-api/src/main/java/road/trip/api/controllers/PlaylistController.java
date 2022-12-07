@@ -94,7 +94,7 @@ public class PlaylistController {
             System.out.println("Error: " + e.getMessage());
         }
 
-        response.sendRedirect("http://trailblazers.gq/generate-playlist");
+        response.sendRedirect("https://trailblazers.gq/generate-playlist");
         return spotifyApi.getAccessToken();
     }
 
