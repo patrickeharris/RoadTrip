@@ -52,14 +52,14 @@ const CardContent = (props) => {
             <p className="font-sans text-md mb-1">{props.end}</p>
             <p className="font-sans text-md mb-1">{props.date}</p>
             <hr className="mb-1" />
-            <p className="font-sans font-bold text-md mb-1">Stops</p>
+            {props.stops.length > 2 && <><p className="font-sans font-bold text-md mb-1">Stops</p>
             {props.stops.map((stop) => {
                 let index = props.stops.findIndex(element => element.vicinity === stop.vicinity);
                 if(index > 0 && index < props.stops.length - 1) {
                     console.log(stop)
                     return <p className="font-sans text-md mb-1">{index}: {stop.stopName}</p>
                 }
-            })}
+            })}</>}
             <div>
                 <button onClick={() => {
                     setToggle(!toggle)
@@ -73,7 +73,7 @@ const CardContent = (props) => {
                                        window.sessionStorage.setItem('curTrip', props.tripid);
                                        console.log(window.sessionStorage.getItem('spotifyLogged') )
                                            window.sessionStorage.setItem('spotifyLogged', 'true');
-                                           fetch("https://localhost:8080/spotify-login", {
+                                           fetch("https://trailblazers.gq:8080/spotify-login", {
                                                headers: {
                                                    "Content-Type": "application/json",
                                                    'Access-Control-Allow-Origin' : '*',
