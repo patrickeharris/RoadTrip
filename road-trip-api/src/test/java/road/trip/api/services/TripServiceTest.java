@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,5 +66,13 @@ public class TripServiceTest {
         assertThrows(NoSuchElementException.class, () -> {
             tripService.findTripById(result.getTrip_id());
         });
+    }
+
+    @Test
+    @Transactional
+    void testFindAllTrips() {
+        List<Trip> result = tripService.findAllTrips();
+
+        assertThat(result).isNotNull();
     }
 }
