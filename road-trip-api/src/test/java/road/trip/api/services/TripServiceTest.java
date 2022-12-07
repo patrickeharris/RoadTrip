@@ -1,56 +1,69 @@
 package road.trip.api.services;
 
-import org.junit.jupiter.api.*;
-/*
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import road.trip.api.persistence.Route;
 import road.trip.api.persistence.Trip;
 
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 public class TripServiceTest {
+
     @Autowired
     TripService tripService;
 
-    Trip trip = new Trip(10000L, "Test Trip", "Houston", "Houston", "Fort Worth",
-            "Fort Worth", "11/8/2022", "Y", "Y", 1L, "route",
-            3L, null, null);
-    Trip trip2 = new Trip(10000L, "Test Duplicate", "Houston", "Houston", "Fort Worth",
-            "Fort Worth", "11/8/2022", "Y", "Y", 1L, "route",
-            3L, null, null);
-
     @Test
-    void testGetTrips(){
-        assertTrue(tripService.findAllTrips().size() > 0);
+    @Transactional
+    void testCreateTrip() throws MessagingException, GeneralSecurityException, IOException {
+        Trip testTrip = new Trip(null, "Test trip", "Houston, TX, USA", "29.7604267 -95.3698028", "Waco, TX, USA", "31.549333 -97.1466695", "2022-10-20", "true", "true", 1L, "Hwy 6 N", "3aKfOYLX8JGFThGWieixXD", "https://open.spotify.com/playlist/3aKfOYLX8JGFThGWieixXD", new ArrayList<>(), new Route(null, "Test route", new ArrayList<>()));
+        Trip result = tripService.createTrip(testTrip);
+
+        assertThat(result).isNotNull();
     }
 
     @Test
-    void testDeleteTrip() throws MessagingException, GeneralSecurityException, IOException {
-        trip = tripService.createTrip(trip);
-        int size = tripService.findAllTrips().size();
-        tripService.deleteTrip(trip.getTrip_id());
-        assertTrue(tripService.findAllTrips().size() < size);
+    @Transactional
+    void testFindTripById() throws MessagingException, GeneralSecurityException, IOException {
+        Trip testTrip = new Trip(null, "Test trip", "Houston, TX, USA", "29.7604267 -95.3698028", "Waco, TX, USA", "31.549333 -97.1466695", "2022-10-20", "true", "true", 1L, "Hwy 6 N", "3aKfOYLX8JGFThGWieixXD", "https://open.spotify.com/playlist/3aKfOYLX8JGFThGWieixXD", new ArrayList<>(), new Route(null, "Test route", new ArrayList<>()));
+        Trip result = tripService.createTrip(testTrip);
+
+        Trip result2 = tripService.findTripById(result.getTrip_id());
+        assertThat(result).isNotNull();
+        assertThat(result.getTrip_id()).isEqualTo(result2.getTrip_id());
     }
 
     @Test
-    void testMakeTrip() throws MessagingException, GeneralSecurityException, IOException {
-        int size = tripService.findAllTrips().size();
-        tripService.createTrip(trip);
-        assertTrue(tripService.findAllTrips().size() > size);
-    }
-
-    @Test
+    @Transactional
     void testEditTrip() throws MessagingException, GeneralSecurityException, IOException {
-        trip = tripService.createTrip(trip);
-        trip2.setTrip_id(trip.getTrip_id());
-        tripService.editTrip(trip2);
-        assertNotEquals(trip, tripService.findTripById(trip2.getTrip_id()));
+        Trip testTrip = new Trip(null, "Test trip", "Houston, TX, USA", "29.7604267 -95.3698028", "Waco, TX, USA", "31.549333 -97.1466695", "2022-10-20", "true", "true", 1L, "Hwy 6 N", "3aKfOYLX8JGFThGWieixXD", "https://open.spotify.com/playlist/3aKfOYLX8JGFThGWieixXD", new ArrayList<>(), new Route(null, "Test route", new ArrayList<>()));
+        Trip result = tripService.createTrip(testTrip);
+
+        result.setDate("2023-11-21");
+        Trip result2 = tripService.editTrip(result);
+
+        assertThat(result2.getDate()).isEqualTo("2023-11-21");
+    }
+
+    @Test
+    @Transactional
+    void testDeleteTrip() throws MessagingException, GeneralSecurityException, IOException {
+        Trip testTrip = new Trip(null, "Test trip", "Houston, TX, USA", "29.7604267 -95.3698028", "Waco, TX, USA", "31.549333 -97.1466695", "2022-10-20", "true", "true", 1L, "Hwy 6 N", "3aKfOYLX8JGFThGWieixXD", "https://open.spotify.com/playlist/3aKfOYLX8JGFThGWieixXD", new ArrayList<>(), new Route(null, "Test route", new ArrayList<>()));
+        Trip result = tripService.createTrip(testTrip);
+
+        tripService.deleteTrip(result.getTrip_id());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            tripService.findTripById(result.getTrip_id());
+        });
     }
 }
-*/

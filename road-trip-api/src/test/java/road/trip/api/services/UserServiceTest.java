@@ -1,13 +1,16 @@
 package road.trip.api.services;
 
-/*
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import road.trip.api.persistence.User;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import javax.transaction.Transactional;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -15,40 +18,56 @@ public class UserServiceTest {
     @Autowired
     UserService userService;
 
-    User user = new User("Mia", "Gortney", "testing@junit.com", "password");
-    User user2 = new User("Mia2", "Gortney", "testing@junit.com", "password");
-
     @Test
-    public void testUpdate() {
-        user = userService.register(user);
-        user2.setUser_id(user.getUser_id());
-        userService.update(user2);
-        assertEquals(user2.getFirstName(), userService.findAccountById(user.getUser_id()).getFirstName());
+    @Transactional
+    void testRegister() {
+        User testUser = new User("John", "Smith", "jsmith", "test123");
+        User result = userService.register(testUser);
+
+        assertThat(result).isNotNull();
     }
 
     @Test
-    public void testRegister() {
-        user = userService.register(user);
-        assertEquals(userService.findAccountById(user.getUser_id()), user);
+    @Transactional
+    void testFindAllUsers() {
+        List<User> users = userService.findAllUsers();
+
+        assertThat(users).isNotNull();
     }
 
-    @Test
-    public void testLogin() {
+//    @Test
+//    void testUpdate() {
+//        User testUser = new User("John", "Smith", "jsmith", "test123");
+//        User result = userService.register(testUser);
+//
+//        result.setFirstName("Bob");
+//
+//        userService.update(result);
+//        User result2 = userService.findAccountById(result.getUser_id());
+//
+//        assertThat(result2.getFirstName()).isEqualTo("Bob");
+//    }
 
-    }
+//    @Test
+//    @Transactional
+//    void testLogin() throws Exception {
+//        User testUser = new User("John", "Smith", "jsmith@gmail.com", "test123");
+//        userService.register(testUser);
+//
+//        assertDoesNotThrow(() -> {
+//            userService.login("jsmith@gmail.com", "test123");
+//        });
+//    }
 
     @Test
-    public void testFindAllUsers() {
-        assertTrue(userService.findAllUsers().size() > 0);
-    }
+    void testDeleteAccount() {
+        User testUser = new User("John", "Smith", "jsmith@gmail.com", "test123");
+        User result = userService.register(testUser);
 
-    @Test
-    public void testDeleteAccount() {
-        user = userService.register(user);
-        int size = userService.findAllUsers().size();
-        userService.deleteAccount(user.getUser_id());
-        assertTrue(userService.findAllUsers().size() < size);
+        assertDoesNotThrow(() -> {
+            User result2 = userService.deleteAccount(result.getUser_id());
+
+            assertThat(result2).isNotNull();
+        });
     }
 }
-
- */
