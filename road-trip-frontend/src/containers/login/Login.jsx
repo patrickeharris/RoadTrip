@@ -89,11 +89,12 @@ const Login = () => {
                                 }else{
                                     if(response[i].notification.includes('departs')){
                                         console.log('ID: ' + response[i].notif_id)
+                                        let notif_id = response[i].notif_id
                                         try {
-                                            const resp = await myAxios.post(
+                                            const resp = await myAxios.delete(
                                                 "/remove/notification",
-                                                JSON.stringify({notif_id: response[i].notif_id}),
                                                 {
+                                                    params: {notif_id},
                                                     headers: {
                                                         "Content-Type": "application/json",
                                                         'Access-Control-Allow-Origin': '*',
@@ -103,7 +104,12 @@ const Login = () => {
                                                 }
                                             );
                                         } catch (err){
-
+                                            if (!err?.response) {
+                                                console.log("No Server Response");
+                                            } else {
+                                                console.log("Notification Delete Failed");
+                                                console.log(err?.response);
+                                            }
                                         }
                                         console.log('DELETE')
                                     }else {
