@@ -36,6 +36,9 @@ const Notifs = () => {
     const [test, setTest] = useState(false)
 
     async function getNotifs(){
+        if(notifs.length > 0){
+
+        }
         const response = (await myAxios.get("/get/notifications", {
             headers:{
                 'Access-Control-Allow-Origin' : '*',
@@ -60,13 +63,23 @@ const Notifs = () => {
         setTest(true)
     }
 
+    function deleteNotif(e){
+        setTest(false)
+        myAxios.delete("/remove/notification", {
+            params: {notif_id: e.target.value},
+            headers:{
+                'Access-Control-Allow-Origin' : '*',
+                'Authorization': window.sessionStorage.getItem('token')}
+        }).then(getNotifs())
+    }
+
     useEffect(() => {
         getNotifs();
     })
 
     return <div className="flex flex-col items-center max-h-64 overflow-scroll overflow-hidden min-w-64 max-w-64 bg-opacity-40">{test && notifs.length > 0 ? notifs.map((notif) => {
         return <div className="bg-purple-500 w-full bg-opacity-40 mb-4 w-[80%]">
-            <button className="float-right pr-4 pt-2">X</button>
+            <button value={notif.notif_id} onClick={deleteNotif} className="float-right pr-4 pt-2">X</button>
             <p className="w-full font-bold font-sans text-xs text-left pl-4 pt-2">{notif.timestamp}</p>
             <p className="w-full font-sans text-md text-center pb-2">{notif.notification}</p>
             </div>}) : <p className="w-full font-sans text-center">No Notifications Found</p>}</div>

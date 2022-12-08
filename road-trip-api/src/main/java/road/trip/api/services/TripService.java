@@ -56,7 +56,9 @@ public class TripService {
             }
             s.setStop_id(null);
         }
-        deleteTrip(t.getTrip_id());
+        if(t.getTrip_id() != null) {
+            deleteTrip(t.getTrip_id());
+        }
         return createTrip(trip);
     }
 
