@@ -205,7 +205,7 @@ const Login = () => {
     }
 
     return (
-        <div className={globalStyles.sectionPadding}>
+        <div className="min-h-screen pt-32">
             <ToastContainer />
             <div className={styles.login}>
                 <div className={styles.loginContent}>

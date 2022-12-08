@@ -8,6 +8,8 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +29,7 @@ public class TripService {
         return tripRepository.findById(id).get();
     }
 
-    public Trip createTrip (Trip trip) throws GeneralSecurityException, IOException, MessagingException {
+    public Trip createTrip (Trip trip) {
 
         if (trip.getRoute() != null) {
             stopService.addStops(trip.getRoute().getStops());
@@ -38,16 +40,24 @@ public class TripService {
     }
 
     public Trip editTrip(Trip trip) {
-
         Trip t = findTripById(trip.getTrip_id());
-        t.setDate(trip.getDate());
-        t.setEnd(trip.getEnd());
-        t.setStart(trip.getStart());
-        t.setTripName(trip.getTripName());
-        t.setUser_id(trip.getUser_id());
-        t.setSelectedRoute(trip.getSelectedRoute());
-
-        return tripRepository.save(t);
+        trip.setStartLoc(t.getStartLoc());
+        trip.setEndLoc(t.getEndLoc());
+        trip.setTrip_id(null);
+        trip.getRoute().setRoute_id(null);
+        for(Stop s : trip.getRoute().getStops()){
+            for(Stop s2 : t.getRoute().getStops()){
+                if(s.getStopName().equals(s2.getStopName())){
+                    s.setStopLocLong(s2.getStopLocLong());
+                    s.setStopLocLat(s2.getStopLocLat());
+                    s.setVicinity(s2.getVicinity());
+                    s.setStopType(s2.getStopType());
+                }
+            }
+            s.setStop_id(null);
+        }
+        deleteTrip(t.getTrip_id());
+        return createTrip(trip);
     }
 
     public List<Trip> findAllTrips(){

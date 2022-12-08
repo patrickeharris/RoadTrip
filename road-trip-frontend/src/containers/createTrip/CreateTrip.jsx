@@ -116,7 +116,7 @@ const Trip = ({trip, setTest, setTrip, map, stopsResponse, setStopsResponse, mar
     });
 }
 
-const Results = ({results, setSelectedRoute, selectedRoute, map, set, setSet, calculateStops}) => {
+const Results = ({results, setSelectedRoute, selectedRoute, map, set, setSet, calculateStops, trip, setTrip}) => {
     const containerStyle = {
         width: '400px',
         height: '400px'
@@ -132,6 +132,8 @@ const Results = ({results, setSelectedRoute, selectedRoute, map, set, setSet, ca
 
         selectedRoute = id.target.value;
         setSelectedRoute(id.target.value);
+        trip.splice(1, trip.length - 2)
+        setTrip(trip);
         setSelected(true)
         const t = [];
         t.routes = [results.routes.find(element => id.target.value === element.summary)];
@@ -540,6 +542,66 @@ const CreateTrip = () => {
         libraries: ["places"],
     });
     const handleSubmit = async () => {
+        if(tripName === ""){
+            toast.warn('You must specify a trip name!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
+        if(start === ""){
+            toast.warn('You must specify a starting location!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
+        if(end === ""){
+            toast.warn('You must specify an ending location!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
+        if(date === ""){
+            toast.warn('You must specify a date!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
+        if(selectedRoute === ""){
+            toast.warn('You must choose a route!', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            return;
+        }
         try {
             const startLoc = selectedStart.lat + " " + selectedStart.lng;
             const stops = [];
@@ -792,7 +854,7 @@ const CreateTrip = () => {
                             </li></ul>}
                         </div>
 
-                            {routes && <div className="absolute grid top-14 left-2 items-center z-10 w-90 max-h-full overflow-auto pb-16 bg-white rounded border-8 text-center border-white">{directionsResponse !== null ? <Results calculateStops={calculateStops} results={directionsResponse} set={t} setSet={setT} setSelectedRoute={setSelectedRoute} selectedRoute={selectedRoute} map={map}/>: <h2>No start or end</h2>}</div>}
+                            {routes && <div className="absolute grid top-14 left-2 items-center z-10 w-90 max-h-full overflow-auto pb-16 bg-white rounded border-8 text-center border-white">{directionsResponse !== null ? <Results trip={trip} setTrip={setTrip} calculateStops={calculateStops} results={directionsResponse} set={t} setSet={setT} setSelectedRoute={setSelectedRoute} selectedRoute={selectedRoute} map={map}/>: <h2>No start or end</h2>}</div>}
                             {stops && <div className="absolute grid top-14 left-2 items-center z-10 w-90 max-h-full w-96 overflow-auto bg-white rounded border-8 text-center border-white">{showStopPref ?
                                 <div>
                                     <h2 className="font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-purple-400 to-orange-300">Distance to Route:</h2> <h6 className="font-extrabold text-transparent text-lg bg-clip-text bg-gradient-to-r from-red-400 to-orange-300">{distance} mi</h6> <input type={"range"} min={"1"} style={getBackgroundSize()} max={MAX} onChange={(e) => setDistance(e.target.value)} value={distance}/>
