@@ -36,9 +36,7 @@ const Notifs = () => {
     const [test, setTest] = useState(false)
 
     async function getNotifs(){
-        if(notifs.length > 0){
-
-        }
+        if(notifs.length > 0){}
         const response = (await myAxios.get("/get/notifications", {
             headers:{
                 'Access-Control-Allow-Origin' : '*',
@@ -64,13 +62,13 @@ const Notifs = () => {
     }
 
     function deleteNotif(e){
-        setTest(false)
+        console.log(e.target.parentElement)
         myAxios.delete("/remove/notification", {
             params: {notif_id: e.target.value},
             headers:{
                 'Access-Control-Allow-Origin' : '*',
                 'Authorization': window.sessionStorage.getItem('token')}
-        }).then(getNotifs())
+        }).then(e.target.parentElement.remove())
     }
 
     useEffect(() => {
