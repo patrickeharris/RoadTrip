@@ -58,7 +58,7 @@ const Trip = ({trip, setTest, setTrip, map, stopsResponse, setStopsResponse, mar
         let container = e.currentTarget;
         const index = trip.findIndex(element => element.vicinity === container.value);
         console.log(index)
-        if(index !== -1) {
+        if(index !== -1 && index !== 1) {
             let arrIndex = trip.findIndex(element => element.vicinity === container.value)
             let temp = trip[arrIndex]
             trip[arrIndex] = trip[arrIndex - 1]
@@ -84,7 +84,7 @@ const Trip = ({trip, setTest, setTrip, map, stopsResponse, setStopsResponse, mar
         let container = e.currentTarget;
         const index = trip.findIndex(element => element.vicinity === container.value);
         console.log(index)
-        if(index !== -1) {
+        if(index !== -1 && index !== trip.length - 2) {
             let arrIndex = trip.findIndex(element => element.vicinity === container.value)
             let temp = trip[arrIndex]
             trip[arrIndex] = trip[arrIndex + 1]
